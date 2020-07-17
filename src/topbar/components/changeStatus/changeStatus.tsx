@@ -11,7 +11,9 @@ const BaseStyle: CSS.Properties = {
     fontWeight: 400,
     fontFamily: '"Open Sans", sans-serif',
     textDecoration: 'underline',
-    color: '#b2bec3'
+    color: '#b2bec3',
+    margin: 0,
+    cursor: 'default'
 }
 
 const GetChangeString = (currentTS: number, lastChangeTS: number) => {
