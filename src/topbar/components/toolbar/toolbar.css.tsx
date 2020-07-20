@@ -41,5 +41,5 @@ export const ToolbarBtn: CSS.Properties = {
 
 export const WindowInteractionButtons: CSS.Properties = {
     float: 'right',
-    padding: '2px 0px'
+    padding: '2px 0px',
 }
