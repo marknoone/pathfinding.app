@@ -2,10 +2,13 @@ import React from 'react';
 import CSS from 'csstype';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import '../../hover.anim.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 type DropdownMenuTextBtnProps = {
     title: string
 
+    hasCaret?: boolean
     onClick?: () => void
 }
 
@@ -17,7 +20,7 @@ export const BaseStyle: CSS.Properties = {
     backgroundColor: 'inherit',
     margin: 0,
     lineHeight: '14px',
-    padding: '4px 10px'
+    padding: '4px 6px'
 }
 
 const DropdownMenuTextBtn: React.FunctionComponent<DropdownMenuTextBtnProps> = (props) =>  
@@ -27,6 +30,13 @@ const DropdownMenuTextBtn: React.FunctionComponent<DropdownMenuTextBtnProps> = (
                 props.onClick()
     }}>
         {props.title}
+        {
+            props.hasCaret? 
+            <div style={{paddingLeft: '8px', color: '#666', display:'inline-block'}}>
+                <FontAwesomeIcon icon={faCaretDown}/>
+            </div>:
+            null 
+        }
 </p>
 
 export default DropdownMenuTextBtn;

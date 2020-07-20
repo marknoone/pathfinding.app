@@ -23,7 +23,8 @@ export const MenuContainer: CSS.Properties = {
     backgroundColor: '#Fefefe',
     boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.4)',
     borderRadius: '4px',
-    padding: '0px 4px'
+    padding: '0px 4px',
+    zIndex: 45
 }
 
 export const DropdownSection: CSS.Properties = {

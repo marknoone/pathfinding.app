@@ -15,7 +15,7 @@ import {
 } from './topbar.css';
 
 const TopBar: React.FunctionComponent = (props) => {
-    return <>
+    return <div style={{ boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.1)'}}>
         <div style={TopSectionContainer}>
             <div style={LogoContainer}>
                 <img style={Logo} src="https://via.placeholder.com/300.png" alt=""/>
@@ -31,7 +31,7 @@ const TopBar: React.FunctionComponent = (props) => {
             </div>
         </div>
         <div style={ToolbarContainer}><ToolbarComponent /></div>
-    </>;
+    </div>;
 }
 
 export default TopBar;
