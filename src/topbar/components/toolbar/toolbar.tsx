@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux'
+import { SetToolbarCollapse} from '../../../app/store/layout/actions';
 import { GetMenuSectionDefinitions } from './menus';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DropdownMenu } from '../../../app/components/dropdownMenu';
@@ -138,7 +139,9 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
                     </a>
                 </li>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={{...ToolbarBtn, color: '#444'}}>
+                    <a onClick={()=>{
+                        dispatch(SetToolbarCollapse(true))
+                    }} style={{...ToolbarBtn, color: '#444'}}>
                         <FontAwesomeIcon icon={faAngleDoubleUp}/>
                     </a>
                 </li>

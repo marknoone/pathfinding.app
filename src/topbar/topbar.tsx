@@ -1,4 +1,6 @@
 import React from 'react';
+import { AppState } from '../store';
+import { useSelector } from "react-redux";
 import { ToolbarComponent } from './components/toolbar';
 import { ActionMenus } from './components/actionMenus';
 import { ChangeStatus } from './components/changeStatus';
@@ -15,6 +17,9 @@ import {
 } from './topbar.css';
 
 const TopBar: React.FunctionComponent = (props) => {
+    const isCollapsed = useSelector((state: AppState) => state.layout.isTopbarCollapsed);
+    console.log(isCollapsed);
+    
     return <div style={{ boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.1)', zIndex: 40, position: 'relative'}}>
         <div style={TopSectionContainer}>
             <div style={LogoContainer}>

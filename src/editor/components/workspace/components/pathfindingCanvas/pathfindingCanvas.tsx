@@ -6,7 +6,9 @@ import {
 
 const PathfindingCanvas: React.FunctionComponent = (props) => 
     <div style={BaseStyle}> 
-        <canvas style={WorkspaceCanvas}></canvas>
+        <div style={{}}>
+            <canvas style={WorkspaceCanvas}></canvas>
+        </div>
     </div>;
 
 export default PathfindingCanvas;
