@@ -1,9 +1,8 @@
 import React from 'react';
 import CSS from 'csstype';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import '../../hover.anim.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import '../../hover.anim.css';
 
 type DropdownMenuTextBtnProps = {
     title: string

@@ -1,12 +1,9 @@
 import CSS from 'csstype';
 
 export const BaseStyle: CSS.Properties = {
-    position: 'absolute',
-    right: 0,
-    top: '96px',
-    minWidth: '360px',
-    width: '10vw',
-    height: 'calc(100% - 96px)',
+    position: 'relative',
+    width: '100%',
+    height: '100%',
     borderLeft: '1px solid #ddd'
 }
 

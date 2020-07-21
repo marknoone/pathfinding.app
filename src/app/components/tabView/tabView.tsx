@@ -6,7 +6,6 @@ import {
     TabHeader,
     TabHeaderActive
 } from './tabView.css';
-import { SimulationPanel } from '../../../editor/components/simulationPanel';
 
 type TabViewProps = {
     views: {header:string, view:JSX.Element}[]
@@ -23,7 +22,7 @@ const TabView: React.FunctionComponent<TabViewProps> = (props) => {
                 onClick={() => {setViewIdx(i)}}
                 style={{
                     ...TabHeader,
-                    ...(i==viewIdx && TabHeaderActive),
+                    ...(i===viewIdx && TabHeaderActive),
                     width: `${100/props.views.length}%`
                 }}>
                     <p>{v.header}</p>
