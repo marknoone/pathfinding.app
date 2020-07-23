@@ -1,26 +1,28 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TabView } from '../../../app/components/tabView';
+import { PassengerView } from './components/passengerView';
+import { ComponentView } from './components/componentView';
 import {
     BaseStyle,
     PanelToggle,
     ToggleBtn
-} from './scenarioPanel.css';
+} from './leftPanel.css';
 import { 
     faAngleLeft, 
     faAngleRight, 
 } from '@fortawesome/free-solid-svg-icons';
 import './hover.anim.css';
 
-type ScenarioPanel = {
+type LeftPanel = {
     isCollapsed?: boolean
 }
 
-const ScenarioPanel: React.FunctionComponent<ScenarioPanel> = (props) => {
+const LeftPanel: React.FunctionComponent<LeftPanel> = (props) => {
     return <div style={BaseStyle}>
         <TabView views={[
-            {header: "Inspector", view: (<>Hello, inspector!</>)},
-            {header: "Entities", view: (<>Hello, entities!</>)},
+            {header: "Passengers", view: (<><PassengerView /></>)},
+            {header: "Components", view: (<><ComponentView /></>)},
         ]} />
         <div style={PanelToggle}>
             <div style={ToggleBtn} className="panel-toggle-hover">
@@ -30,4 +32,4 @@ const ScenarioPanel: React.FunctionComponent<ScenarioPanel> = (props) => {
     </div>;
 }
 
-export default ScenarioPanel;
+export default LeftPanel;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { ScenarioPanel } from './components/scenarioPanel';
+import { LeftPanel } from './components/leftPanel';
 import { WorkspaceComponent } from './components/workspace';
-import { SimulationPanel } from './components/simulationPanel';
+import { RightPanel } from './components/rightPanel';
 import {
     BaseStyle
 } from './editor.css';
@@ -15,7 +15,7 @@ const EditorComponent: React.FunctionComponent = (props) => {
             height: '100%',
             display: 'inline-block',
             verticalAlign: 'top',
-        }}><ScenarioPanel /></div>
+        }}><LeftPanel /></div>
 
         <div style={{
             display: 'inline-block',
@@ -30,7 +30,7 @@ const EditorComponent: React.FunctionComponent = (props) => {
             display: 'inline-block',
             verticalAlign: 'top',
             float: 'right'
-        }}><SimulationPanel /></div>
+        }}><RightPanel /></div>
     </div>;
 }
 
