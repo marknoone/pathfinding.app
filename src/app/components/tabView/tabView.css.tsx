@@ -22,7 +22,8 @@ export const TabHeader: CSS.Properties = {
 }
 
 export const TabHeaderActive: CSS.Properties = {
-    borderBottom: '2px solid #ddd'
+    color: '#079992',
+    borderBottom: '2px solid #079992'
 }
 
 export const TabContent: CSS.Properties = {
