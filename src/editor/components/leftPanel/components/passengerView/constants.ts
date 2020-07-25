@@ -1,9 +1,9 @@
 export type PassengerState = {
     count: number
-    tree: {
-        [k:number] : Passenger | PassengerDirectory
-    }
+    tree: PassengerTree
 }
+
+export type PassengerTree = { [k:number] : Passenger | PassengerDirectory }
 
 export type PassengerAction = {
     type: string,
