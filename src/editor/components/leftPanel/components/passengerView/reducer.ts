@@ -9,7 +9,6 @@ const initialState: PassengerState = {
             name: "All Passenger Trips",
             children: [],
             isCollapsed: false,
-            isHovering: false
         }
     }
 }

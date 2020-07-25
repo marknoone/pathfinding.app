@@ -5,7 +5,7 @@ import ScenarioReducer from './editor/reducer';
 
 export const rootReducer = combineReducers({
     layout: LayoutReducer,
-    scenarios: ScenarioReducer
+    scenario: ScenarioReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

@@ -29,7 +29,6 @@ export type PassengerDirectory = {
     children: number[]
 
     isCollapsed: boolean
-    isHovering: boolean
 }
 
 export type Passenger = {
@@ -38,6 +37,12 @@ export type Passenger = {
     start: number
     destination: number
     tod: number
-    
-    isHovering: boolean
+}
+
+export function isPassenger(p: Passenger | PassengerDirectory): p is Passenger {
+    return (p as Passenger).start !== undefined;
+}
+
+export function isPassengerDirectory(p: Passenger | PassengerDirectory): p is PassengerDirectory {
+    return (p as PassengerDirectory).children !== undefined;
 }
