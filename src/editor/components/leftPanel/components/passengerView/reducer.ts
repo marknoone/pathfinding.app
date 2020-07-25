@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import { PassengerState, PassengerAction, PassengerActionTypes } from './constants'
 
 const initialState: PassengerState = {
-    count: 1,
+    nextId: 1,
     tree: {
         0 : {
             id: 0,

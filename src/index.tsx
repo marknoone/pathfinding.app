@@ -6,8 +6,12 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { rootReducer } from './store';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, composeWithDevTools(
+  // applyMiddleware(...middleware),
+  // other store enhancers if any
+));
 
 ReactDOM.render(
   <React.StrictMode>

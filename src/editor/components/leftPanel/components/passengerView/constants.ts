@@ -1,5 +1,5 @@
 export type PassengerState = {
-    count: number
+    nextId: number
     tree: PassengerTree
 }
 

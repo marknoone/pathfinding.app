@@ -5,12 +5,12 @@ import {
     VehicleActionTypes, StationActionTypes, RouteActionTypes,
 } from './constants';
 
-const initialVehicleState = { nextIdx: 0, data: {} }
+const initialVehicleState = { nextId: 0, data: {} }
 export const VehicleReducer: Reducer<VehiclesState, VehicleAction> = (state = initialVehicleState, action) => {
     switch(action.type) {
         case VehicleActionTypes.ADD_NEW_VEHICLE:
             return action.payload.obj? {
-                nextIdx: state.nextIdx+1,
+                nextId: state.nextId+1,
                 data: {
                     ...state.data,
                     [action.payload.id]: action.payload.obj
@@ -32,12 +32,12 @@ export const VehicleReducer: Reducer<VehiclesState, VehicleAction> = (state = in
     }
 }
 
-const initialStationState = { nextIdx: 0, data: {} }
+const initialStationState = { nextId: 0, data: {} }
 export const StationReducer: Reducer<StationsState, StationAction> = (state = initialStationState, action) => {
     switch(action.type) {
         case StationActionTypes.ADD_NEW_STATION:
             return action.payload.obj? {
-                nextIdx: state.nextIdx+1,
+                nextId: state.nextId+1,
                 data: {
                     ...state.data,
                     [action.payload.id]: action.payload.obj
@@ -59,12 +59,12 @@ export const StationReducer: Reducer<StationsState, StationAction> = (state = in
     }
 }
 
-const initialRouteState = { nextIdx: 0, data: {} }
+const initialRouteState = { nextId: 0, data: {} }
 export const RouteReducer: Reducer<RoutesState, RouteAction> = (state = initialRouteState, action) => {
     switch(action.type) {
         case RouteActionTypes.ADD_NEW_ROUTE:
             return action.payload.obj? {
-                nextIdx: state.nextIdx+1,
+                nextId: state.nextId+1,
                 data: {
                     ...state.data,
                     [action.payload.id]: action.payload.obj

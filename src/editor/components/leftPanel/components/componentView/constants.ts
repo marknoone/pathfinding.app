@@ -2,9 +2,9 @@ export type StationDataObj = {[key: number]: Station}
 export type RouteDataObj   = {[key: number]: Route}
 export type VehicleDataObj = {[key: number]: Vehicle}
 
-export type StationsState = { nextIdx: number, data: StationDataObj }
-export type RoutesState =   { nextIdx: number, data: RouteDataObj   }
-export type VehiclesState = { nextIdx: number, data: VehicleDataObj }
+export type StationsState = { nextId: number, data: StationDataObj }
+export type RoutesState =   { nextId: number, data: RouteDataObj   }
+export type VehiclesState = { nextId: number, data: VehicleDataObj }
 
 export type StationAction = { type: string; payload: { id: number, obj?: Station } }
 export type RouteAction =   { type: string; payload: { id: number, obj?: Route } }

@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import LayoutReducer from './app/store/layout/reducers';
-import PassengerReducer from './editor/components/leftPanel/components/passengerView/reducer';
+import ScenarioReducer from './editor/reducer';
 
 export const rootReducer = combineReducers({
     layout: LayoutReducer,
-    passengers: PassengerReducer
+    scenarios: ScenarioReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

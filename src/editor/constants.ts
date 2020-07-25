@@ -16,7 +16,8 @@ export enum ComponentTypes {
 export type ScenarioAction = {
     type: string,
     payload: {
-        id: number
+        id: number,
+        name?: string,
         scenarios?: Scenario[] 
     }
 }
@@ -24,6 +25,7 @@ export type ScenarioAction = {
 export enum ScenarioActionTypes {
     SET_SCENARIO_IDX = "@scenario/SET_SCENARIO_IDX",
     SET_SCENARIO_STATE = "@scenario/SET_SCENARIO_STATE",
+    SET_SCENARIO_NAME_BY_IDX = "@@scenario/SET_SCENARIO_NAME_BY_IDX"
 }
 
 export type ScenarioState = {
@@ -32,9 +34,10 @@ export type ScenarioState = {
 }
 
 export type Scenario = {
-    stations:   StationsState
-    routes:     RoutesState
-    vehicles:   VehiclesState
-    passengers: PassengerState
-    simulationConfig: SimulationState
+    name:               string
+    stations:           StationsState
+    routes:             RoutesState
+    vehicles:           VehiclesState
+    passengers:         PassengerState
+    simulationConfig:   SimulationState
 }

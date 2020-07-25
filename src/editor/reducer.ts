@@ -1,9 +1,11 @@
 import { combineReducers, Reducer } from 'redux';
+import { Algorithms, Playspeed } from './components/rightPanel/components/simulationView/constants';
 import PassengerReducer from './components/leftPanel/components/passengerView/reducer';
 import SimulationReducer from './components/rightPanel/components/simulationView/reducer';
 import { RouteReducer, StationReducer,  VehicleReducer} 
     from './components/leftPanel/components/componentView/reducer';
-import { ScenarioState, ScenarioAction, ScenarioActionTypes } from './constants' 
+import { ScenarioState, ScenarioAction, ScenarioActionTypes, Scenario } from './constants' 
+import { PassengerTree } from './components/leftPanel/components/passengerView/constants';
 
 const scenarioReducer = combineReducers({
     stations:   StationReducer,
@@ -15,10 +17,23 @@ const scenarioReducer = combineReducers({
 
 const initialState = {
     activeScenarioIdx: 0,
-    scenarios: []
+    scenarios: [{
+        name: "Scenario-1",
+        stations:   { nextId: 0, data: {}},
+        routes:     { nextId: 0, data: {}},
+        vehicles:   { nextId: 0, data: {}},
+        passengers: { nextId: 0, tree: {} as PassengerTree },
+        simulationConfig: {
+            isPlaying: false,
+            simFrame: 1,
+            algorithm: Algorithms.Dijkstra,
+            playSpeed: 1 as Playspeed
+        }
+    }]
 }
 
 export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (state = initialState, action) => {
+    console.log(state, action);
     if (
             action.type.startsWith('@@vehicle/') ||
             action.type.startsWith('@@passenger/') ||
@@ -30,8 +45,12 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
             ...state,
             scenarios: [
                 ...state.scenarios.slice(0, state.activeScenarioIdx),
-                scenarioReducer(state.scenarios[state.activeScenarioIdx], action),
-                ...state.scenarios.slice(state.activeScenarioIdx + 1)
+                Object.assign(
+                    {}, 
+                    state.scenarios[state.activeScenarioIdx],
+                    scenarioReducer(state.scenarios[state.activeScenarioIdx], action)
+                ),
+                ...state.scenarios.slice(state.activeScenarioIdx)
             ]
         }
     }
@@ -47,9 +66,22 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
                 activeScenarioIdx: action.payload.id,
                 scenarios: action.payload.scenarios
             }: state;
+        case ScenarioActionTypes.SET_SCENARIO_NAME_BY_IDX:
+            return {
+                ...state,
+                scenarios: [
+                    ...state.scenarios.slice(0, action.payload.id),
+                    Object.assign(
+                        {}, 
+                        state.scenarios[state.activeScenarioIdx], 
+                        {name: action.payload.name}
+                    ),
+                    ...state.scenarios.slice(action.payload.id)
+                ]
+            }
         default:
             return state
     }
 }
 
-export default scenarioStateReducer;
+export default scenarioStateReducer;;
