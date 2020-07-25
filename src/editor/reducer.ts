@@ -2,10 +2,11 @@ import { combineReducers, Reducer } from 'redux';
 import { Algorithms, Playspeed } from './components/rightPanel/components/simulationView/constants';
 import PassengerReducer from './components/leftPanel/components/passengerView/reducer';
 import SimulationReducer from './components/rightPanel/components/simulationView/reducer';
-import { RouteReducer, StationReducer,  VehicleReducer} 
-    from './components/leftPanel/components/componentView/reducer';
 import { ScenarioState, ScenarioAction, ScenarioActionTypes, Scenario } from './constants' 
 import { PassengerTree } from './components/leftPanel/components/passengerView/constants';
+import { TransitModes } from './components/leftPanel/components/componentView/constants';
+import { RouteReducer, StationReducer,  VehicleReducer} 
+    from './components/leftPanel/components/componentView/reducer';
 
 const scenarioReducer = combineReducers({
     stations:   StationReducer,
@@ -19,10 +20,36 @@ const initialState = {
     activeScenarioIdx: 0,
     scenarios: [{
         name: "Scenario-1",
-        stations:   { nextId: 0, data: {}},
-        routes:     { nextId: 0, data: {}},
-        vehicles:   { nextId: 0, data: {}},
-        passengers: { nextId: 0, tree: {} as PassengerTree },
+        stations:   { nextId: 5, data: {
+            1: { id: 1, name: "Station-1", colour: "#ff9f43", nodeID: 1 },
+            2: { id: 2, name: "Station-2", colour: "#1dd1a1", nodeID: 2 },
+            3: { id: 3, name: "Station-3", colour: "#ee5253", nodeID: 3 },
+            4: { id: 4, name: "Station-4", colour: "#2e86de", nodeID: 4 },
+            5: { id: 5, name: "Station-5", colour: "#1dd1a1", nodeID: 5 },
+        }},
+        
+        routes:     { nextId: 2, data: {
+            1: { id: 1, name: "Route-1", mode: TransitModes.BUS, color: "#1dd1a1", stations: [2, 5], departures: [40000] },
+            2: { id: 2, name: "Route-2", mode: TransitModes.TRAIN, color: "#1dd1a1", stations: [2, 5], departures: [40000] },
+        }},
+
+        vehicles:   { nextId: 3, data: {
+            1: { id: 1, capacity: 32, glyph: "" },
+            2: { id: 2, capacity: 4,  glyph: "" },
+            3: { id: 3, capacity: 16, glyph: "" },
+        }},
+
+        passengers: { nextId: 6, tree: {
+            0 : {id: 0, name: "All Passengers", isCollapsed: false, isHovering: false, children: [1, 2, 3]},
+
+            1 : {id: 1, name: "Passenger-1", start: 2, destination: 4, tod: 38000, isHovering: false},
+            2 : {id: 2, name: "Passenger-2", start: 1, destination: 3, tod: 39000, isHovering: false},
+            3 : {id: 3, name: "Batch-1", isCollapsed: false, isHovering: false, children: [3, 4]},
+            
+            4 : {id: 4, name: "Passenger-3", start: 4, destination: 1, tod: 34000, isHovering: false},
+            5 : {id: 5, name: "Passenger-4", start: 5, destination: 3, tod: 32000, isHovering: false},
+        } as PassengerTree },
+
         simulationConfig: {
             isPlaying: false,
             simFrame: 1,

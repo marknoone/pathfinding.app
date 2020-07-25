@@ -35,8 +35,8 @@ export type PassengerDirectory = {
 export type Passenger = {
     id: number
     name: string
-    start: string
-    destination: string
+    start: number
+    destination: number
     tod: number
     
     isHovering: boolean
