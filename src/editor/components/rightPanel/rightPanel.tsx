@@ -27,7 +27,7 @@ const RightPanel: React.FunctionComponent<RightPanel> = (props) => {
         </div>
         <div style={{position: 'relative', left: '12px', height: '100%'}}>
             <TabView views={[ 
-                {header: "Inspector", view: (<><InspectorView /></>)},
+                // {header: "Inspector", view: (<><InspectorView /></>)},
                 {header: "Simulation", view: (<><SimulationView /></>)}
             ]} />
         </div>
