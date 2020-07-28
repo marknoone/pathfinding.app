@@ -20,7 +20,7 @@ const initialState = {
     activeScenarioIdx: 0,
     scenarios: [{
         name: "Scenario-1",
-        stations:   { nextId: 5, data: {
+        stations:   { nextId: 6, data: {
             1: { id: 1, name: "Station-1", colour: "#ff9f43", nodeID: 1 },
             2: { id: 2, name: "Station-2", colour: "#1dd1a1", nodeID: 2 },
             3: { id: 3, name: "Station-3", colour: "#ee5253", nodeID: 3 },
@@ -28,15 +28,15 @@ const initialState = {
             5: { id: 5, name: "Station-5", colour: "#1dd1a1", nodeID: 5 },
         }},
         
-        routes:     { nextId: 2, data: {
+        routes:     { nextId: 3, data: {
             1: { id: 1, name: "Route-1", mode: TransitModes.BUS, color: "#1dd1a1", stations: [2, 5], departures: [40000] },
             2: { id: 2, name: "Route-2", mode: TransitModes.TRAIN, color: "#1dd1a1", stations: [2, 5], departures: [40000] },
         }},
 
-        vehicles:   { nextId: 3, data: {
-            1: { id: 1, capacity: 32, glyph: "" },
-            2: { id: 2, capacity: 4,  glyph: "" },
-            3: { id: 3, capacity: 16, glyph: "" },
+        vehicles:   { nextId: 4, data: {
+            1: { id: 1, name: "Vehicle-1", capacity: 32, glyph: "" },
+            2: { id: 2, name: "Vehicle-2", capacity: 4,  glyph: "" },
+            3: { id: 3, name: "Vehicle-3", capacity: 16, glyph: "" },
         }},
 
         passengers: { nextId: 6, tree: {
@@ -68,6 +68,7 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
             action.type.startsWith('@@station/') ||
             action.type.startsWith('@@simulation/')
     ) {
+        console.log(state.scenarios.slice(0, state.activeScenarioIdx))
         return {
             ...state,
             scenarios: [
@@ -77,7 +78,7 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
                     state.scenarios[state.activeScenarioIdx],
                     scenarioReducer(state.scenarios[state.activeScenarioIdx], action)
                 ),
-                ...state.scenarios.slice(state.activeScenarioIdx)
+                ...state.scenarios.slice(state.activeScenarioIdx + 1)
             ]
         }
     }
@@ -103,7 +104,7 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
                         state.scenarios[state.activeScenarioIdx], 
                         {name: action.payload.name}
                     ),
-                    ...state.scenarios.slice(action.payload.id)
+                    ...state.scenarios.slice(action.payload.id + 1)
                 ]
             }
         default:

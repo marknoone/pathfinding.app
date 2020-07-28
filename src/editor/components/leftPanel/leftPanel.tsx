@@ -21,7 +21,7 @@ type LeftPanel = {
 const LeftPanel: React.FunctionComponent<LeftPanel> = (props) => {
     return <div style={BaseStyle}>
         <TabView views={[
-            {header: "Passengers", view: (<><PassengerView /></>)},
+            // {header: "Passengers", view: (<><PassengerView /></>)},
             {header: "Components", view: (<><ComponentView /></>)},
         ]} />
         <div style={PanelToggle}>

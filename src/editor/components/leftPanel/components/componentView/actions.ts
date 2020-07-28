@@ -5,6 +5,11 @@ import {
 } from './constants';
 
 // Vehicle Actions -----------------------------------------------------------
+export const AddEmptyVehicleComponent = ():VehicleAction => ({
+    type: VehicleActionTypes.ADD_NEW_EMPTY_VEHICLE,
+    payload: {id: 0}
+})
+
 export const AddVehicleComponent = (val: Vehicle):VehicleAction => ({
     type: VehicleActionTypes.ADD_NEW_VEHICLE,
     payload: {id: val.id, obj: val}
@@ -21,6 +26,11 @@ export const UpdateVehicleByID = (val: Vehicle):VehicleAction => ({
 })
 
 // Station Actions -----------------------------------------------------------
+export const AddEmptyStationComponent = ():StationAction => ({
+    type: StationActionTypes.ADD_NEW_EMPTY_STATION,
+    payload: {id: 0}
+})
+
 export const AddStationComponent = (val: Station):StationAction => ({
     type: StationActionTypes.ADD_NEW_STATION,
     payload: {id: val.id, obj: val}
@@ -37,6 +47,11 @@ export const UpdateStationByID = (val: Station):StationAction => ({
 })
 
 // Route Actions -----------------------------------------------------------
+export const AddEmptyRouteComponent = ():RouteAction => ({
+    type: RouteActionTypes.ADD_NEW_EMPTY_ROUTE,
+    payload: {id: 0}
+})
+
 export const AddRouteComponent = (val: Route):RouteAction => ({
     type: RouteActionTypes.ADD_NEW_ROUTE,
     payload: {id: val.id, obj: val}

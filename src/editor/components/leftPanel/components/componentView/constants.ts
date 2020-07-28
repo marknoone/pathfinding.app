@@ -11,18 +11,21 @@ export type RouteAction =   { type: string; payload: { id: number, obj?: Route }
 export type VehicleAction = { type: string; payload: { id: number, obj?: Vehicle } }
 
 export enum VehicleActionTypes {  
+    ADD_NEW_EMPTY_VEHICLE = "@@vehicle/ADD_NEW_EMPTY_VEHICLE",
     ADD_NEW_VEHICLE = "@@vehicle/ADD_NEW_VEHICLE",
     DELETE_VEHICLE = "@@vehicle/DELETE_VEHICLE",
     UPDATE_VEHICLE = "@@vehicle/UPDATE_VEHICLE"
 }
 
 export enum StationActionTypes {  
+    ADD_NEW_EMPTY_STATION = "@@station/ADD_NEW_EMPTY_STATION",
     ADD_NEW_STATION = "@@station/ADD_NEW_STATION",
     DELETE_STATION = "@@station/DELETE_STATION",
     UPDATE_STATION = "@@station/UPDATE_STATION"
 }
 
 export enum RouteActionTypes {  
+    ADD_NEW_EMPTY_ROUTE = "@@route/ADD_NEW_EMPTY_ROUTE",
     ADD_NEW_ROUTE = "@@route/ADD_NEW_ROUTE",
     DELETE_ROUTE = "@@route/DELETE_ROUTE",
     UPDATE_ROUTE = "@@route/UPDATE_ROUTE"
@@ -47,6 +50,7 @@ export type Route = {
 
 export type Vehicle = {
     id: number
+    name: string
     capacity: number
     glyph: string
 }

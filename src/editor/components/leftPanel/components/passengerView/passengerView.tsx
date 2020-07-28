@@ -18,9 +18,7 @@ const PassengerView: React.FunctionComponent = (props) => {
     const dir = useSelector((state: AppState) => 
         getPassengerElemByID(state, 0)) as PassengerDirectory
 
-    return <div style={BaseStyle}>
-        <PassengerDirectoryElement key={0} dir={dir}/>
-    </div>;
+    return <PassengerDirectoryElement key={0} dir={dir}/>;
 }
 
 type PProps = { passenger: Passenger }

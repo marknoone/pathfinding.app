@@ -4,24 +4,25 @@ import {
     StationsState, RoutesState, VehiclesState,
     StationDataObj, RouteDataObj, VehicleDataObj,
 } from './constants';
+import { AppState } from '../../../../../store';
 
 
-const getVehicleState = (state: ScenarioState) => state.scenarios[state.activeScenarioIdx].vehicles
-export const getVehicles = createSelector<ScenarioState, VehiclesState, VehicleDataObj>(
+const getVehicleState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx].vehicles
+export const getVehicles = createSelector<AppState, VehiclesState, VehicleDataObj>(
     [getVehicleState],
     (s: VehiclesState) => s.data
 );
 
 
-const getRouteState = (state: ScenarioState) => state.scenarios[state.activeScenarioIdx].routes
-export const getRoutes = createSelector<ScenarioState, RoutesState, RouteDataObj>(
+const getRouteState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx].routes
+export const getRoutes = createSelector<AppState, RoutesState, RouteDataObj>(
     [getRouteState],
     (s: RoutesState) => s.data
 );
 
 
-const getStationState = (state: ScenarioState) => state.scenarios[state.activeScenarioIdx].stations
-export const getStations = createSelector<ScenarioState, StationsState, StationDataObj>(
+const getStationState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx].stations
+export const getStations = createSelector<AppState, StationsState, StationDataObj>(
     [getStationState],
     (s: StationsState) => s.data
 );
