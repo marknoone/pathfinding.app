@@ -13,6 +13,11 @@ export const getVehicles = createSelector<AppState, VehiclesState, VehicleDataOb
     (s: VehiclesState) => s.data
 );
 
+export const makeGetVehicleByIDSelector = () => createSelector(
+    [ getVehicleState, (_: any, id:number) => id ],
+    (s: VehiclesState, id) => s.data[id]
+);
+
 
 const getRouteState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx].routes
 export const getRoutes = createSelector<AppState, RoutesState, RouteDataObj>(
@@ -20,9 +25,19 @@ export const getRoutes = createSelector<AppState, RoutesState, RouteDataObj>(
     (s: RoutesState) => s.data
 );
 
+export const makeGetRouteByIDSelector = () => createSelector(
+    [ getRouteState, (_: any, id:number) => id ],
+    (s: RoutesState, id) => s.data[id]
+);
+
 
 const getStationState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx].stations
 export const getStations = createSelector<AppState, StationsState, StationDataObj>(
     [getStationState],
     (s: StationsState) => s.data
+);
+
+export const makeGetStationByIDSelector = () => createSelector(
+    [ getStationState, (_: any, id:number) => id ],
+    (s: StationsState, id) => s.data[id]
 );

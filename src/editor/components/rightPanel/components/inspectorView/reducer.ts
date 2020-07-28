@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { ComponentTypes } from '../../../../constants';
 import { 
     InspectorState, 
     InspectorAction,
@@ -7,7 +8,7 @@ import {
 
 export const initialState = {
     elementID: 0,
-    componentType: ""
+    componentType: ComponentTypes.STATION,
 }
 
 

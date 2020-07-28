@@ -1,15 +1,16 @@
-import { ComponentTypes } from '../../../../constants';
+import { Passenger } from "../../../leftPanel/components/passengerView/constants"
+import { Station, Route, Vehicle } from "../../../leftPanel/components/componentView/constants"
 
 export type InspectorState = {
     elementID: number
-    componentType: string
+    componentType: number
 }
 
 export type InspectorAction = {
     type: string
     payload: { 
         elementID: number
-        componentType: string
+        componentType: number
     }
 }
 
