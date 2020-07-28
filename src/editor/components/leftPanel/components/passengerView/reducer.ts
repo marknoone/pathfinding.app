@@ -8,7 +8,6 @@ const initialState: PassengerState = {
             id: 0,
             name: "All Passenger Trips",
             children: [],
-            isCollapsed: false,
         }
     }
 }

@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
-import PassengerDirectoryElement from './passengerDirElem'
+import { useSelector } from 'react-redux';
+import React, { useState, useMemo } from 'react';
+import PassengerDirectoryElement from './passengerDirElem';
+import { makeGetPassengerElemByIDSelector } from './selectors';
+import { PassengerDirectory, Passenger } from './constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { AppState } from '../../../../../store';
 import {
     BaseStyle,
-    PassengerElementStyle
+    PassengerElementStyle,
+    PassengerIcon,
+    PassengerP
 } from './passengerView.css';
 
-export type IDProps = {
-    id: number
-}
-
 const PassengerView: React.FunctionComponent = (props) => {
+    const getPassengerElemByID = useMemo(makeGetPassengerElemByIDSelector, [])
+    const dir = useSelector((state: AppState) => 
+        getPassengerElemByID(state, 0)) as PassengerDirectory
+
     return <div style={BaseStyle}>
-        <PassengerDirectoryElement id={0}/>
+        <PassengerDirectoryElement key={0} dir={dir}/>
     </div>;
 }
 
-
-const PassengerElement: React.FunctionComponent<IDProps> = (props) => {
-    const [isHovering, setIsHovering] = useState(false)
-    return <div style={PassengerElementStyle}>
-
+type PProps = { passenger: Passenger }
+export const PassengerElement: React.FunctionComponent<PProps> = (props) => 
+    <div style={PassengerElementStyle}>
+        <div style={PassengerIcon}><FontAwesomeIcon icon={faUser} /></div>
+        <p style={PassengerP}>{props.passenger.name}</p>
     </div>
-}
 
 
 export default PassengerView;

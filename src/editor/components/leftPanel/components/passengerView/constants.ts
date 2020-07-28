@@ -27,8 +27,6 @@ export type PassengerDirectory = {
     id: number
     name: string
     children: number[]
-
-    isCollapsed: boolean
 }
 
 export type Passenger = {

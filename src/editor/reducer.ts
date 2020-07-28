@@ -40,14 +40,14 @@ const initialState = {
         }},
 
         passengers: { nextId: 6, tree: {
-            0 : {id: 0, name: "All Passengers", isCollapsed: false, isHovering: false, children: [1, 2, 3]},
+            0 : {id: 0, name: "All Passengers", children: [1, 2, 3]},
 
-            1 : {id: 1, name: "Passenger-1", start: 2, destination: 4, tod: 38000, isHovering: false},
-            2 : {id: 2, name: "Passenger-2", start: 1, destination: 3, tod: 39000, isHovering: false},
-            3 : {id: 3, name: "Batch-1", isCollapsed: false, isHovering: false, children: [3, 4]},
+            1 : {id: 1, name: "Passenger-1", start: 2, destination: 4, tod: 38000},
+            2 : {id: 2, name: "Passenger-2", start: 1, destination: 3, tod: 39000},
+            3 : {id: 3, name: "Batch-1", children: [4, 5]},
             
-            4 : {id: 4, name: "Passenger-3", start: 4, destination: 1, tod: 34000, isHovering: false},
-            5 : {id: 5, name: "Passenger-4", start: 5, destination: 3, tod: 32000, isHovering: false},
+            4 : {id: 4, name: "Passenger-3", start: 4, destination: 1, tod: 34000},
+            5 : {id: 5, name: "Passenger-4", start: 5, destination: 3, tod: 32000},
         } as PassengerTree },
 
         simulationConfig: {

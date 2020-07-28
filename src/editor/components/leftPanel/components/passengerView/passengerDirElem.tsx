@@ -1,9 +1,9 @@
 import React, {useState, useMemo} from 'react';
+import { PassengerElement } from './passengerView';
 import { useSelector } from 'react-redux';
-import { IDProps } from './passengerView';
 import { AppState } from '../../../../../store';
-import { makeGetPassengerElemByIDPropsSelector } from './selectors'
-import { Passenger, PassengerDirectory, isPassengerDirectory } from './constants';
+import { makeGetChildElemsByIDSelector } from './selectors';
+import { PassengerDirectory, isPassengerDirectory } from './constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight, faCaretDown, faFolderPlus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -12,34 +12,50 @@ import {
     DirName,
     HoverIcon,
     ChildrenList,
-    CollapseIcon
+    CollapseIcon,
+    Icon
 } from './passengerView.css';
 
-const PassengerDirectoryElement: React.FunctionComponent<IDProps> = (props) => {
+type PDProps = { dir: PassengerDirectory }
+const PassengerDirectoryElement: React.FunctionComponent<PDProps> = (props) => {
     const [isHovering, setIsHovering] = useState(false);
-    const getPassengerElemByIDProps = useMemo(makeGetPassengerElemByIDPropsSelector, [])
-    const dir = useSelector((state: AppState) => 
-        getPassengerElemByIDProps(state, props.id)) as PassengerDirectory
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const getChildElemsByID = useMemo(makeGetChildElemsByIDSelector, [])
+    const children = useSelector((state: AppState) => getChildElemsByID(state, props.dir.id))
+    console.log(children)
 
-    return <div 
-            style={PassengerDirectoryStyle} 
+    return <div style={PassengerDirectoryStyle} >
+        <div 
             onMouseEnter={() => setIsHovering(true)} 
             onMouseLeave={() => setIsHovering(false)}
+            onClick={() => { setIsCollapsed(!isCollapsed)}}
+            style={ListElement}
         >
-        <div style={ListElement}>
-            <div style={CollapseIcon}>
-                <FontAwesomeIcon icon={dir.isCollapsed?faCaretRight:faCaretDown}/>
+            <div style={{...CollapseIcon, ...(isCollapsed && {padding: '0px 3px'})}}>
+                <FontAwesomeIcon icon={!isCollapsed?faCaretDown:faCaretRight}/>
             </div>
-            <p style={DirName}>{dir.name}</p>
-            <div style={HoverIcon}>
-                <div style={{}}><FontAwesomeIcon icon={faUserPlus} /></div>
-                <div style={{}}><FontAwesomeIcon icon={faFolderPlus} /></div>
-            </div>
+            <p style={DirName}>{props.dir.name}</p>
+            {
+                isHovering?
+                    <div style={HoverIcon}>
+                        <div style={{...Icon, fontSize: '11px'}}><FontAwesomeIcon icon={faUserPlus} /></div>
+                        <div style={{...Icon, fontSize: '15px'}}><FontAwesomeIcon icon={faFolderPlus} /></div>
+                    </div>
+                : null
+            }
         </div>
         {
-            !dir.isCollapsed?
+            !isCollapsed?
             <div style={ChildrenList}>
-                
+                {
+                    children.map( (child) => {
+                        if(isPassengerDirectory(child)){
+                            return <PassengerDirectoryElement key={child.id} dir={child} />
+                        } else {
+                            return <PassengerElement key={child.id} passenger={child} />
+                        }
+                    })
+                }
             </div>:
             null
         }
