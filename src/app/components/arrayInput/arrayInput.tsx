@@ -6,6 +6,7 @@ import { BaseStyle, ArrayToolbar, ElementList, Element, ElementName,
 
 interface HasName { name:string }
 type OAProps<T> = {
+    name: string
     isOrdered? :boolean
     value: { [key:number]: T }
     onChange: (obj: { [key:number]: T }) => void
@@ -46,7 +47,7 @@ function ArrayInput<T extends HasName>(
 
     return <div style={BaseStyle}>
         <div style={ArrayToolbar}>
-            <p style={ViewTitle}>Ordered Array View:</p>
+            <p style={ViewTitle}>{props.name}</p>
             <div style={AddIcon}><FontAwesomeIcon icon={faPlus} onClick={() => {
                 handleAction(Object.keys(props.value).length, 0)}}/></div>
         </div>

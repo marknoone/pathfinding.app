@@ -7,7 +7,7 @@ import {
 } from './constants';
 
 export const initialState = {
-    elementID: 0,
+    elementID: 1,
     componentType: ComponentTypes.STATION,
 }
 

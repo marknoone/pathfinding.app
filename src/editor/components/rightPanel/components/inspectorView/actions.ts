@@ -9,3 +9,4 @@ export const SetInspectingObject = (type:ComponentTypes, id: number):InspectorAc
     type: InspectorActionTypes.SET_INSPECTING_OBJECT,
     payload: {elementID: id, componentType: type}
 })
+

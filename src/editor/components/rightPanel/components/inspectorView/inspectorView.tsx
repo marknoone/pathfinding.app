@@ -21,8 +21,8 @@ const InspectorView: React.FunctionComponent = (props) => {
             return <RouteInspectorView id={inspectingID} />;
         case ComponentTypes.VEHICLE:
             return <VehicleInspectorView id={inspectingID} />;
-            default:
-                return <></>
+        default:
+            return <></>
     }
 }
 
