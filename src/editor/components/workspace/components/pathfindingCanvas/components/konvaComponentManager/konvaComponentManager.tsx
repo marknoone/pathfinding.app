@@ -1,10 +1,22 @@
 import React from 'react';
 import { Layer } from "react-konva";
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../../../../store';
 import { KonvaStation } from './components/konvaStation';
 import { KonvaRoute } from './components/konvaRoute';
-import { KonvaVehicle } from './components/konvaVehicle';
+import { Passenger } from '../../../../../leftPanel/components/passengerView/constants';
+import { Station, Route, StationDataObj, RouteDataObj } 
+    from '../../../../../leftPanel/components/componentView/constants';
 
-type KCMProps = { coords: number[], gridBlockSize: number, scale: { x: number, y:number }}
+type KCMProps = { 
+    coords: number[], 
+    gridBlockSize: number, 
+    scale: { 
+        x: number, 
+        y:number 
+    }
+}
+
 const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
     return <Layer x={props.coords[0]} y={props.coords[1]} scale={props.scale}>
 

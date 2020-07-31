@@ -5,6 +5,7 @@ import { KonvaEventObject } from 'konva/types/Node';
 type KRProps = { toFrom: number[][], colour: string}
 const KonvaRoute: React.FunctionComponent<KRProps> = (props) => {
     return <Line
+        id="testing"
         points={[...props.toFrom[0], ...props.toFrom[1]]}
         stroke={props.colour}
         strokeWidth={8}

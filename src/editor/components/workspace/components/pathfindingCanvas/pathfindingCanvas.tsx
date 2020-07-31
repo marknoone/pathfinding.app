@@ -2,8 +2,8 @@ import React, { useState, useLayoutEffect } from 'react';
 import { KonvaBG } from './components/konvaBG';
 import { KonvaGrid } from './components/konvaGrid';
 import { KonvaComponentManager } from './components/konvaComponentManager';
+import { KonvaVehicleManager } from './components/konvaVehicleManager';
 import { Stage, Layer, Rect } from "react-konva";
-import { KonvaEventObject } from 'konva/types/Node';
 
 type PCState = {coords: number[], scale: {x: number, y: number}}
 type PCProps={ dimensions: number[] }
@@ -32,6 +32,7 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
             onScaleChange={(s) => setState({scale: s.newScale, coords: s.newCoords})}/>
         <KonvaComponentManager gridBlockSize={30} coords={state.coords} 
             scale={state.scale}/>
+        <KonvaVehicleManager coords={state.coords}  scale={state.scale}/>
     </Stage>;
 }
 
