@@ -1,0 +1,1 @@
+export { default as KonvaRoute } from './konvaRoute';
