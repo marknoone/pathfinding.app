@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { ScenarioState } from '../../../../constants';
 import { 
     StationsState, RoutesState, VehiclesState,
     StationDataObj, RouteDataObj, VehicleDataObj,

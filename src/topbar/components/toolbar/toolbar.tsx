@@ -58,14 +58,14 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faSearchPlus}/>
-                    </a>
+                    </button>
                 </li>
                 <li style={{...ToolbarBtnListElem}} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn} className="">
+                    <button onClick={()=>{}} style={ToolbarBtn} className="">
                         <FontAwesomeIcon icon={faSearchMinus}/>
-                    </a>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -74,12 +74,12 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faUndo}/>
-                    </a>
+                    </button>
                 </li>
                 <li style={{...ToolbarBtnListElem}} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn} ><FontAwesomeIcon icon={faRedo}/></a>
+                    <button onClick={()=>{}} style={ToolbarBtn} ><FontAwesomeIcon icon={faRedo}/></button>
                 </li>
             </ul>
         </div>
@@ -88,9 +88,9 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faTrash}/>
-                    </a>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -108,24 +108,24 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faStop}/>
-                    </a>
+                    </button>
                 </li>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faBus}/>
-                    </a>
+                    </button>
                 </li>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faTrain}/>
-                    </a>
+                    </button>
                 </li>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faTram}/>
-                    </a>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -134,16 +134,16 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={WindowInteractionButtons}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{}} style={{...ToolbarBtn, color: '#444'}}>
+                    <button onClick={()=>{}} style={{...ToolbarBtn, color: '#444'}}>
                         <FontAwesomeIcon icon={faExpandArrowsAlt}/>
-                    </a>
+                    </button>
                 </li>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <a onClick={()=>{
+                    <button onClick={()=>{
                         dispatch(SetToolbarCollapse(true))
                     }} style={{...ToolbarBtn, color: '#444'}}>
                         <FontAwesomeIcon icon={faAngleDoubleUp}/>
-                    </a>
+                    </button>
                 </li>
             </ul>
         </div>

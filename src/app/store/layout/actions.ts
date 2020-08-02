@@ -1,4 +1,3 @@
-import { Action } from 'redux';
 import { LayoutActionTypes, LayoutAction } from './constants';
 
 export const SetInspectorPanelCollapse = (val: boolean):LayoutAction => ({

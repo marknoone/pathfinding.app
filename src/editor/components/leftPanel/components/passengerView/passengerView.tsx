@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import PassengerDirectoryElement from './passengerDirElem';
 import { makeGetPassengerElemByIDSelector } from './selectors';
 import { PassengerDirectory, Passenger } from './constants';
@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { AppState } from '../../../../../store';
 import {
-    BaseStyle,
     PassengerElementStyle,
     PassengerIcon,
     PassengerP

@@ -36,7 +36,10 @@ export const ToolbarBtn: CSS.Properties = {
     height: '100%',
     border: 'none',
     outline: 0,
-    color: '#999'
+    color: '#999',
+    background: 'none',
+    margin: 'auto',
+    padding: 0
 }
 
 export const WindowInteractionButtons: CSS.Properties = {

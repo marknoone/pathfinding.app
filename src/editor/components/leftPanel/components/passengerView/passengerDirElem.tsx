@@ -22,7 +22,6 @@ const PassengerDirectoryElement: React.FunctionComponent<PDProps> = (props) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const getChildElemsByID = useMemo(makeGetChildElemsByIDSelector, [])
     const children = useSelector((state: AppState) => getChildElemsByID(state, props.dir.id))
-    console.log(children)
 
     return <div style={PassengerDirectoryStyle} >
         <div 

@@ -20,7 +20,7 @@ const ScenarioSelector: React.FunctionComponent = (props) =>
         <ul style={ScenarioList}>
         {
             Scenarios.map((k, i) => 
-            <li style={{...ScenarioListElem, ...(i === 1 && ScenarioListElemActive)}} className="scenario-hover">
+            <li key={i} style={{...ScenarioListElem, ...(i === 1 && ScenarioListElemActive)}} className="scenario-hover">
                 <p style={ScenarioTitle}>{k}</p>
             </li>)
         }

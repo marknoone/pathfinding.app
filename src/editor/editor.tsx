@@ -2,9 +2,6 @@ import React from 'react';
 import { LeftPanel } from './components/leftPanel';
 import { WorkspaceComponent } from './components/workspace';
 import { RightPanel } from './components/rightPanel';
-import {
-    BaseStyle
-} from './editor.css';
 
 const EditorComponent: React.FunctionComponent = (props) => {
     return <div style={{

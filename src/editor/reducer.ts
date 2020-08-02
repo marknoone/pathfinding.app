@@ -2,7 +2,7 @@ import { combineReducers, Reducer } from 'redux';
 import { Algorithms, Playspeed } from './components/rightPanel/components/simulationView/constants';
 import PassengerReducer from './components/leftPanel/components/passengerView/reducer';
 import SimulationReducer from './components/rightPanel/components/simulationView/reducer';
-import { ScenarioState, ScenarioAction, ScenarioActionTypes, Scenario } from './constants' 
+import { ScenarioState, ScenarioAction, ScenarioActionTypes } from './constants' 
 import { PassengerTree } from './components/leftPanel/components/passengerView/constants';
 import { TransitModes } from './components/leftPanel/components/componentView/constants';
 import { RouteReducer, StationReducer,  VehicleReducer} 
@@ -30,7 +30,7 @@ const initialState = {
         
         routes:     { nextId: 3, data: {
             1: { id: 1, name: "Route-1", mode: TransitModes.BUS, color: "#1dd1a1", stations: [2, 5], departures: [40000] },
-            2: { id: 2, name: "Route-2", mode: TransitModes.TRAIN, color: "#1dd1a1", stations: [2, 5], departures: [40000] },
+            2: { id: 2, name: "Route-2", mode: TransitModes.TRAIN, color: "#ee5253", stations: [1, 4], departures: [40000] },
         }},
 
         vehicles:   { nextId: 4, data: {
@@ -60,7 +60,6 @@ const initialState = {
 }
 
 export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (state = initialState, action) => {
-    console.log(state, action);
     if (
             action.type.startsWith('@@vehicle/') ||
             action.type.startsWith('@@passenger/') ||

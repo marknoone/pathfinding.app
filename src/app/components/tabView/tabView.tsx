@@ -18,7 +18,7 @@ const TabView: React.FunctionComponent<TabViewProps> = (props) => {
         <div style={TabHeaders}>
         {
             props.views.map( (v, i) => (
-                <div 
+                <div key={i}
                 onClick={() => {setViewIdx(i)}}
                 style={{
                     ...TabHeader,

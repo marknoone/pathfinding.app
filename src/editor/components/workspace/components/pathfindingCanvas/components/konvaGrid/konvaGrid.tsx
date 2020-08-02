@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { KonvaEventObject } from 'konva/types/Node';
 import _ from 'lodash';
 import { Layer, Rect, Line } from "react-konva";
@@ -54,7 +54,7 @@ const KonvaGrid: React.FunctionComponent<KGProps> = (props) =>
                 };
 
                 const newScale =
-                    e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+                    -e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
         
                 props.onScaleChange({
                     newCoords: [

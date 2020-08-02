@@ -1,8 +1,7 @@
 import { useSelector } from 'react-redux';
 import React, { useState, useMemo } from 'react';
 import { AppState } from '../../../../../../../store';
-import { InspectorSubViewProps } from '../../inspectorView'
-import { SelectionInput } from '../../../../../../../app/components/selectionInput';
+import { InspectorSubViewProps } from '../../inspectorView';
 import { Passenger } from '../../../../../leftPanel/components/passengerView/constants';
 import { makeGetPassengerElemByIDSelector } from '../../../../../leftPanel/components/passengerView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 

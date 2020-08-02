@@ -1,7 +1,6 @@
 import { 
     CanvasActionTypes, 
-    CanvasAction,
-    CanvasState
+    CanvasAction
 } from './constants';
 
 export const SetCanvasCoordinates = (x: number, y: number):CanvasAction => ({

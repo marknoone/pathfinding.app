@@ -54,8 +54,8 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div>
         </div>
         <div style={FormButtons}>
-            <a style={SubmitBtn}>Save</a>
-            <a style={ResetBtn}>Reset</a>
+            <button style={SubmitBtn}>Save</button>
+            <button style={ResetBtn}>Reset</button>
         </div>
     </div>
 }

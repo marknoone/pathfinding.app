@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { AppState } from '../../../../../store';
-import { PassengerState, PassengerTree, Passenger, PassengerDirectory, isPassengerDirectory } from './constants';
+import { PassengerState, PassengerTree, isPassengerDirectory } from './constants';
 
 const getPassengerState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx].passengers
 export const getPassengerTree = createSelector<AppState, PassengerState, PassengerTree>(

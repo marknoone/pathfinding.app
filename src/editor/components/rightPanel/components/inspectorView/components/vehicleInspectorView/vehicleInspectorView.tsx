@@ -43,8 +43,8 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div>
         </div>
         <div style={FormButtons}>
-            <a style={SubmitBtn}>Submit</a>
-            <a style={ResetBtn}>Reset</a>
+            <button  style={SubmitBtn}>Submit</button>
+            <button  style={ResetBtn}>Reset</button>
         </div>
     </div>
 }

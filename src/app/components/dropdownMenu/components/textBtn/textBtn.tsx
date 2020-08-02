@@ -31,9 +31,9 @@ const DropdownMenuTextBtn: React.FunctionComponent<DropdownMenuTextBtnProps> = (
         {props.title}
         {
             props.hasCaret? 
-            <div style={{paddingLeft: '8px', color: '#666', display:'inline-block'}}>
+            <span style={{paddingLeft: '8px', color: '#666', display:'inline-block'}}>
                 <FontAwesomeIcon icon={faCaretDown}/>
-            </div>:
+            </span>:
             null 
         }
 </p>

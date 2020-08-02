@@ -1,5 +1,4 @@
 import React, { useState }from 'react';
-import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DropdownMenu } from '../../../../../app/components/dropdownMenu';
 import { faPlay, faForward, faStepForward, faBackward, 
@@ -17,7 +16,6 @@ import {
 
 
 const SimulationView: React.FunctionComponent = (props) => {
-    const dispatch = useDispatch();
     const [isDropdownShowing, setIsDropdownShowing] = useState(false);
 
     return <div style={BaseStyle}>
@@ -41,8 +39,8 @@ const SimulationView: React.FunctionComponent = (props) => {
         </div>
         <div style={{...SimSection}}>
             <p style={SimHeader}>Controls</p>
-            <a style={{...SimBtn, backgroundColor: '#ff9f43', marginTop: '24px'}}>Bake</a>
-            <a style={{...SimBtn, backgroundColor: '#10ac84'}}>Simulate</a>
+            <button style={{...SimBtn, backgroundColor: '#ff9f43', marginTop: '24px'}}>Bake</button>
+            <button style={{...SimBtn, backgroundColor: '#10ac84'}}>Simulate</button>
             <div style={SimPlaybackCtrl}>
                 <ul style={SimPlaybackCtrlList}>
                     <li style={SimPlaybackCtrlElem}><FontAwesomeIcon icon={faStepBackward}/></li>
