@@ -4,22 +4,30 @@ import {
     CanvasState
 } from './constants';
 
-export const SetCoordinates = (x, y: number):CanvasAction => ({
+export const SetCanvasCoordinates = (x: number, y: number):CanvasAction => ({
     type: CanvasActionTypes.SET_COORDINATES,
-    payload: {val: [x, y]}
+    payload: {val: [[x, y]]}
 })
 
-export const SetCanvasSize = (w, h: number):CanvasAction => ({
+export const SetCanvasSize = (w: number, h: number):CanvasAction => ({
     type: CanvasActionTypes.SET_CANVAS_SIZE,
-    payload: {val: [w, h]}
+    payload: {val: [[w, h]]}
 })
 
-export const SetBoxSize = (w, h: number):CanvasAction => ({
+export const SetCanvasBoxSize = (w: number, h: number):CanvasAction => ({
     type: CanvasActionTypes.SET_BOX_SIZE,
-    payload: {val: [w, h]}
+    payload: {val: [[w, h]]}
 })
 
-export const SetCanvasScale = (scale: number):CanvasAction => ({
+export const SetCanvasScale = (scaleX: number, scaleY: number):CanvasAction => ({
     type: CanvasActionTypes.SET_SCALE,
-    payload: {val: [scale]}
+    payload: {val: [[scaleX, scaleY]]}
+})
+
+export const SetScaleAndCanvasScale = (
+    x: number, y: number,
+    scaleX: number, scaleY: number, 
+):CanvasAction => ({
+    type: CanvasActionTypes.SET_SCALE_AND_CANVAS,
+    payload: { val: [[scaleX, scaleY], [x, y]] }
 })

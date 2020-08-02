@@ -14,8 +14,9 @@ const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (prop
     const route = useSelector((state: AppState) =>  getRouteByID(state, props.id))
     const [editingObj, setEditingObj] = useState<Route>(route)
     const [dummy, setDummy] = useState<{[key:number]: Station}>({
-        1: { id: 1, name: "Station-1", colour: "#ff9f43", nodeID: 1 },
-        2: { id: 2, name: "Station-2", colour: "#1dd1a1", nodeID: 2 }, 
+        1: { id: 1, name: "Station-1", colour: "#ff9f43", coordinates: {x: 50, y: 50} },
+        2: { id: 2, name: "Station-2", colour: "#1dd1a1", coordinates: {x: 150, y: 150} },
+        3: { id: 3, name: "Station-3", colour: "#ee5253", coordinates: {x: 250, y: 250} }
     });
     
     return <div style={BaseStyle}>

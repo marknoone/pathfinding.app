@@ -32,9 +32,9 @@ export type PassengerDirectory = {
 export type Passenger = {
     id: number
     name: string
-    start: number
-    destination: number
     tod: number
+    start: {x: number, y: number}
+    destination: {x: number, y: number}
 }
 
 export function isPassenger(p: Passenger | PassengerDirectory): p is Passenger {

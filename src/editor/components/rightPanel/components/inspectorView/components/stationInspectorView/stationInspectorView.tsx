@@ -35,9 +35,22 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>NodeID:</p>
-                <SelectionInput<number> value={editingObj.nodeID}
-                    options={[]}
-                    onChange={(e: number) => {}}/>
+                <input type="text" style={InputText} value={editingObj.coordinates.x}
+                    placeholder="X" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = parseInt(e.target.value, 10); 
+                        if (!isNaN(num))
+                            setEditingObj({...editingObj, coordinates: { 
+                                ...editingObj.coordinates, x: num
+                            }})
+                    }}/>
+                <input type="text" style={InputText} value={editingObj.coordinates.y}
+                    placeholder="Y" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = parseInt(e.target.value, 10); 
+                        if (!isNaN(num))
+                            setEditingObj({...editingObj, coordinates: { 
+                                ...editingObj.coordinates, y: num
+                            }})
+                    }}/>
             </div>
         </div>
         <div style={FormButtons}>

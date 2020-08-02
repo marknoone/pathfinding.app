@@ -60,7 +60,7 @@ export const StationReducer: Reducer<StationsState, StationAction> = (state = in
                         id: state.nextId,
                         name: `Station-${state.nextId}`,
                         colour: "#464646",
-                        nodeID: 0
+                        coordinates: { x: 0, y: 0 }
                     }
                 }
             };

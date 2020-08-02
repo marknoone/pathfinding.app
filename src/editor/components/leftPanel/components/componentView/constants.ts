@@ -35,7 +35,10 @@ export type Station = {
     id: number
     name: string
     colour: string
-    nodeID: number
+    coordinates: {
+        x: number,
+        y: number,
+    }
 }
 
 export type Route = {

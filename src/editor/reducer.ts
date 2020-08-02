@@ -21,11 +21,11 @@ const initialState = {
     scenarios: [{
         name: "Scenario-1",
         stations:   { nextId: 6, data: {
-            1: { id: 1, name: "Station-1", colour: "#ff9f43", nodeID: 1 },
-            2: { id: 2, name: "Station-2", colour: "#1dd1a1", nodeID: 2 },
-            3: { id: 3, name: "Station-3", colour: "#ee5253", nodeID: 3 },
-            4: { id: 4, name: "Station-4", colour: "#2e86de", nodeID: 4 },
-            5: { id: 5, name: "Station-5", colour: "#1dd1a1", nodeID: 5 },
+            1: { id: 1, name: "Station-1", colour: "#ff9f43", coordinates: {x: 50, y: 50} },
+            2: { id: 2, name: "Station-2", colour: "#1dd1a1", coordinates: {x: 150, y: 150} },
+            3: { id: 3, name: "Station-3", colour: "#ee5253", coordinates: {x: 250, y: 250} },
+            4: { id: 4, name: "Station-4", colour: "#2e86de", coordinates: {x: 350, y: 350} },
+            5: { id: 5, name: "Station-5", colour: "#1dd1a1", coordinates: {x: 450, y: 450} },
         }},
         
         routes:     { nextId: 3, data: {
@@ -42,12 +42,12 @@ const initialState = {
         passengers: { nextId: 6, tree: {
             0 : {id: 0, name: "All Passengers", children: [1, 2, 3]},
 
-            1 : {id: 1, name: "Passenger-1", start: 2, destination: 4, tod: 38000},
-            2 : {id: 2, name: "Passenger-2", start: 1, destination: 3, tod: 39000},
+            1 : {id: 1, name: "Passenger-1", start: {x: 25, y: 25}, destination: {x: 75, y: 75}, tod: 38000},
+            2 : {id: 2, name: "Passenger-2", start: {x: 125, y: 125}, destination: {x: 175, y: 175}, tod: 39000},
             3 : {id: 3, name: "Batch-1", children: [4, 5]},
             
-            4 : {id: 4, name: "Passenger-3", start: 4, destination: 1, tod: 34000},
-            5 : {id: 5, name: "Passenger-4", start: 5, destination: 3, tod: 32000},
+            4 : {id: 4, name: "Passenger-3", start: {x: 225, y: 225}, destination: {x: 275, y: 275}, tod: 34000},
+            5 : {id: 5, name: "Passenger-4", start: {x: 325, y: 325}, destination: {x: 375, y: 375}, tod: 32000},
         } as PassengerTree },
 
         simulationConfig: {

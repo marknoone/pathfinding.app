@@ -30,23 +30,41 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Start:</p>
-                <SelectionInput<number> value={editingObj.start}
-                    onChange={(e: number) => {}}
-                    options={[
-                        {s: "test-0", value: 0}, {s: "test-1", value: 1}, 
-                        {s: "test-2", value: 2}, {s: "test-3", value: 3},
-                        {s: "test-4", value: 4}, {s: "test-5", value: 5},
-                    ]}/>
+                <input type="text" style={InputText} value={editingObj.start.x}
+                    placeholder={"X:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = parseInt(e.target.value, 10); 
+                        if (!isNaN(num))
+                            setEditingObj({...editingObj, start: {
+                                ...editingObj.start, x: num 
+                            }}) 
+                    }}/>
+                <input type="text" style={InputText} value={editingObj.start.y}
+                    placeholder={"Y:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = parseInt(e.target.value, 10); 
+                        if (!isNaN(num))
+                            setEditingObj({...editingObj, start: {
+                                ...editingObj.start, y: num 
+                            }}) 
+                    }}/>
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Destination:</p>
-                <SelectionInput<number> value={editingObj.destination}
-                    onChange={(e: number) => {}}
-                    options={[
-                        {s: "test-0", value: 0}, {s: "test-1", value: 1}, 
-                        {s: "test-2", value: 2}, {s: "test-3", value: 3},
-                        {s: "test-4", value: 4}, {s: "test-5", value: 5},
-                    ]}/>
+                <input type="text" style={InputText} value={editingObj.destination.x}
+                    placeholder={"X:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = parseInt(e.target.value, 10); 
+                        if (!isNaN(num))
+                            setEditingObj({...editingObj, start: {
+                                ...editingObj.destination, x: num 
+                            }}) 
+                    }}/>
+                <input type="text" style={InputText} value={editingObj.destination.y}
+                    placeholder={"Y:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = parseInt(e.target.value, 10); 
+                        if (!isNaN(num))
+                            setEditingObj({...editingObj, start: {
+                                ...editingObj.destination, y: num 
+                            }}) 
+                    }}/>
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Time Of Departure:</p>
