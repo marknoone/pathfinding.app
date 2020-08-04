@@ -41,9 +41,18 @@ import './toolbar.hover.anim.css';
 
 const ToolbarComponent: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
+    const currentScale = useSelector((s:AppState) => s.canvas.scale[0]);
     const toolbarMenus = useSelector((state:AppState) => state.layout.toolbar, shallowEqual)
     const isCollapsed = useSelector((state: AppState) => state.layout.isTopbarCollapsed);
-    const sectionDefintions = GetMenuSectionDefinitions(dispatch);
+    const layoutVals = useSelector((s:AppState) => {
+        return {
+            lp: s.layout.isComponentPanelCollapsed,
+            rp: s.layout.isSimulationPanelCollapsed
+        }
+    });
+
+    const sectionDefintions = GetMenuSectionDefinitions(dispatch, layoutVals);
+    const getZoom = (scale:number) => Math.round(scale*100) + "%";
 
     return <div style={BaseStyle}>
         {/* Panel Selections */}
@@ -60,7 +69,7 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         {/* Zoom Selection */}
         <div style={ToolbarSection}>
             <DropdownMenu 
-                render={ () => <DropdownMenuTextBtn hasCaret={true} title="100%"/> } 
+                render={ () => <DropdownMenuTextBtn hasCaret={true} title={getZoom(currentScale)}/> } 
                 isActive={toolbarMenus.isZoomLevelShowing}
                 onBtnClick={() => {
                     dispatch(SetToolbarZoomLevelValue(!toolbarMenus.isZoomLevelShowing));
@@ -106,7 +115,7 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
                     onBtnClick={() => {
                         dispatch(SetToolbarAddComponentValue(!toolbarMenus.isAddComponentShowing));
                     }}
-                    sections={sectionDefintions["zoomSelection"]}/>
+                    sections={sectionDefintions["addElement"]}/>
         </div>
 
         {/* Delete Button */}

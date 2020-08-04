@@ -40,7 +40,10 @@ const DropdownMenu: React.FunctionComponent<DropdownMenuProps> = (props) => {
                                 <ul style={DropdownSection}>
                                     {                                        
                                         section.entries.map( entry =>
-                                            <li style={DropdownEntry} className="dropdown-entry-hover">
+                                            <li style={DropdownEntry} className="dropdown-entry-hover" onClick={() => {
+                                                if(entry.onClick)
+                                                    entry.onClick();
+                                            }}>
                                                 <div style={EntryToggleIcon}>
                                                     {
                                                         entry.value?

@@ -1,7 +1,7 @@
 import { LayoutActionTypes, LayoutAction } from './constants';
 
-export const SetInspectorPanelCollapse = (val: boolean):LayoutAction => ({
-    type: LayoutActionTypes.SET_INSPECTOR_COLLAPSE_VALUE,
+export const SetComponentPanelCollapse = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_COMPONENT_COLLAPSE_VALUE,
     payload: {val: val}
 })
 

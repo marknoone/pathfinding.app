@@ -55,7 +55,7 @@ const PassengerReducer: Reducer<PassengerState, PassengerAction> = (state = init
             }: state;
         case PassengerActionTypes.ADD_EMPTY_PASSENGER_TO_DIRECTORY:
             const dir = state.tree[action.payload.id];
-            return isPassengerDirectory(dir) && action.payload.item?{
+            return isPassengerDirectory(dir)? {
                 nextId: state.nextId+1,
                 tree: {
                     ...state.tree,

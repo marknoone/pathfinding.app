@@ -3,7 +3,7 @@ import { LayoutState, LayoutAction, LayoutActionTypes } from './constants'
 
 const initialState: LayoutState = {
     isTopbarCollapsed: false,
-    isInspectorPanelCollapsed: false,
+    isComponentPanelCollapsed: false,
     isSimulationPanelCollapsed: false,
     actionMenus: {
         isFileShowing: false,
@@ -21,10 +21,10 @@ const initialState: LayoutState = {
 
 const LayoutReducer: Reducer<LayoutState, LayoutAction> = (state = initialState, action) => {
     switch(action.type) {
-        case LayoutActionTypes.SET_INSPECTOR_COLLAPSE_VALUE:
+        case LayoutActionTypes.SET_COMPONENT_COLLAPSE_VALUE:
             return {
                 ...state,
-                isInspectorPanelCollapsed: action.payload.val
+                isComponentPanelCollapsed: action.payload.val
             }
         case LayoutActionTypes.SET_SIMULATION_COLLAPSE_VALUE:
             return {
