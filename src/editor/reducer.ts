@@ -59,7 +59,7 @@ const initialState = {
     }]
 }
 
-export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (state = initialState, action) => {
+export const scenarioStateReducer: Reducer<ScenarioState, any> = (state = initialState, action) => {
     if (
             action.type.startsWith('@@vehicle/') ||
             action.type.startsWith('@@passenger/') ||
@@ -67,7 +67,7 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
             action.type.startsWith('@@station/') ||
             action.type.startsWith('@@simulation/')
     ) {
-        console.log(state.scenarios.slice(0, state.activeScenarioIdx))
+        const {name, ...rest} = state.scenarios[state.activeScenarioIdx];
         return {
             ...state,
             scenarios: [
@@ -75,7 +75,7 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
                 Object.assign(
                     {}, 
                     state.scenarios[state.activeScenarioIdx],
-                    scenarioReducer(state.scenarios[state.activeScenarioIdx], action)
+                    scenarioReducer(rest, action)
                 ),
                 ...state.scenarios.slice(state.activeScenarioIdx + 1)
             ]
@@ -83,18 +83,33 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
     }
     
     switch(action.type) {
-        case ScenarioActionTypes.SET_SCENARIO_IDX:
+        case ScenarioActionTypes.ADD_EMPTY_SCENARIO:
             return {
                 ...state,
+                scenarios:[
+                    ...state.scenarios,
+                    {
+                        name: `Scenario-${state.scenarios.length+1}`,
+                        stations:   {},
+                        routes:     {},
+                        vehicles:   {},
+                        passengers: {},
+                        simulationConfig: {}
+                    }
+                ]
+            };
+        case ScenarioActionTypes.SET_SCENARIO_IDX:
+            return action.payload? {
+                ...state,
                 activeScenarioIdx: action.payload.id
-            }
+            }: state;
         case ScenarioActionTypes.SET_SCENARIO_STATE:
-            return action.payload.scenarios? {
+            return action.payload && action.payload.scenarios? {
                 activeScenarioIdx: action.payload.id,
                 scenarios: action.payload.scenarios
             }: state;
         case ScenarioActionTypes.SET_SCENARIO_NAME_BY_IDX:
-            return {
+            return action.payload? {
                 ...state,
                 scenarios: [
                     ...state.scenarios.slice(0, action.payload.id),
@@ -105,7 +120,7 @@ export const scenarioStateReducer: Reducer<ScenarioState, ScenarioAction> = (sta
                     ),
                     ...state.scenarios.slice(action.payload.id + 1)
                 ]
-            }
+            }: state;
         default:
             return state
     }

@@ -1,11 +1,13 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import React, { useMemo } from 'react';
-import PassengerDirectoryElement from './passengerDirElem';
-import { makeGetPassengerElemByIDSelector } from './selectors';
-import { PassengerDirectory, Passenger } from './constants';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { AppState } from '../../../../../store';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import PassengerDirectoryElement from './passengerDirElem';
+import { PassengerDirectory, Passenger } from './constants';
+import { makeGetPassengerElemByIDSelector } from './selectors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ComponentTypes } from '../../../../constants';
+import { SetInspectingObject } from '../../../rightPanel/components/inspectorView/actions';
 import {
     PassengerElementStyle,
     PassengerIcon,
@@ -21,11 +23,25 @@ const PassengerView: React.FunctionComponent = (props) => {
 }
 
 type PProps = { passenger: Passenger }
-export const PassengerElement: React.FunctionComponent<PProps> = (props) => 
-    <div style={PassengerElementStyle}>
+export const PassengerElement: React.FunctionComponent<PProps> = (props) => {
+    const dispatch = useDispatch();
+    const isActive = useSelector((state:AppState) => 
+        state.inspector.componentType === ComponentTypes.PASSENGER 
+        && state.inspector.elementID === props.passenger.id
+    );
+
+    return <div style={{
+        ...PassengerElementStyle,
+        ...(isActive && { backgroundColor: "#e8e8e8"})
+    }} 
+    onClick={() => dispatch(
+        SetInspectingObject(ComponentTypes.PASSENGER, props.passenger.id)
+    )}>
         <div style={PassengerIcon}><FontAwesomeIcon icon={faUser} /></div>
         <p style={PassengerP}>{props.passenger.name}</p>
-    </div>
+    </div>;
+}
+    
 
 
 export default PassengerView;

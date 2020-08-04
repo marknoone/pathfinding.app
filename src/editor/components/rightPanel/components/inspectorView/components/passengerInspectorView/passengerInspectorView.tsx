@@ -1,18 +1,24 @@
-import { useSelector } from 'react-redux';
-import React, { useState, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useMemo, useEffect } from 'react';
 import { AppState } from '../../../../../../../store';
 import { InspectorSubViewProps } from '../../inspectorView';
 import { Passenger } from '../../../../../leftPanel/components/passengerView/constants';
+import { UpdatePassengerWithID } from '../../../../../leftPanel/components/passengerView/actions';
 import { makeGetPassengerElemByIDSelector } from '../../../../../leftPanel/components/passengerView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
     from '../../inspectorView.css';
 
 const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
+    const dispatch = useDispatch();
     const getPassengerElemByID = useMemo(makeGetPassengerElemByIDSelector, [])
     const passenger = useSelector((state: AppState) =>  
         getPassengerElemByID(state, props.id)) as Passenger;
     const [editingObj, setEditingObj] = useState<Passenger>(passenger)
-   
+    useEffect(() => {
+        if(props.id !== editingObj.id)
+            setEditingObj(passenger);
+    });
+
     return <div style={BaseStyle}>
         <div style={InspectorForm}>
             <div style={FormEntry}>
@@ -75,8 +81,10 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
             </div>
         </div>
         <div style={FormButtons}>
-            <button style={SubmitBtn}>Save</button>
-            <button style={ResetBtn}>Reset</button>
+            <button style={SubmitBtn} onClick={() => dispatch(
+                UpdatePassengerWithID(editingObj)
+            )} >Save</button>
+            <button style={ResetBtn} onClick={() => setEditingObj(passenger)}>Reset</button>
         </div>
     </div>
 }
