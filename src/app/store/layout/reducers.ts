@@ -14,7 +14,8 @@ const initialState: LayoutState = {
     },
     toolbar: {
         isLayoutSelectShowing: false,
-        isZoomLevelShowing: false
+        isZoomLevelShowing: false,
+        isAddComponentShowing: false,
     }
 }
 
@@ -95,7 +96,8 @@ const LayoutReducer: Reducer<LayoutState, LayoutAction> = (state = initialState,
                 ...state,
                 toolbar: {
                     isLayoutSelectShowing: action.payload.val,
-                    isZoomLevelShowing: false
+                    isZoomLevelShowing: false,
+                    isAddComponentShowing: false
                 }
             }
         case LayoutActionTypes.SET_TOOLBAR_ZOOM_LEVEL_VALUE:
@@ -103,7 +105,17 @@ const LayoutReducer: Reducer<LayoutState, LayoutAction> = (state = initialState,
                 ...state,
                 toolbar: {
                     isLayoutSelectShowing: false,
-                    isZoomLevelShowing: action.payload.val
+                    isZoomLevelShowing: action.payload.val,
+                    isAddComponentShowing: false
+                }
+            }
+        case LayoutActionTypes.SET_TOOLBAR_ADD_COMPONENT_VALUE:
+            return {
+                ...state,
+                toolbar: {
+                    isLayoutSelectShowing: false,
+                    isZoomLevelShowing: false,
+                    isAddComponentShowing: action.payload.val
                 }
             }
         default:

@@ -7,7 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DropdownMenu } from '../../../app/components/dropdownMenu';
 import { DropdownMenuIconBtn } from '../../../app/components/dropdownMenu/components/iconBtn';
 import { DropdownMenuTextBtn } from '../../../app/components/dropdownMenu/components/textBtn';
-import { SetToolbarLayoutSelectValue, SetToolbarZoomLevelValue } from '../../../app/store/layout/actions'; 
+import { 
+    SetToolbarLayoutSelectValue, 
+    SetToolbarZoomLevelValue,
+    SetToolbarAddComponentValue,
+} from '../../../app/store/layout/actions'; 
 import { 
     faPlus, 
     faUndo, 
@@ -109,8 +113,10 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <DropdownMenu 
                     render={ () => <DropdownMenuIconBtn icon={faPlus}/> } 
-                    isActive={false}
-                    onBtnClick={() => {}}
+                    isActive={toolbarMenus.isAddComponentShowing}
+                    onBtnClick={() => {
+                        dispatch(SetToolbarAddComponentValue(!toolbarMenus.isAddComponentShowing));
+                    }}
                     sections={sectionDefintions["zoomSelection"]}/>
         </div>
 
@@ -143,11 +149,11 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         {/* Window Interactions */}
         <div style={WindowInteractionButtons}>
             <ul style={ToolbarBtnList}>
-                <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
+                {/* <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
                     <button onClick={()=>{}} style={{...ToolbarBtn, color: '#444'}}>
                         <FontAwesomeIcon icon={faExpandArrowsAlt}/>
                     </button>
-                </li>
+                </li> */}
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
                     <button onClick={()=>{
                         dispatch(SetToolbarCollapse(!isCollapsed))

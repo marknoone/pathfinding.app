@@ -12,6 +12,7 @@ export type LayoutState = {
     toolbar: {
         isLayoutSelectShowing: boolean
         isZoomLevelShowing: boolean
+        isAddComponentShowing: boolean
     }
 } 
 
@@ -32,5 +33,6 @@ export enum LayoutActionTypes {
     SET_MENU_HELP_VALUE = "@layout/SET_MENU_HELP_VALUE",
     
     SET_TOOLBAR_LAYOUT_SELECT_VALUE = "@layout/SET_TOOLBAR_LAYOUT_SELECT_VALUE",
-    SET_TOOLBAR_ZOOM_LEVEL_VALUE = "@layout/SET_TOOLBAR_ZOOM_LEVEL_VALUE"
+    SET_TOOLBAR_ZOOM_LEVEL_VALUE = "@layout/SET_TOOLBAR_ZOOM_LEVEL_VALUE",
+    SET_TOOLBAR_ADD_COMPONENT_VALUE = "@layout/SET_TOOLBAR_ADD_COMPONENT_VALUE"
 }

@@ -51,3 +51,8 @@ export const SetToolbarZoomLevelValue = (val: boolean):LayoutAction => ({
     type: LayoutActionTypes.SET_TOOLBAR_ZOOM_LEVEL_VALUE,
     payload: {val: val}
 })
+
+export const SetToolbarAddComponentValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_TOOLBAR_ADD_COMPONENT_VALUE,
+    payload: {val: val}
+})
