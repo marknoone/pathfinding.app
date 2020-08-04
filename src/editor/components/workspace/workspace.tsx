@@ -5,6 +5,7 @@ import { ScenarioSelector } from './components/scenarioSelector';
 const WorkspaceComponent: React.FunctionComponent = (props) => {
     const canvasContainerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState([500, 500]);
+    
 
     useLayoutEffect(() => {
         if(canvasContainerRef.current)

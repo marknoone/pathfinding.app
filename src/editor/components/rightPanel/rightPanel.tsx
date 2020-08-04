@@ -13,24 +13,37 @@ import {
     faAngleRight, 
 } from '@fortawesome/free-solid-svg-icons';
 import './hover.anim.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../../store';
+import { SetComponentPanelCollapse, SetSimulationPanelCollapse } from '../../../app/store/layout/actions';
 
-type RightPanel = {
-    isCollapsed?: boolean
+type RPPRops = {
+    isCollapsed: boolean
 }
 
-const RightPanel: React.FunctionComponent<RightPanel> = (props) => {
-    return <div style={BaseStyle}>
+const RightPanel: React.FunctionComponent<RPPRops> = (props) => {
+    const dispatch = useDispatch();
+
+    return <div style={{
+            ...BaseStyle, 
+            ...(props.isCollapsed && {width: "12px"}),
+            ...(!props.isCollapsed && {width: "100%"})
+        }}>
         <div style={PanelToggle}>
-            <div style={ToggleBtn} className="sim-panel-toggle-hover">
+            <div style={ToggleBtn} className="sim-panel-toggle-hover"
+                onClick={() => dispatch(SetSimulationPanelCollapse(!props.isCollapsed))}>
                 <FontAwesomeIcon icon={ props.isCollapsed? faAngleLeft: faAngleRight} />
             </div>
         </div>
-        <div style={{position: 'relative', left: '12px', height: '100%'}}>
-            <TabView views={[ 
-                {header: "Inspector", view: (<><InspectorView /></>)},
-                {header: "Simulation", view: (<><SimulationView /></>)}
-            ]} />
-        </div>
+        {
+            props.isCollapsed? null:
+            <div style={{position: 'relative', left: '12px', height: '100%'}}>
+                <TabView views={[ 
+                    {header: "Inspector", view: (<><InspectorView /></>)},
+                    {header: "Simulation", view: (<><SimulationView /></>)}
+                ]} />
+            </div>
+        }
     </div>;
 }
 
