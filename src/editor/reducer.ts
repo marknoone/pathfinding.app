@@ -4,9 +4,10 @@ import PassengerReducer from './components/leftPanel/components/passengerView/re
 import SimulationReducer from './components/rightPanel/components/simulationView/reducer';
 import { ScenarioState, ScenarioAction, ScenarioActionTypes } from './constants' 
 import { PassengerTree } from './components/leftPanel/components/passengerView/constants';
-import { TransitModes } from './components/leftPanel/components/componentView/constants';
+import { TransitModes, ColourSet, Colours } from './components/leftPanel/components/componentView/constants';
 import { RouteReducer, StationReducer,  VehicleReducer} 
     from './components/leftPanel/components/componentView/reducer';
+import { faArchive } from '@fortawesome/free-solid-svg-icons';
 
 const scenarioReducer = combineReducers({
     stations:   StationReducer,
@@ -29,14 +30,14 @@ const initialState = {
         }},
         
         routes:     { nextId: 3, data: {
-            1: { id: 1, name: "Route-1", mode: TransitModes.BUS, color: "#1dd1a1", stations: [2, 5], departures: [40000] },
-            2: { id: 2, name: "Route-2", mode: TransitModes.TRAIN, color: "#ee5253", stations: [1, 4], departures: [40000] },
+            1: { id: 1, name: "Route-1", mode: TransitModes.BUS, color: Colours.FUEL_TOWN, stations: [2, 5], departures: [40000] },
+            2: { id: 2, name: "Route-2", mode: TransitModes.TRAIN, color: Colours.PASTEL_RED, stations: [1, 4], departures: [40000] },
         }},
 
         vehicles:   { nextId: 4, data: {
-            1: { id: 1, name: "Vehicle-1", capacity: 32, glyph: "" },
-            2: { id: 2, name: "Vehicle-2", capacity: 4,  glyph: "" },
-            3: { id: 3, name: "Vehicle-3", capacity: 16, glyph: "" },
+            1: { id: 1, name: "Vehicle-1", capacity: 32, glyph: faArchive },
+            2: { id: 2, name: "Vehicle-2", capacity: 4,  glyph: faArchive },
+            3: { id: 3, name: "Vehicle-3", capacity: 16, glyph: faArchive },
         }},
 
         passengers: { nextId: 6, tree: {

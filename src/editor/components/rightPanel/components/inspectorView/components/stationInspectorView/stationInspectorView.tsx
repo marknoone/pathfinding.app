@@ -1,17 +1,25 @@
-import { useSelector } from 'react-redux';
-import React, { useState, useMemo } from 'react';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import React, { useState, useMemo, useEffect } from 'react';
 import { AppState } from '../../../../../../../store';
 import { InspectorSubViewProps } from '../../inspectorView';
-import { Station } from '../../../../../leftPanel/components/componentView/constants';
+import { Station, Colours } from '../../../../../leftPanel/components/componentView/constants';
 import { makeGetStationByIDSelector } from '../../../../../leftPanel/components/componentView/selectors';
+import { SelectionInput } from '../../../../../../../app/components/selectionInput';
+import { UpdateStationByID } from '../../../../../leftPanel/components/componentView/actions';
+import { ColourSet } from '../../../../../leftPanel/components/componentView/constants'; 
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
     from '../../inspectorView.css';
-import { SelectionInput } from '../../../../../../../app/components/selectionInput';
 
 const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
+    const dispatch = useDispatch();
     const getStationByID = useMemo(makeGetStationByIDSelector, [])
-    const station = useSelector((state: AppState) =>  getStationByID(state, props.id))
-    const [editingObj, setEditingObj] = useState<Station>(station)
+    const station = useSelector((state: AppState) =>  getStationByID(state, props.id), shallowEqual)
+    const [editingObj, setEditingObj] = useState<Station>(station);
+    useEffect(() => {
+        if(props.id !== editingObj.id)
+            setEditingObj(station);
+    });
+
     
     return <div style={BaseStyle}>
         <div style={InspectorForm}>
@@ -27,12 +35,12 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                         setEditingObj({...editingObj, name: e.target.value})
                     }}/>
             </div>
-            <div style={FormEntry}>
+            {/* <div style={FormEntry}>
                 <p style={InputLabel}>Colour:</p>
-                <SelectionInput<string> value={editingObj.colour}
-                    options={[]}
-                    onChange={(e: string) => {}}/>
-            </div>
+                <SelectionInput<Colours> value={editingObj.colour}
+                    options={ColourSet}
+                    onChange={(e: Colours) => {}}/>
+            </div> */}
             <div style={FormEntry}>
                 <p style={InputLabel}>NodeID:</p>
                 <input type="text" style={InputText} value={editingObj.coordinates.x}
@@ -54,8 +62,10 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div>
         </div>
         <div style={FormButtons}>
-            <button style={SubmitBtn}>Save</button>
-            <button style={ResetBtn}>Reset</button>
+            <button style={SubmitBtn} onClick={() => dispatch(
+                UpdateStationByID(editingObj)
+            )}>Save</button>
+            <button style={ResetBtn} onClick={() => setEditingObj(station)}>Reset</button>
         </div>
     </div>
 }

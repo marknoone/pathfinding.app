@@ -19,7 +19,7 @@ export const ToolbarSection: CSS.Properties = {
 export const ToolbarBtnList: CSS.Properties = {
     listStyle: 'none',
     margin: 0,
-    padding: '0px 8px'
+    padding: '0px 2px'
 }
 
 export const ToolbarBtnListElem: CSS.Properties = {

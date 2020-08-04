@@ -98,17 +98,6 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
             </ul>
         </div>
 
-        {/* Delete Button */}
-        <div style={ToolbarSection}>
-            <ul style={ToolbarBtnList}>
-                <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <button onClick={()=>{}} style={ToolbarBtn}>
-                        <FontAwesomeIcon icon={faTrash}/>
-                    </button>
-                </li>
-            </ul>
-        </div>
-        
         {/* Add Element Button */}
         <div style={ToolbarSection}>
             <DropdownMenu 
@@ -120,7 +109,18 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
                     sections={sectionDefintions["zoomSelection"]}/>
         </div>
 
-        {/* Brush Buttons */}
+        {/* Delete Button */}
+        <div style={ToolbarSection}>
+            <ul style={ToolbarBtnList}>
+                <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
+                    <button onClick={()=>{}} style={ToolbarBtn}>
+                        <FontAwesomeIcon icon={faTrash}/>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        {/* Toggle Buttons */}
         <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">

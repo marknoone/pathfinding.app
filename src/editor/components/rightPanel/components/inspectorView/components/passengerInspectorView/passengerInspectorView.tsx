@@ -83,7 +83,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
         <div style={FormButtons}>
             <button style={SubmitBtn} onClick={() => dispatch(
                 UpdatePassengerWithID(editingObj)
-            )} >Save</button>
+            )}>Save</button>
             <button style={ResetBtn} onClick={() => setEditingObj(passenger)}>Reset</button>
         </div>
     </div>

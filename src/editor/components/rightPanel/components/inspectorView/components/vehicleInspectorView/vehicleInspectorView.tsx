@@ -1,17 +1,25 @@
-import { useSelector } from 'react-redux';
-import React, { useState, useMemo } from 'react';
 import { AppState } from '../../../../../../../store';
+import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useMemo, useEffect } from 'react';
 import { InspectorSubViewProps } from '../../inspectorView';
 import { SelectionInput } from '../../../../../../../app/components/selectionInput';
 import { Vehicle } from '../../../../../leftPanel/components/componentView/constants';
+import { UpdateVehicleByID } from '../../../../../leftPanel/components/componentView/actions';
 import { makeGetVehicleByIDSelector } from '../../../../../leftPanel/components/componentView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
     from '../../inspectorView.css';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faArchive } from '@fortawesome/free-solid-svg-icons';
 
 const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
+    const dispatch = useDispatch();
     const getVehicleByID = useMemo(makeGetVehicleByIDSelector, [])
     const vehicle = useSelector((state: AppState) =>  getVehicleByID(state, props.id))
     const [editingObj, setEditingObj] = useState<Vehicle>(vehicle)
+    useEffect(() => {
+        if(props.id !== editingObj.id)
+            setEditingObj(vehicle);
+    });
     
     return <div style={BaseStyle}>
         <div style={InspectorForm}>
@@ -37,14 +45,18 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Glyph:</p>
-                <SelectionInput<string> value={editingObj.glyph}
-                    options={[]}
-                    onChange={(e: string) => {}}/>
+                <SelectionInput<IconDefinition> value={editingObj.glyph}
+                    options={[
+                        { s: "Archive", value: faArchive}
+                    ]}
+                    onChange={(e: IconDefinition) => setEditingObj({...editingObj, glyph: e})}/>
             </div>
         </div>
         <div style={FormButtons}>
-            <button  style={SubmitBtn}>Submit</button>
-            <button  style={ResetBtn}>Reset</button>
+            <button  style={SubmitBtn} onClick={() => dispatch(
+                UpdateVehicleByID(editingObj)
+            )}>Save</button>
+            <button  style={ResetBtn} onClick={() => setEditingObj(vehicle)}>Reset</button>
         </div>
     </div>
 }

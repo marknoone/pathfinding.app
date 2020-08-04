@@ -2,8 +2,9 @@ import { Reducer } from 'redux';
 import {
     VehicleAction, StationAction, RouteAction,
     VehiclesState, StationsState, RoutesState,
-    VehicleActionTypes, StationActionTypes, RouteActionTypes, TransitModes,
+    VehicleActionTypes, StationActionTypes, RouteActionTypes, TransitModes, Colours,
 } from './constants';
+import { faArchive, faBus } from '@fortawesome/free-solid-svg-icons';
 
 const initialVehicleState = { nextId: 0, data: {} }
 export const VehicleReducer: Reducer<VehiclesState, VehicleAction> = (state = initialVehicleState, action) => {
@@ -17,7 +18,7 @@ export const VehicleReducer: Reducer<VehiclesState, VehicleAction> = (state = in
                         id: state.nextId,
                         name: `Vehicle-${state.nextId}`,
                         capacity: 0,
-                        glyph: ""
+                        glyph: faBus
                     }
                 }
             };
@@ -103,7 +104,7 @@ export const RouteReducer: Reducer<RoutesState, RouteAction> = (state = initialR
                         id: state.nextId,
                         name: `Route-${state.nextId}`,
                         mode: TransitModes.BUS,
-                        color: "#000",
+                        color: Colours.FUEL_TOWN,
                     
                         stations: [],
                         departures: [],

@@ -12,7 +12,7 @@ import {
 import './hover.anim.css';
 
 type SelectionValue = string | number;
-type SelectionProps<T extends SelectionValue> = { 
+type SelectionProps<T> = { 
     value: T, 
     options: { 
         s: string, 
@@ -22,7 +22,7 @@ type SelectionProps<T extends SelectionValue> = {
     onChange: (e: T) => void
 }
 
-function SelectionInput<T extends SelectionValue>(
+function SelectionInput<T>(
     {value, options, onChange}: React.PropsWithChildren<SelectionProps<T>>
 ) : JSX.Element {
     const [isShowing, setIsShowing] = useState(false)

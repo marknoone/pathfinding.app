@@ -1,3 +1,5 @@
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core"
+
 export type StationDataObj = {[key: number]: Station}
 export type RouteDataObj   = {[key: number]: Route}
 export type VehicleDataObj = {[key: number]: Vehicle}
@@ -31,10 +33,29 @@ export enum RouteActionTypes {
     UPDATE_ROUTE = "@@route/UPDATE_ROUTE"
 }
 
+export enum Colours {
+    JIGGLYPUFF = "#ff9ff3",      LOTUS_PINK = "#f368e0",       JADE_DUST = "#00d2d3",           
+    AQUA_VELVET = "#01a3a4",     CASANDRA_YELLOW = "#feca57",  DRAGON_SKIN = "#ff9f43",      
+    JOUST_BLUE = "#54a0ff",      BLEU_DE_FRANCE = "#2e86de",   PASTEL_RED = "#ff6b6b",      
+    AMOUR = "#ee5253",           NASU_PURPLE = "#5f27cd",      BLUEBELL = "#341f97",
+    MEGAMAN = "#48dbfb",         CYANITE = "#0abde3",          LIGHT_BLUE_BALLERINA = "#c8d6e5", 
+    STORM_PETREL = "#8395a7",    CARRIBEAN_GREEN = "#1dd1a1",  MOUNTAIN_MEADOW = "#10ac84",  
+    FUEL_TOWN = "#576574",       IMPERIAL_PRIMER = "#222f3e",
+}
+
+export const ColourSet = [
+    { s: "JigglyPuff", value: Colours.JIGGLYPUFF },    { s: "Lotus Pink", value: Colours.LOTUS_PINK },            { s:"Jade Dust", value: Colours.JADE_DUST }, 
+    { s: "Aqua Velvet", value: Colours.AQUA_VELVET },  { s: "Casandra Yellow", value: Colours.CASANDRA_YELLOW },  { s:"Dragon Skin", value: Colours.DRAGON_SKIN }, 
+    { s: "Joust Blue", value: Colours.JOUST_BLUE },    { s: "Bleu De France", value: Colours.BLEU_DE_FRANCE },    { s:"Pastel Red", value: Colours.PASTEL_RED }, 
+    { s: "Amour", value: Colours.AMOUR },              { s: "Nasu Purple", value: Colours.NASU_PURPLE },          { s:"Bluebell", value: Colours.BLUEBELL }, 
+    { s: "Megaman", value: Colours.MEGAMAN },          { s: "Cyanite", value: Colours.CYANITE },                  { s:"Light Blue Ballerina", value: Colours.LIGHT_BLUE_BALLERINA }, 
+    { s: "Storm Petal", value: Colours.STORM_PETREL }, { s: "Carribean Green", value: Colours.CARRIBEAN_GREEN },  { s:"Mountain Meadow", value: Colours.MOUNTAIN_MEADOW }, 
+    { s: "Fuel Town", value: Colours.FUEL_TOWN },      { s: "Imperial Primer", value: Colours.IMPERIAL_PRIMER }
+];
+
 export type Station = {
     id: number
     name: string
-    colour: string
     coordinates: {
         x: number,
         y: number,
@@ -45,7 +66,7 @@ export type Route = {
     id: number
     name: string
     mode: TransitModes
-    color: string
+    color: Colours
 
     stations: number[]
     departures: number[]
@@ -55,7 +76,7 @@ export type Vehicle = {
     id: number
     name: string
     capacity: number
-    glyph: string
+    glyph: IconDefinition
 }
 
 export enum TransitModes {
@@ -64,5 +85,11 @@ export enum TransitModes {
     TRAIN   = "TRAIN",
     TRAM    = "TRAM",
 }
+
+export const TransitOptions = [   
+    { s: "Bus",   value: TransitModes.BUS },    
+    { s: "Train", value: TransitModes.TRAIN },    
+    { s: "Tram",  value: TransitModes.TRAM },    
+];
 
 

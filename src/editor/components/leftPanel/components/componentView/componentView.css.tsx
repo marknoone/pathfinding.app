@@ -39,12 +39,14 @@ export const AddIcon: CSS.Properties = {
 }
 
 export const CategoryChildren: CSS.Properties = {
-    padding: '8px 12px'
+    padding: '0px 0px'
 }
 
 export const CCChild: CSS.Properties = {
-    fontSize: '14px',
+    fontSize: '13px',
     fontFamily: "'Montserrat', sans-serif",
     fontWeight: 500,
-    padding: '2px 0px'
+    padding: '2px 0px 2px 20px',
+    color: 'rgb(102, 102, 102',
+    cursor: 'pointer'
 }
