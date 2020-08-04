@@ -44,7 +44,8 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                     stationRouteMap[curr.id].end.push(routeID);
                     stationRouteMap[prev.id].start.push(routeID);
                     returnedElems.push(
-                        <KonvaRoute key={routeID} id={routeID} colour={route.color}
+                        <KonvaRoute key={routeID} id={routeID} 
+                            name={route.name} colour={route.color}
                             to={[curr.coordinates.x, curr.coordinates.y]} 
                             from={[prev.coordinates.x, prev.coordinates.y]} />);
                 }
