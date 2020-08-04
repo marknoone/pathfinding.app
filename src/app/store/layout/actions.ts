@@ -14,3 +14,40 @@ export const SetToolbarCollapse = (val: boolean):LayoutAction => ({
     type: LayoutActionTypes.SET_TOPBAR_COLLAPSE_VALUE,
     payload: {val: val}
 })
+
+// Action Menus
+export const SetFileMenuValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_MENU_FILE_VALUE,
+    payload: {val: val}
+})
+
+export const SetEditMenuValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_MENU_EDIT_VALUE,
+    payload: {val: val}
+})
+
+export const SetViewMenuValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_MENU_VIEW_VALUE,
+    payload: {val: val}
+})
+
+export const SetExtrasMenuValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_MENU_EXTRAS_VALUE,
+    payload: {val: val}
+})
+
+export const SetHelpMenuValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_MENU_HELP_VALUE,
+    payload: {val: val}
+})
+
+// Toolbar dropdowns
+export const SetToolbarLayoutSelectValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_TOOLBAR_LAYOUT_SELECT_VALUE,
+    payload: {val: val}
+})
+
+export const SetToolbarZoomLevelValue = (val: boolean):LayoutAction => ({
+    type: LayoutActionTypes.SET_TOOLBAR_ZOOM_LEVEL_VALUE,
+    payload: {val: val}
+})

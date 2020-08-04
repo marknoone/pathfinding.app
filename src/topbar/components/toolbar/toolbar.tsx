@@ -1,11 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux'
+import { AppState } from '../../../store';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { SetToolbarCollapse} from '../../../app/store/layout/actions';
 import { GetMenuSectionDefinitions } from './menus';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DropdownMenu } from '../../../app/components/dropdownMenu';
 import { DropdownMenuIconBtn } from '../../../app/components/dropdownMenu/components/iconBtn';
 import { DropdownMenuTextBtn } from '../../../app/components/dropdownMenu/components/textBtn';
+import { SetToolbarLayoutSelectValue, SetToolbarZoomLevelValue } from '../../../app/store/layout/actions'; 
 import { 
     faPlus, 
     faUndo, 
@@ -19,7 +21,8 @@ import {
     faTrain,
     faTram,
     faExpandArrowsAlt,
-    faAngleDoubleUp, 
+    faAngleDoubleUp,
+    faAngleDoubleDown, 
 } from '@fortawesome/free-solid-svg-icons';
 import {
     BaseStyle,
@@ -31,8 +34,11 @@ import {
 } from './toolbar.css';
 import './toolbar.hover.anim.css';
 
+
 const ToolbarComponent: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
+    const toolbarMenus = useSelector((state:AppState) => state.layout.toolbar, shallowEqual)
+    const isCollapsed = useSelector((state: AppState) => state.layout.isTopbarCollapsed);
     const sectionDefintions = GetMenuSectionDefinitions(dispatch);
 
     return <div style={BaseStyle}>
@@ -40,8 +46,10 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <DropdownMenu 
                 render={ () => <DropdownMenuIconBtn icon={faColumns}/> } 
-                isActive={false}
-                onBtnClick={() => {}}
+                isActive={toolbarMenus.isLayoutSelectShowing}
+                onBtnClick={() => {
+                    dispatch(SetToolbarLayoutSelectValue(!toolbarMenus.isLayoutSelectShowing));
+                }}
                 sections={sectionDefintions["panels"]}/>
         </div>
 
@@ -49,8 +57,10 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <DropdownMenu 
                 render={ () => <DropdownMenuTextBtn hasCaret={true} title="100%"/> } 
-                isActive={false}
-                onBtnClick={() => {}}
+                isActive={toolbarMenus.isZoomLevelShowing}
+                onBtnClick={() => {
+                    dispatch(SetToolbarZoomLevelValue(!toolbarMenus.isZoomLevelShowing));
+                }}
                 sections={sectionDefintions["zoomSelection"]}/>
         </div>
 
@@ -140,9 +150,9 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
                 </li>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
                     <button onClick={()=>{
-                        dispatch(SetToolbarCollapse(true))
+                        dispatch(SetToolbarCollapse(!isCollapsed))
                     }} style={{...ToolbarBtn, color: '#444'}}>
-                        <FontAwesomeIcon icon={faAngleDoubleUp}/>
+                        <FontAwesomeIcon icon={isCollapsed?faAngleDoubleDown:faAngleDoubleUp}/>
                     </button>
                 </li>
             </ul>

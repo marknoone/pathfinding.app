@@ -2,7 +2,6 @@ import CSS from 'csstype';
 
 export const TopSectionContainer: CSS.Properties = {
     width: '100%',
-    height: '64px',
     backgroundColor: '#FBFBFB',
     position: 'relative',
     borderBottom: '1px solid #dedede'
@@ -50,7 +49,7 @@ export const ChangeStatusLayout: CSS.Properties = {
 }
 
 export const ToolbarContainer: CSS.Properties = {
-    
+    paddingTop: '2px'
 }
 
 export const MenuAndChangeContainer: CSS.Properties = {

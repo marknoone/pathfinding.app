@@ -21,12 +21,19 @@ const TopBar: React.FunctionComponent = (props) => {
     console.log(isCollapsed);
     
     return <div style={{ boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.1)', zIndex: 40, position: 'relative'}}>
-        <div style={TopSectionContainer}>
-            <div style={LogoContainer}>
-                <img style={Logo} src="https://via.placeholder.com/300.png" alt=""/>
-            </div>
+        <div style={{
+            ...TopSectionContainer, 
+            ...(!isCollapsed && {height: '64px'}),
+            ...(isCollapsed && {height: '28px'})
+        }}>
+            {
+                isCollapsed? null: 
+                <div style={LogoContainer}>
+                    <img style={Logo} src="https://via.placeholder.com/300.png" alt=""/>
+                </div>
+            }
             <div style={TopSectionInnerContainer}>
-                <p style={WindowTitle}>Pathfinding.app</p>
+                { isCollapsed? null:<p style={WindowTitle}>Pathfinding.app</p> }
                 <div style={MenuAndChangeContainer}>
                     <div style={ActionMenuLayout}><ActionMenus /></div>
                     <div style={ChangeStatusLayout}>
