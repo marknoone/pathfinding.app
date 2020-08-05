@@ -11,12 +11,15 @@ import {
     SetCanvasCoordinates,
     SetScaleAndCanvasScale
 } from './actions';
+import { SetInspectingObject } from '../../../rightPanel/components/inspectorView/actions';
+import { ComponentTypes } from '../../../../constants';
 
 type PCState = {coords: number[], scale: {x: number, y: number}}
 type PCProps={ dimensions: number[] }
 const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
     const dispatch = useDispatch();
     const canvasOpts = useSelector((state: AppState) => state.canvas, shallowEqual);
+    const inspecting = useSelector((state:AppState) => state.inspector, shallowEqual);
     const stations = useSelector((state: AppState) => state.scenario.scenarios
         [ state.scenario.activeScenarioIdx ].stations, shallowEqual);
     const routes = useSelector((state: AppState) => state.scenario.scenarios
@@ -42,9 +45,11 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
                 s.newCoords[0], s.newCoords[1], 
                 s.newScale.x, s.newScale.y
             ))}/>
-        <KonvaComponentManager gridBlockSize={canvasOpts.boxSize} 
+        <KonvaComponentManager gridBlockSize={canvasOpts.boxSize} inspecting={inspecting}
             coords={canvasOpts.coords} stations={stations.data} routes={routes.data} 
-            scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}}
+            scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} 
+            onRouteClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.ROUTE, id))}
+            onStationClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.STATION, id))}
             onStationCoordChange={(id, chg) => { 
                 dispatch(UpdateStationByID({ ...stations.data[id], coordinates:{ x: chg.x, y: chg.y }}))
             }}/>

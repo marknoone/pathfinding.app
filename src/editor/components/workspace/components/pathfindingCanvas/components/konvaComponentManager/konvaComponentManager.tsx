@@ -4,6 +4,9 @@ import { KonvaStation } from './components/konvaStation';
 import { KonvaRoute } from './components/konvaRoute';
 import { StationDataObj, RouteDataObj } 
     from '../../../../../leftPanel/components/componentView/constants';
+import { InspectorState } from '../../../../../rightPanel/components/inspectorView/constants';
+import { ComponentTypes } from '../../../../../../constants';
+import { KonvaEventObject } from 'konva/types/Node';
 
 type KCMProps = { 
     coords: number[], 
@@ -15,7 +18,10 @@ type KCMProps = {
 
     stations: StationDataObj,
     routes: RouteDataObj,
+    inspecting: InspectorState
 
+    onRouteClick?: (id: number) => void
+    onStationClick?: (id: number) => void
     onStationCoordChange: 
         (id: number, newCoords: {x: number, y:number}) => void
 }
@@ -47,7 +53,15 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                         <KonvaRoute key={routeID} id={routeID} 
                             name={route.name} colour={route.color}
                             to={[curr.coordinates.x, curr.coordinates.y]} 
-                            from={[prev.coordinates.x, prev.coordinates.y]} />);
+                            from={[prev.coordinates.x, prev.coordinates.y]} 
+                            onClick={(e: KonvaEventObject<MouseEvent>) => {
+                                if(props.onRouteClick)
+                                    props.onRouteClick(route.id);
+                            }}
+                            isHighlighted={
+                                props.inspecting.componentType === ComponentTypes.ROUTE 
+                                && props.inspecting.elementID === route.id
+                            }/>);
                 }
 
                 return returnedElems; 
@@ -65,7 +79,15 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                     startLineIDs={stationRouteMap[stn.id].start} 
                     endLineIDs={stationRouteMap[stn.id].end}
                     coords={[stn.coordinates.x, stn.coordinates.y]}
-                    onChange={c => props.onStationCoordChange(stn.id, c)}/>
+                    onClick={(e: KonvaEventObject<MouseEvent>) => {
+                        if(props.onStationClick)
+                            props.onStationClick(stn.id);
+                    }}
+                    onChange={c => props.onStationCoordChange(stn.id, c)}
+                    isHighlighted={
+                        props.inspecting.componentType === ComponentTypes.STATION 
+                        && props.inspecting.elementID === stn.id
+                    }/>
             })
         }
     </Layer>;

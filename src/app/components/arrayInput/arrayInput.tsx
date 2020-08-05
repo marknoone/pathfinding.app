@@ -55,7 +55,7 @@ function ArrayInput<T extends HasName>(
             { Object.keys(props.value)
                 .map((k:string) => {
                     const item = props.value[+k]
-                    return <li style={Element}>
+                    return <li style={Element} key={k}>
                         <p style={ElementNumber}>{k}.</p>
                         <p style={ElementName}>{item.name}</p>
                         <div style={ElemIcons}>{

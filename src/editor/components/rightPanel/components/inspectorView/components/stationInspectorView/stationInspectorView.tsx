@@ -16,7 +16,7 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
     const station = useSelector((state: AppState) =>  getStationByID(state, props.id), shallowEqual)
     const [editingObj, setEditingObj] = useState<Station>(station);
     useEffect(() => {
-        if(props.id !== editingObj.id)
+        if(props.id !== editingObj.id || editingObj.coordinates !== station.coordinates)
             setEditingObj(station);
     });
 
