@@ -36,11 +36,11 @@ const DropdownMenu: React.FunctionComponent<DropdownMenuProps> = (props) => {
             (
                 <div style={MenuContainer}>
                     {
-                        props.sections.map( section => 
-                                <ul style={DropdownSection}>
+                        props.sections.map( (section, i) => 
+                                <ul style={DropdownSection} key={i}>
                                     {                                        
                                         section.entries.map( entry =>
-                                            <li style={DropdownEntry} className="dropdown-entry-hover" onClick={() => {
+                                            <li key={entry.title} style={DropdownEntry} className="dropdown-entry-hover" onClick={() => {
                                                 if(entry.onClick)
                                                     entry.onClick();
                                             }}>

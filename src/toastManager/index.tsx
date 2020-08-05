@@ -1,1 +1,1 @@
-export { default as ToastManager } from './toastManager';
+export { default as ToastPortal } from './toastPortal';

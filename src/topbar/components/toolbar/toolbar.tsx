@@ -5,6 +5,7 @@ import { SetToolbarCollapse} from '../../../app/store/layout/actions';
 import { GetMenuSectionDefinitions } from './menus';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DropdownMenu } from '../../../app/components/dropdownMenu';
+import { AddInfoToastNotification } from '../../../toastManager/actions';
 import { DropdownMenuIconBtn } from '../../../app/components/dropdownMenu/components/iconBtn';
 import { DropdownMenuTextBtn } from '../../../app/components/dropdownMenu/components/textBtn';
 import { 
@@ -144,7 +145,7 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
                     </button>
                 </li>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <button onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=>{ dispatch(AddInfoToastNotification("Test!"))}} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faTrain}/>
                     </button>
                 </li>

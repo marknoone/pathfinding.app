@@ -1,10 +1,29 @@
 import React from 'react';
+import { AppState } from '../store';
+import { useSelector, useDispatch } from 'react-redux';
+import { ToastNotification } from './components/toast';
+import { DeleteToastNotification } from './actions';
 import {
-    BaseStyle
+    BaseStyle,
+    NotificationContainer
 } from './toastManager.css';
 
-const ToastManager: React.FunctionComponent = (props) => {
-    return <></>;
-}
+export const ToastManager: React.FunctionComponent = (props) => {
+    const dispatch = useDispatch();
+    const toastQueue = useSelector((state:AppState) => state.toasts.sortedQueue);
 
-export default ToastManager;
+    return <div style={BaseStyle}>
+        <div style={NotificationContainer}>
+            {
+                toastQueue.map((t, i) => {
+                    return <ToastNotification t={t} 
+                        onToastExpired={() => dispatch(
+                            DeleteToastNotification(i)
+                        )}/>
+                })
+            }
+        </div>
+    </div>;
+};
+
+
