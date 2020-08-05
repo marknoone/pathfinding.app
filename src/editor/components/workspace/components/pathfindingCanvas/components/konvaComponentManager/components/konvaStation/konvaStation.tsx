@@ -6,6 +6,7 @@ import { svgPathData } from '@fortawesome/free-solid-svg-icons/faMapPin';
 
 type KSProps = { 
     colour: string, 
+    boxSize: number,
     coords: number[],
     isHighlighted: boolean,
 
@@ -17,6 +18,7 @@ type KSProps = {
 }
 
 const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
+    console.log(props.coords);
     return <Group draggable
         x={props.coords[0]} y={props.coords[1]}
         onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {
@@ -29,8 +31,24 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
             if(stage)
                 stage.container().style.cursor = "default";
         }}
+        onDragStart={(e: KonvaEventObject<MouseEvent>) => {
+            const layer = e.target.getLayer() as Konva.Layer;
+            const shadowRect = layer.findOne("#grid-shadow-rect");
+            shadowRect.position({
+                x: Math.round(e.target.x()-30 / props.boxSize) * props.boxSize,
+                y: Math.round(e.target.y()-30 / props.boxSize) * props.boxSize
+            });
+            shadowRect.show();
+             
+        }}
         onDragMove={(e: KonvaEventObject<MouseEvent>) => {
             const layer = e.target.getLayer() as Konva.Layer
+            const shadowRect = layer.findOne("#grid-shadow-rect");
+            shadowRect.position({
+                x: Math.round((e.target.x()-30) / props.boxSize) * props.boxSize,
+                y: Math.round((e.target.y()-30) / props.boxSize) * props.boxSize
+            });
+
             if(props.startLineIDs.length > 0) {
                 props.startLineIDs.map( id => {
                     const obj = layer.find(`#${id}`)
@@ -64,7 +82,12 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
             };
         }}
         onDragEnd={(e: KonvaEventObject<MouseEvent>) => {
-            const x = e.target.x(), y = e.target.y();
+            const layer = e.target.getLayer() as Konva.Layer;
+            const shadowRect = layer.findOne("#grid-shadow-rect");
+            const x = Math.round((shadowRect.x()+30) / props.boxSize) * props.boxSize,
+                  y = Math.round((shadowRect.y()+30) / props.boxSize) * props.boxSize;
+            e.target.position({x: x, y: y});
+            shadowRect.hide();
             props.onChange({x, y});
         }}
         onClick={(e: KonvaEventObject<MouseEvent>) => {

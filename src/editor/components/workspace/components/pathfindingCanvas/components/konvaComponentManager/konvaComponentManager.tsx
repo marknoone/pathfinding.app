@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layer } from "react-konva";
+import { Layer, Rect } from "react-konva";
 import { KonvaStation } from './components/konvaStation';
 import { KonvaRoute } from './components/konvaRoute';
 import { StationDataObj, RouteDataObj } 
@@ -35,6 +35,18 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
     });
 
     return <Layer x={props.coords[0]} y={props.coords[1]} scale={props.scale}>
+        <Rect
+            id="grid-shadow-rect" 
+            x={0} y={0}
+            visible={false}
+            width={props.gridBlockSize * 2}
+            height={props.gridBlockSize * 2}
+            fill={'#FF7B17'}
+            opacity={0.6}
+            stroke={'#CF6412'}
+            strokeWidth={3}
+            dash={[20, 2]}
+        />
         {
             /* Draw routes */
             Object.keys(props.routes).map((k: string) => {
@@ -83,6 +95,7 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                         if(props.onStationClick)
                             props.onStationClick(stn.id);
                     }}
+                    boxSize={props.gridBlockSize}
                     onChange={c => props.onStationCoordChange(stn.id, c)}
                     isHighlighted={
                         props.inspecting.componentType === ComponentTypes.STATION 
