@@ -26,7 +26,7 @@ type CCProps = {
 }
 
 const ComponentCategoryView: React.FunctionComponent<CCProps> = (props) => {
-    const [isCollapsed, setIsCollapsed] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(true)
     return <><div style={CategoryEntry}>
             <div style={CollapseIcon} onClick={() => {setIsCollapsed(!isCollapsed)}}>
                 <FontAwesomeIcon icon={isCollapsed? faCaretRight:faCaretDown}/></div>
@@ -44,7 +44,7 @@ const ComponentCategoryView: React.FunctionComponent<CCProps> = (props) => {
                         return <div style={{
                             ...CCChild,
                             ...(i+1 === props.activeItem && { backgroundColor: '#e8e8e8' })
-                        }} 
+                        }} key={elem.id}
                         onClick={() => {
                             if(props.onItemClick)
                                 props.onItemClick(elem.id)

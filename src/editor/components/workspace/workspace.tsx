@@ -2,7 +2,7 @@ import React, { useState, useRef, useLayoutEffect } from 'react';
 import { PathfindingCanvas } from './components/pathfindingCanvas';
 import { ScenarioSelector } from './components/scenarioSelector';
 
-const WorkspaceComponent: React.FunctionComponent = (props) => {
+const WorkspaceComponent: React.FunctionComponent<{isComponentCollapsed:boolean}> = (props) => {
     const canvasContainerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState([500, 500]);
     
@@ -25,9 +25,10 @@ const WorkspaceComponent: React.FunctionComponent = (props) => {
         <div style={{
             position: 'absolute',
             bottom: 0,
-            left: 0,
             right: 0,
             height: '38px',
+            ...(props.isComponentCollapsed && {left: '12px'}),
+            ...(!props.isComponentCollapsed && {left: '360px'}),
         }}><ScenarioSelector /></div> 
     </div>;
 }

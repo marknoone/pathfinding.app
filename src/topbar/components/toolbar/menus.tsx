@@ -49,7 +49,7 @@ export const GetMenuSectionDefinitions = (dispatch: Dispatch<any>, panelVals: {l
         ],
         "addElement":[
             { entries: [
-                    { title: "Passenger", onClick: () => { dispatch(AddEmptyPassengerToDirectory()); dispatch(SetToolbarAddComponentValue(false)); }},
+                    { title: "Passenger", onClick: () => { dispatch(AddEmptyPassengerToDirectory(0)); dispatch(SetToolbarAddComponentValue(false)); }},
                     { title: "Station",   onClick: () => { dispatch(AddEmptyStationComponent()); dispatch(SetToolbarAddComponentValue(false)); }},
                     { title: "Route",     onClick: () => { dispatch(AddEmptyRouteComponent()); dispatch(SetToolbarAddComponentValue(false)); }},
                     { title: "Vehicle",   onClick: () => { dispatch(AddEmptyVehicleComponent()); dispatch(SetToolbarAddComponentValue(false)); }}

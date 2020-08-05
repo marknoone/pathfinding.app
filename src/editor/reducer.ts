@@ -91,10 +91,12 @@ export const scenarioStateReducer: Reducer<ScenarioState, any> = (state = initia
                     ...state.scenarios,
                     {
                         name: `Scenario-${state.scenarios.length+1}`,
-                        stations:   {},
-                        routes:     {},
-                        vehicles:   {},
-                        passengers: {},
+                        stations:   { nextId: 1, data: {} },
+                        routes:     { nextId: 1, data: {} },
+                        vehicles:   { nextId: 1, data: {} },
+                        passengers: { nextId: 1, tree: { 
+                            0 : {id: 0, name: "All Passengers", children: []}
+                        }},
                         simulationConfig: {}
                     }
                 ]

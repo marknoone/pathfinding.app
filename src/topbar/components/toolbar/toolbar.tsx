@@ -37,6 +37,7 @@ import {
     WindowInteractionButtons
 } from './toolbar.css';
 import './toolbar.hover.anim.css';
+import { SetCanvasScale } from '../../../editor/components/workspace/components/pathfindingCanvas/actions';
 
 
 const ToolbarComponent: React.FunctionComponent = (props) => {
@@ -81,12 +82,12 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <button onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=> dispatch(SetCanvasScale(currentScale+0.1, currentScale+0.1))} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faSearchPlus}/>
                     </button>
                 </li>
                 <li style={{...ToolbarBtnListElem}} className="toolbar-btn-hover">
-                    <button onClick={()=>{}} style={ToolbarBtn} className="">
+                    <button onClick={()=> dispatch(SetCanvasScale(currentScale-0.1, currentScale-0.1))} style={ToolbarBtn} className="">
                         <FontAwesomeIcon icon={faSearchMinus}/>
                     </button>
                 </li>

@@ -20,14 +20,14 @@ export const AddPassengerToDirectory = (targetID: number, val: Passenger):Passen
     payload: {id: targetID, item: val}
 })
 
-export const AddEmptyPassengerToDirectory = ():PassengerAction => ({
+export const AddEmptyPassengerToDirectory = (dirID: number):PassengerAction => ({
     type: PassengerActionTypes.ADD_EMPTY_PASSENGER_TO_DIRECTORY,
-    payload: {id: 0}
+    payload: {id: dirID}
 })
 
-export const AddEmptyDirectoryToDirectory = ():PassengerAction => ({
+export const AddEmptyDirectoryToDirectory = (dirID: number):PassengerAction => ({
     type: PassengerActionTypes.ADD_EMPTY_DIRECTORY_TO_DIRECTORY,
-    payload: {id: 0}
+    payload: {id: dirID}
 })
 
 export const AddDirectoryToDirectory = (targetID: number,val: PassengerDirectory):PassengerAction => ({

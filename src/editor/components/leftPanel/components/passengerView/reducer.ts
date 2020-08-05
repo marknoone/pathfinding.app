@@ -94,17 +94,21 @@ const PassengerReducer: Reducer<PassengerState, PassengerAction> = (state = init
                 }
             }: state;
         case PassengerActionTypes.ADD_EMPTY_DIRECTORY_TO_DIRECTORY:
-            if(!action.payload.item)
-                return state;
-
-            const empDirToDir = action.payload.item;
-            return isPassengerDirectory(empDirToDir)?{
+            const directory = state.tree[action.payload.id];
+            return isPassengerDirectory(directory)?{
                 nextId: state.nextId+1,
                 tree: {
                     ...state.tree,
+                    [directory.id]:{
+                        ...state.tree[directory.id],
+                        children: [
+                            ...directory.children,
+                            state.nextId
+                        ],
+                    },
                     [state.nextId]: {
                         id: state.nextId,
-                        name: `Directory-${state.nextId}`,
+                        name: `Dir-${state.nextId}`,
                         children: []
                     }
                 }

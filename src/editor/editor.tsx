@@ -32,7 +32,7 @@ const EditorComponent: React.FunctionComponent = (props) => {
             verticalAlign: 'top',
             width: 'calc(100vw)',
             height: '100%',
-        }}><WorkspaceComponent /></div>
+        }}><WorkspaceComponent isComponentCollapsed={isComponentCollapsed}/></div>
 
         <div style={{ 
             height: '100%',
