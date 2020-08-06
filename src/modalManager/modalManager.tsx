@@ -43,7 +43,10 @@ const ModalManager: React.FunctionComponent = (props) => {
                 verticalAlign: 'center',
                 width: `100%`, 
                 height: `100%`,
-                overflow: 'none'
+                overflow: 'none',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
             }
         }}
         isOpen={isModalOpen}
