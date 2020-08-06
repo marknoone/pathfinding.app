@@ -1,18 +1,22 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useMemo, useEffect } from 'react';
 import { PathfindingCanvas } from './components/pathfindingCanvas';
 import { ScenarioSelector } from './components/scenarioSelector';
 
 const WorkspaceComponent: React.FunctionComponent<{isComponentCollapsed:boolean}> = (props) => {
     const canvasContainerRef = useRef<HTMLDivElement>(null);
-    const [dimensions, setDimensions] = useState([500, 500]);
-    
-
-    useLayoutEffect(() => {
+    const [dimensions, setDimensions] = useState([500, 500]);    
+    const effect = useMemo(() => () => {
         if(canvasContainerRef.current)
             setDimensions([
                 canvasContainerRef.current.clientWidth,
                 canvasContainerRef.current.clientHeight,
             ])
+    }, [])
+
+    useLayoutEffect(effect, []);
+    useEffect(() => {
+        window.addEventListener("resize", effect);
+        return () => window.removeEventListener("resize", effect)
     }, [])
 
     return <div ref={canvasContainerRef}
