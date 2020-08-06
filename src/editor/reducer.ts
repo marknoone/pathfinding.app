@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from 'redux';
-import { Algorithms, Playspeed } from './components/rightPanel/components/simulationView/constants';
+import { Algorithms } from './components/rightPanel/components/simulationView/constants';
 import PassengerReducer from './components/leftPanel/components/passengerView/reducer';
 import SimulationReducer from './components/rightPanel/components/simulationView/reducer';
 import { ScenarioState, ScenarioAction, ScenarioActionTypes } from './constants' 
@@ -55,7 +55,7 @@ const initialState = {
             isPlaying: false,
             simFrame: 1,
             algorithm: Algorithms.Dijkstra,
-            playSpeed: 1 as Playspeed
+            playSpeedIdx: 4
         }
     }]
 }

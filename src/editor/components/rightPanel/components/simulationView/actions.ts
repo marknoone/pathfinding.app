@@ -2,8 +2,7 @@ import {
     Algorithms,
     SimulationState,
     SimulationActionTypes,
-    SimulationAction,
-    Playspeed
+    SimulationAction
 } from './constants';
 
 export const SetSimulationAlgorithm = (alg: Algorithms):SimulationAction => ({
@@ -16,12 +15,27 @@ export const SetSimulationFrame = (frame: number):SimulationAction => ({
     payload: {simFrame: frame}
 })
 
-export const SetPlaySpeed = (spd: Playspeed):SimulationAction => ({
-    type: SimulationActionTypes.SET_PLAY_SPEED,
-    payload: {playSpeed: spd}
+export const IncSimulationFrame = ():SimulationAction => ({
+    type: SimulationActionTypes.INC_SIMULATION_FRAME,
+    payload: {}
 })
 
-export const SetToolbarCollapse = (val: boolean):SimulationAction => ({
+export const DecSimulationFrame = ():SimulationAction => ({
+    type: SimulationActionTypes.DEC_SIMULATION_FRAME,
+    payload: {}
+})
+
+export const IncPlaySpeed = ():SimulationAction => ({
+    type: SimulationActionTypes.INC_PLAY_SPEED,
+    payload: {}
+})
+
+export const DecPlaySpeed = ():SimulationAction => ({
+    type: SimulationActionTypes.DEC_PLAY_SPEED,
+    payload: {}
+})
+
+export const SetIsPlaying = (val: boolean):SimulationAction => ({
     type: SimulationActionTypes.SET_IS_PLAYING                  ,
     payload: {isPlaying: val}
 })
