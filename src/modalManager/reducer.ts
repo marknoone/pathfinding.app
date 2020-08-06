@@ -1,9 +1,10 @@
 import { Reducer } from 'redux';
-import { ModalActionTypes, ModalAction, ModalState } from './constants';
+import { ModalActionTypes, ModalAction, ModalState, ModalSize } from './constants';
 
 const initialState = {
-    isModalOpen: false,
-    modalType: -1,
+    isModalOpen: true,
+    modalSize: 'md' as ModalSize,
+    modalType: 0,
     modalProps: {
         title: "Alert",
         message: "Hello world!"

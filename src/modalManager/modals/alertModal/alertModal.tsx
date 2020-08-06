@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from '../modal';
 
 type AMProps = {
     title: string
@@ -7,25 +8,11 @@ type AMProps = {
     closeModal: () => void
 }
 
-const AlertModal: React.FunctionComponent<AMProps> = ({ closeModal, title, message }) => {
-    return (
-      <div >
-        <div >
-          <h5
-            className="modal-title"
-          >{title}</h5>
-          <button type="button" className="close" aria-label="Close" onClick={() => closeModal()}>
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div className="modal-body">
-          <p>{message}</p>
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" onClick={() => closeModal()}>close</button>
-        </div>
-      </div>
-    );
-}
+const AlertModal: React.FunctionComponent<AMProps> = ({ closeModal, title, message }) => 
+    <Modal title={title} saveAction={() => {}} closeAction={() => closeModal()} render={() =>{
+
+        return <p style={{}}>{message}</p>;
+    }}/>;
+
 
 export default AlertModal;

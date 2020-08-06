@@ -27,3 +27,9 @@ export enum ModalType {
     SCENARIO_MODAL  = 5
 }
 
+export type ModalSize = 'xl' | 'lg' | 'md' | 'sm' | 'xs';
+export type ModalSizeObj = {
+    width: number,
+    height: number
+}
+
