@@ -5,13 +5,15 @@ import CanvasReducer from './editor/components/workspace/components/pathfindingC
 import LayoutReducer from './app/store/layout/reducers';
 import ScenarioReducer from './editor/reducer';
 import ToastReducer from './toastManager/reducer';
+import ModalReducer from './modalManager/reducer';
 
 export const rootReducer = combineReducers({
     layout: LayoutReducer,
     scenario: ScenarioReducer,
     inspector: InspectorReducer,
     canvas: CanvasReducer,
-    toasts: ToastReducer
+    toasts: ToastReducer,
+    modals: ModalReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

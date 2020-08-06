@@ -1,12 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
 import { App } from './app';
-import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware  } from 'redux';
+import ReactDOM from 'react-dom';
+import ReactModal from 'react-modal';
 import { rootReducer } from './store';
+import { Provider } from 'react-redux';
+import * as serviceWorker from './serviceWorker';
+import { createStore, applyMiddleware  } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import './index.css';
 
 import createSagaMiddleware from 'redux-saga'
 import mySagas from './sagas'
@@ -17,6 +18,7 @@ const store = createStore(rootReducer, composeWithDevTools(
 ));
 
 sagas.run(mySagas);
+
 
 ReactDOM.render(
   <React.StrictMode>

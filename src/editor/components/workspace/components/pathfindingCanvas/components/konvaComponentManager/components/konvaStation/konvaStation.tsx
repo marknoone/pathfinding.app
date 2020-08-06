@@ -18,7 +18,6 @@ type KSProps = {
 }
 
 const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
-    console.log(props.coords);
     return <Group draggable
         x={props.coords[0]} y={props.coords[1]}
         onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {
