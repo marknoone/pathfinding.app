@@ -16,7 +16,7 @@ export const ToastManager: React.FunctionComponent = (props) => {
         <div style={NotificationContainer}>
             {
                 toastQueue.map((t, i) => {
-                    return <ToastNotification t={t} 
+                    return <ToastNotification key={i} t={t} 
                         onToastExpired={() => dispatch(
                             DeleteToastNotification(i)
                         )}/>

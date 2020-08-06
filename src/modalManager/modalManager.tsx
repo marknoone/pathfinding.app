@@ -27,11 +27,8 @@ const ModalManager: React.FunctionComponent = (props) => {
     const modalProps = useSelector((s:AppState) => s.modals.modalProps, shallowEqual);
     
     if (!Object.keys(MODALS).includes(modalType.toString())) {
-        console.log("Nulling")
         return null
     }
-
-    console.log(isModalOpen)
 
     const SpecifiedModal = MODALS[modalType]
     return <ReactModal

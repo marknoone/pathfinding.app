@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastType, ToastNotification } from '../../constants';
-import { BaseStyle } from './toast.css';
+import { BaseStyle, ToastIcon, ToastMessage } from './toast.css';
 import { 
     faExclamationCircle, 
     faTimesCircle, 
@@ -24,22 +24,28 @@ const toastDeps = {
 
 const Toast: React.FunctionComponent<ToastProps> = (props) => {
     const {bg, primary, icon} = toastDeps[props.t.type];
+    console.log(Date.now() - props.t.createdAt);
     const [lifetimeTimer, setLifetimeTimer] = useState<NodeJS.Timeout>(
+        (Date.now() - props.t.createdAt) > 0?
         setTimeout(() => {
             if(props.onToastExpired)
                 props.onToastExpired();
-        }, ToastLifetime_MS) 
+        }, ToastLifetime_MS - (Date.now() - props.t.createdAt)):
+        setTimeout(() => {
+            if(props.onToastExpired)
+                props.onToastExpired();
+        }, 10)
     );
 
     useEffect(() => {
         return () => clearTimeout(lifetimeTimer);
     }, []);
 
-    return <div style={{}}>
-        <div style={{}}>
+    return <div style={{...BaseStyle, backgroundColor: '#fff', border: `1px solid ${bg}`}}>
+        <div style={{...ToastIcon, color: primary}}>
             <FontAwesomeIcon icon={icon} />
         </div>
-        <p style={{}}>{props.t.msg}</p>
+        <p style={{...ToastMessage, color: primary}}>{props.t.msg}</p>
     </div>
 }
 
