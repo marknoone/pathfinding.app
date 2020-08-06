@@ -52,9 +52,7 @@ const ModalManager: React.FunctionComponent = (props) => {
         isOpen={isModalOpen}
         onAfterOpen={() => {}}
         onRequestClose={() => dispatch(closeModal())}
-        contentLabel="Example Modal"
         ariaHideApp={false}
-        bodyOpenClassName="modal-open"
     >
         <SpecifiedModal
         closeModal={() => dispatch(closeModal())}

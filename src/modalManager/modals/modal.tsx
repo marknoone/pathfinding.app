@@ -10,7 +10,7 @@ type ModalProps = {
     render: () => JSX.Element; 
 }
 
-const Modal: React.FunctionComponent<ModalProps> = ({ title, render, closeAction }) => {
+const Modal: React.FunctionComponent<ModalProps> = ({ title, render, closeAction, saveAction }) => {
     return (
       <div style={{...BaseModalStyle, width: '20vw', height: '20vh'}}>
         <div style={ModalTitleBar}>
@@ -23,7 +23,7 @@ const Modal: React.FunctionComponent<ModalProps> = ({ title, render, closeAction
           {render()}
         </div>
         <div style={ModalFooter}>
-          <button type="button" style={{...ModalBtn, ...ModalSaveBtn}} onClick={() => closeAction()}>Save</button>
+          <button type="button" style={{...ModalBtn, ...ModalSaveBtn}} onClick={() => saveAction()}>Save</button>
           <button type="button" style={{...ModalBtn, ...ModalCloseBtn}} onClick={() => closeAction()}>Close</button>
         </div>
       </div>

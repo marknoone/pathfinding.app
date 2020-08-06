@@ -16,10 +16,12 @@ export const ToastManager: React.FunctionComponent = (props) => {
         <div style={NotificationContainer}>
             {
                 toastQueue.map((t, i) => {
-                    return <ToastNotification key={i} t={t} 
-                        onToastExpired={() => dispatch(
-                            DeleteToastNotification(i)
-                        )}/>
+                    return <div style={{margin: "10px 0px"}}>
+                            <ToastNotification key={i} t={t} 
+                            onToastExpired={() => dispatch(
+                                DeleteToastNotification(i)
+                            )}/>
+                        </div>
                 })
             }
         </div>

@@ -3,7 +3,6 @@ import { ModalActionTypes, ModalAction, ModalState, ModalSize } from './constant
 
 const initialState = {
     isModalOpen: true,
-    modalSize: 'md' as ModalSize,
     modalType: 0,
     modalProps: {
         title: "Alert",
