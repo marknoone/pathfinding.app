@@ -6,7 +6,6 @@ export { DirEditModal } from './dirEditModal';
 export { ExportProjectModal } from './exportProjectModal';
 export { GridSizeModal } from './gridSizeModal';
 export { KeyboardShortcutsModal } from './keyboardShortcutsModal';
-export { NewProjectModal } from './newProjectModal';
 export { OpenProjectModal } from './openProjectModal';
 export { PresetsModal } from './presetsModal';
 export { RenameProjectModal } from './renameProjectModal';

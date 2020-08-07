@@ -1,1 +1,0 @@
-export { default as NewProjectModal } from './newProjectModal';
