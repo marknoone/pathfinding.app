@@ -38,10 +38,6 @@ export const ModalCloseIcon: CSS.Properties = {
     fontWeight: 600
 }
 
-export const ModalBody: CSS.Properties = {
-    padding: '8px 16px'
-}
-
 export const ModalFooter: CSS.Properties = {
     position: 'absolute',
     bottom: 0,

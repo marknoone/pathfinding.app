@@ -8,6 +8,7 @@ const PStyle: CSS.Properties = {
     fontSize: "15px",
     fontWeight: 500,
     color: '#464646',
+    padding: '8px 16px'
 }
 
 const AboutAppModal: React.FunctionComponent = (props) => 

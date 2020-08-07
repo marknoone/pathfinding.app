@@ -11,8 +11,8 @@ export const UpdatePassengerWithID = (val: Passenger):PassengerAction => ({
 })
 
 export const UpdateDirectoryWithID = (val: PassengerDirectory):PassengerAction => ({
-    type: PassengerActionTypes.UPDATE_DIRECTORY_WITH_ID,
-    payload: {id: val.id, item: val}
+        type: PassengerActionTypes.UPDATE_DIRECTORY_WITH_ID,
+        payload: {id: val.id, item: val}
 })
 
 export const AddPassengerToDirectory = (targetID: number, val: Passenger):PassengerAction => ({

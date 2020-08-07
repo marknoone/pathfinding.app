@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../actions';
 import {  BaseModalStyle, ModalTitleBar, ModalTitle, ModalCloseIcon,
-    ModalBody, ModalFooter, ModalBtn, ModalCloseBtn, ModalSaveBtn } from './modal.css';
+    ModalFooter, ModalBtn, ModalCloseBtn, ModalSaveBtn } from './modal.css';
 
 type ModalProps = { 
     title: string; 
@@ -25,13 +25,16 @@ const Modal: React.FunctionComponent<ModalProps> = ({ title, size, primaryAction
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div style={ModalBody}>
+        <div>
           {render()}
         </div>
         <div style={ModalFooter}>
           { 
               primaryAction? (
-                <button type="button" style={{...ModalBtn, ...ModalSaveBtn}} onClick={() => primaryAction.func()}>
+                <button type="button" style={{...ModalBtn, ...ModalSaveBtn}} onClick={() => {
+                  primaryAction.func(); 
+                  dispatch(closeModal())}
+                }>
                     {primaryAction.name}
                 </button>
               ): null

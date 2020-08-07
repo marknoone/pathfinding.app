@@ -3,9 +3,9 @@ import { ModalActionTypes, ModalAction, ModalState } from './constants';
 
 const initialState = {
     isModalOpen: true,
-    modalType: 1,
+    modalType: 7,
     modalProps: {
-        title: "Alert",
+        dirID: 0,
         message: "Hello world!"
     }
 }
