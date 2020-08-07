@@ -2,11 +2,11 @@ import React from 'react';
 import Modal from '../modal';
 import { useDispatch } from 'react-redux';
 
-const DirEditModal: React.FunctionComponent = (props) => {
+const PresetSelectModal: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
-    return  <Modal title="Edit Directory"
+    return  <Modal title="Select A Preset"
         primaryAction={{
-            name: "Save",
+            name: "Select",
             func: () => {}
         }}
         render={() =>{
@@ -15,4 +15,4 @@ const DirEditModal: React.FunctionComponent = (props) => {
     }/>  
 }
     
-export default DirEditModal;
+export default PresetSelectModal;

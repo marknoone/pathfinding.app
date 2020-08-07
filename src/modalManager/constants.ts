@@ -19,12 +19,20 @@ export enum ModalActionTypes {
 }
 
 export enum ModalType {
-    ALERT_MODAL     = 0,
-    CONFIRM_MODAL   = 1,
-    DELETE_MODAL    = 2,
-    DIR_EDIT_MODAL  = 3,
-    PROMPT_MODAL    = 4,
-    SCENARIO_MODAL  = 5
+    ABOUT_APP_MODAL           = 1,
+    ALERT_MODAL               = 2,
+    CONFIRM_MODAL             = 3,
+    DELETE_MODAL              = 4,
+    DIR_EDIT_MODAL            = 5,
+    EXPORT_PROJECT_MODAL      = 6,
+    GRID_SIZE_MODAL           = 7,
+    KEYBOARD_SHORTCUTS_MODAL  = 8,
+    NEW_PROJECT_MODAL         = 9,
+    OPEN_PROJECT_MODAL        = 10,
+    PRESETS_MODAL             = 11,
+    RENAME_PROJECT_MODAL      = 12,
+    SCENARIO_EDIT_MODAL       = 13,
+    SCENARIO_RENAME_MODAL     = 14,
 }
 
 export type ModalSize = 'xl' | 'lg' | 'md' | 'sm' | 'xs';

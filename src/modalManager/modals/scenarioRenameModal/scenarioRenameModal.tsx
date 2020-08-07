@@ -2,9 +2,9 @@ import React from 'react';
 import Modal from '../modal';
 import { useDispatch } from 'react-redux';
 
-const DirEditModal: React.FunctionComponent = (props) => {
+const ScenarioRenameModal: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
-    return  <Modal title="Edit Directory"
+    return  <Modal title="Rename Scenario"
         primaryAction={{
             name: "Save",
             func: () => {}
@@ -15,4 +15,4 @@ const DirEditModal: React.FunctionComponent = (props) => {
     }/>  
 }
     
-export default DirEditModal;
+export default ScenarioRenameModal;

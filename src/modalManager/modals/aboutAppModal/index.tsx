@@ -1,0 +1,1 @@
+export { default as AboutAppModal } from './aboutAppModal';

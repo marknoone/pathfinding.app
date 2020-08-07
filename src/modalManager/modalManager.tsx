@@ -4,17 +4,28 @@ import { AppState } from '../store';
 import { closeModal } from './actions';
 import { ModalType } from './constants';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { AlertModal, ConfirmModal, DeleteModal, DirEditModal, 
-    PromptModal, ScenarioEditModal } from './modals';
+import { AboutAppModal, AlertModal, ConfirmModal, DeleteModal, DirEditModal, 
+    ExportProjectModal, GridSizeModal, KeyboardShortcutsModal, NewProjectModal,
+    OpenProjectModal, PresetsModal, RenameProjectModal, ScenarioRenameModal, 
+    ScenarioEditModal 
+} from './modals';
 
 type ModalMap = { [key:number]: React.FunctionComponent<any>};
 const MODALS:ModalMap  = {
-    [ModalType.ALERT_MODAL]:    AlertModal,
-    [ModalType.CONFIRM_MODAL]:  ConfirmModal,
-    [ModalType.DELETE_MODAL]:   DeleteModal,
-    [ModalType.DIR_EDIT_MODAL]: DirEditModal,
-    [ModalType.PROMPT_MODAL]:   PromptModal,
-    [ModalType.SCENARIO_MODAL]: ScenarioEditModal,
+    [ModalType.ABOUT_APP_MODAL]:          AboutAppModal,
+    [ModalType.ALERT_MODAL]:              AlertModal,
+    [ModalType.CONFIRM_MODAL]:            ConfirmModal,
+    [ModalType.DELETE_MODAL]:             DeleteModal,
+    [ModalType.DIR_EDIT_MODAL]:           DirEditModal,
+    [ModalType.EXPORT_PROJECT_MODAL]:     ExportProjectModal,
+    [ModalType.GRID_SIZE_MODAL]:          GridSizeModal,
+    [ModalType.KEYBOARD_SHORTCUTS_MODAL]: KeyboardShortcutsModal,
+    [ModalType.NEW_PROJECT_MODAL]:        NewProjectModal,
+    [ModalType.OPEN_PROJECT_MODAL]:       OpenProjectModal,
+    [ModalType.PRESETS_MODAL]:            PresetsModal,
+    [ModalType.RENAME_PROJECT_MODAL]:     RenameProjectModal,
+    [ModalType.SCENARIO_EDIT_MODAL]:      ScenarioRenameModal,
+    [ModalType.SCENARIO_RENAME_MODAL]:    ScenarioEditModal
 };
 
 ReactModal.setAppElement("#root");

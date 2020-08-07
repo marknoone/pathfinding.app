@@ -14,18 +14,18 @@ export const GetMenuSectionDefinitions = (dispatch: Dispatch<any>) => {
             },
             {
                 entries: [
-                    { title: "Open from...", onClick: () => {}},
-                    { title: "Open recent", onClick: () => {}},
-                    { title: "New", keyboardShortcut: "Ctrl + N", onClick: () => {}}
+                    { title: "Open from local storage", onClick: () => {}},
+                    // { title: "Open recent", onClick: () => {}},
+                    { title: "New Project", keyboardShortcut: "Ctrl + N", onClick: () => {}}
                 ]
             },
             { entries: [{title: "Rename", onClick: () => {}}] },
             { entries: [
-                    { title: "Import from...", onClick: () => {}},
+                    // { title: "Import from...", onClick: () => {}},
                     { title: "Export as...", onClick: () => {}}
                 ]
             },
-            { entries: [{title: "Revision History", onClick: () => {}}] },
+            // { entries: [{title: "Revision History", onClick: () => {}}] },
             { entries: [{title: "Close", onClick: () => {}}] },
         ],
 
@@ -56,13 +56,13 @@ export const GetMenuSectionDefinitions = (dispatch: Dispatch<any>) => {
                     { title: "Simulation Panel",    value: true, onClick: () => {}}
                 ]
             },
-            { 
-                entries: [
-                    { title: "Tooltips",    value: true, onClick: () => {}},
-                    { title: "Ruler",       value: true, onClick: () => {}},
-                    { title: "Grid",        value: true, onClick: () => {}}
-                ]
-            },
+            // { 
+            //     entries: [
+            //         { title: "Tooltips",    value: true, onClick: () => {}},
+            //         { title: "Ruler",       value: true, onClick: () => {}},
+            //         { title: "Grid",        value: true, onClick: () => {}}
+            //     ]
+            // },
             { 
                 entries: [
                     { title: "Bus",     value: true, onClick: () => {}},
@@ -81,20 +81,19 @@ export const GetMenuSectionDefinitions = (dispatch: Dispatch<any>) => {
 
         "Extras":[
             { entries: [{ title: "Presets",         onClick: () => {}}] },
-            { entries: [{ title: "Autosave",        onClick: () => {}}] },
+            // { entries: [{ title: "Autosave",        onClick: () => {}}] },
             { entries: [{ title: "Edit Scenario",   onClick: () => {}}] },
-            { entries: [{ title: "Configuration",   onClick: () => {}}] },
+            // { entries: [{ title: "Configuration",   onClick: () => {}}] },
         ],
 
         "Help":[
             { 
                 entries: [
                     { title: "Keyboard Shortcuts",         onClick: () => {}},
-                    { title: "Quick Start Video",         onClick: () => {}},
-                    { title: "Edit Scenario",         onClick: () => {}},
+                    // { title: "Quick Start Video",         onClick: () => {}},
                 ] 
             },
-            { entries: [{ title: "Abour Pathfinding.app",   onClick: () => {}}] },
+            { entries: [{ title: "About Pathfinding.app",   onClick: () => {}}] },
         ],
     }
 }

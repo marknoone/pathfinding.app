@@ -3,7 +3,7 @@ import { ModalActionTypes, ModalAction, ModalState, ModalSize } from './constant
 
 const initialState = {
     isModalOpen: true,
-    modalType: 0,
+    modalType: 1,
     modalProps: {
         title: "Alert",
         message: "Hello world!"
@@ -19,7 +19,10 @@ const ModalReducer: Reducer<ModalState, ModalAction> = (state = initialState, ac
             modalType: action.payload.type,
         }
       case ModalActionTypes.CLOSE_MODAL:
-        return initialState
+        return {
+          ...initialState,
+          isModalOpen: false
+        }
       default:
         return state
     }
