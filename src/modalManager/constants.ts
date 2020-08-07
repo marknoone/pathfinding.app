@@ -34,10 +34,3 @@ export enum ModalType {
     SCENARIO_EDIT_MODAL       = 13,
     SCENARIO_RENAME_MODAL     = 14,
 }
-
-export type ModalSize = 'xl' | 'lg' | 'md' | 'sm' | 'xs';
-export type ModalSizeObj = {
-    width: number,
-    height: number
-}
-

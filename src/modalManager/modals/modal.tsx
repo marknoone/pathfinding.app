@@ -6,6 +6,7 @@ import {  BaseModalStyle, ModalTitleBar, ModalTitle, ModalCloseIcon,
 
 type ModalProps = { 
     title: string; 
+    size?: {w: string, h:string}
 
     render: () => JSX.Element; 
     primaryAction?: {
@@ -14,10 +15,10 @@ type ModalProps = {
     } 
 }
 
-const Modal: React.FunctionComponent<ModalProps> = ({ title, primaryAction, render }) => {
+const Modal: React.FunctionComponent<ModalProps> = ({ title, size, primaryAction, render }) => {
     const dispatch = useDispatch();
     return (
-      <div style={{...BaseModalStyle, width: '20vw', height: '20vh'}}>
+      <div style={{...BaseModalStyle, width: size?size.w:'20vw', height: size?size.h:'20vh'}}>
         <div style={ModalTitleBar}>
           <h5 style={ModalTitle}>{title}</h5>
           <button style={ModalCloseIcon} type="button" aria-label="Close" onClick={() => dispatch(closeModal())}>
