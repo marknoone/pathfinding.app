@@ -3,8 +3,9 @@ import { ModalActionTypes, ModalAction, ModalState } from './constants';
 
 const initialState = {
     isModalOpen: true,
-    modalType: 7,
+    modalType: 13,
     modalProps: {
+        scenarioID: 0,
         dirID: 0,
         message: "Hello world!"
     }
