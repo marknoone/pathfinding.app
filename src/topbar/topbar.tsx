@@ -1,9 +1,11 @@
 import React from 'react';
 import { AppState } from '../store';
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { ToolbarComponent } from './components/toolbar';
 import { ActionMenus } from './components/actionMenus';
 import { ChangeStatus } from './components/changeStatus';
+import { showModal } from '../modalManager/actions';
+import { ModalType } from '../modalManager/constants';
 import {
     LogoContainer,
     ToolbarContainer,
@@ -15,10 +17,12 @@ import {
     TopSectionInnerContainer,
     Logo
 } from './topbar.css';
+import './project-name.hover.anim.css';
 
 const TopBar: React.FunctionComponent = (props) => {
+    const dispatch = useDispatch()
+    const project = useSelector((state: AppState) => state.project, shallowEqual);
     const isCollapsed = useSelector((state: AppState) => state.layout.isTopbarCollapsed);
-    console.log(isCollapsed);
     
     return <div style={{ boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.1)', zIndex: 40, position: 'relative'}}>
         <div style={{
@@ -33,11 +37,14 @@ const TopBar: React.FunctionComponent = (props) => {
                 </div>
             }
             <div style={TopSectionInnerContainer}>
-                { isCollapsed? null:<p style={WindowTitle}>Pathfinding.app</p> }
+                { isCollapsed? null:
+                    <p onClick={() => dispatch(showModal({modalProps: {}, modalType: ModalType.RENAME_PROJECT_MODAL}))}
+                        className="project-name-hover-anim" style={WindowTitle}>{project.name}</p> 
+                }
                 <div style={MenuAndChangeContainer}>
                     <div style={ActionMenuLayout}><ActionMenus /></div>
                     <div style={ChangeStatusLayout}>
-                        <ChangeStatus isSaving={false} lastChangeTimestamp={1594985729285} />
+                        <ChangeStatus isSaving={false} lastChangeTimestamp={project.lastEdited} />
                     </div>
                 </div>
             </div>

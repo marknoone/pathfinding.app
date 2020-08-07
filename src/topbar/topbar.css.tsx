@@ -26,9 +26,9 @@ export const WindowTitle: CSS.Properties = {
     fontWeight: 500,
     fontFamily: "'Montserrat', sans-serif",
     color: '#2d3436',
-    margin: 0,
-    padding: '6px 0px 2px 8px',
-    cursor: 'default'
+    margin: "6px 4px 2px 4px",
+    padding: '0px 4px 0px 4px',
+    cursor: 'pointer'
 }
 
 export const TopSectionInnerContainer: CSS.Properties = {

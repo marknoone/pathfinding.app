@@ -23,8 +23,8 @@ const MODALS:ModalMap  = {
     [ModalType.OPEN_PROJECT_MODAL]:       OpenProjectModal,
     [ModalType.PRESETS_MODAL]:            PresetsModal,
     [ModalType.RENAME_PROJECT_MODAL]:     RenameProjectModal,
-    [ModalType.SCENARIO_EDIT_MODAL]:      ScenarioRenameModal,
-    [ModalType.SCENARIO_RENAME_MODAL]:    ScenarioEditModal
+    [ModalType.SCENARIO_EDIT_MODAL]:      ScenarioEditModal,
+    [ModalType.SCENARIO_RENAME_MODAL]:    ScenarioRenameModal
 };
 
 ReactModal.setAppElement("#root");
