@@ -1,7 +1,10 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { all } from 'redux-saga/effects'
+import { SaveToLocalStore } from './app/pkg/storage';
 
-function* mySaga() {
-    console.log('Hello Sagas!')
+function* rootSaga() {
+    yield all([
+        SaveToLocalStore()
+    ])
 }
   
-export default mySaga;
+export default rootSaga;

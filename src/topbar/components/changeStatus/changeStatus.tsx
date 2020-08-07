@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CSS from 'csstype';
+import { useDispatch } from 'react-redux';
 
 type ChangeStatusProps = {
     lastChangeTimestamp: number
@@ -34,7 +35,9 @@ const GetChangeString = (currentTS: number, lastChangeTS: number) => {
 }
 
 const ChangeStatus: React.FunctionComponent<ChangeStatusProps> = (props) => {
+    const dispatch = useDispatch();
     const [currentSeconds, setCurrentSeconds] = useState(Date.now());
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentSeconds(Date.now());
@@ -42,7 +45,7 @@ const ChangeStatus: React.FunctionComponent<ChangeStatusProps> = (props) => {
         return () => clearInterval(interval);
     }, []);
 
-    return <p style={BaseStyle}>{ 
+    return <p onClick={() => dispatch({type:'@project/SAVE_PROJECT'})} style={BaseStyle}>{ 
         props.isSaving? 
         "Saving...":
         GetChangeString(currentSeconds, props.lastChangeTimestamp) 
