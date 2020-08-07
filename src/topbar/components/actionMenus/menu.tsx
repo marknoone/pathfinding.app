@@ -9,7 +9,7 @@ export const GetMenuSectionDefinitions = (dispatch: Dispatch<any>) => {
         "File":[
             {
                 entries: [
-                    { title: "Save", keyboardShortcut: "Ctrl + S", onClick: () => {}}
+                    { title: "Save", keyboardShortcut: "Ctrl + S", onClick: () => dispatch({type: '@project/SAVE_PROJECT'})}
                 ]
             },
             {

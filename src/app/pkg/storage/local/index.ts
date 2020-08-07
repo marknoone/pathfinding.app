@@ -1,1 +1,1 @@
-export { default as SaveToLocalStore } from './localStorage';
+export { LocalStoreSaga } from './saga';
