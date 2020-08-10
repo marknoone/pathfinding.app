@@ -9,5 +9,5 @@ export { default as XMLExporter} from './xmlExporter';
 export { default as JSONExporter} from './jsonExporter';
 
 export interface Exporter {
-    Export: (p: ProjectData) => void
+    Export: (name: string, p: ProjectData) => void
 }

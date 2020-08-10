@@ -2,9 +2,7 @@ import { Exporter } from './index';
 import { ProjectData } from '../../store/project/constants';
 
 class XMLExporter implements Exporter {
-    Export(p: ProjectData){
-
-    }
+    Export(name: string, p: ProjectData){}
 };
 
 export default XMLExporter;

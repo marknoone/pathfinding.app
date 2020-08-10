@@ -15,7 +15,8 @@ const LiElem: CSS.Properties = {
 const Icon: CSS.Properties = {
     float: 'right',
     marginRight: '24px',
-    color: '#666'
+    color: '#666',
+    cursor: 'pointer'
 }
 
 const Label: CSS.Properties = {
@@ -33,17 +34,17 @@ const ExportProjectModal: React.FunctionComponent = (props) => {
         size={{w: '520px', h: '261px'}}
         render={() =>{
             return <ul style={{padding: 0, margin: 0, listStyle: 'none'}}>
-                <li style={LiElem} onClick={() => {}}>
+                {/* <li style={LiElem} onClick={() => {}}>
                     <p style={Label}>XML</p>
                     <div style={Icon} 
-                    onClick={() => DefaultXMLExporter.Export(projectState)}>
+                    onClick={() => DefaultXMLExporter.Export(project.name, projectState)}>
                         <FontAwesomeIcon icon={faDownload} />
                     </div>
-                </li>
+                </li> */}
                 <li style={LiElem} onClick={() => {}}>
                     <p style={Label}>JSON</p>
                     <div style={Icon} 
-                    onClick={() => DefaultJSONExporter.Export(projectState)}>
+                    onClick={() => DefaultJSONExporter.Export(project.name, projectState)}>
                         <FontAwesomeIcon icon={faDownload} />
                     </div>
                 </li>
