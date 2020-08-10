@@ -1,4 +1,8 @@
 import { ProjectSummary, ProjectData } from '../../store/project/constants';
+import { initialState as LayoutInitial} from '../../store/layout/reducers';
+import { initialState as ScenarioInitial} from '../../../editor/reducer';
+import { initialState as CanvasInitial} from '../../../editor/components/workspace/components/pathfindingCanvas/reducer';
+import { SetCanvasSize } from '../../../editor/components/workspace/components/pathfindingCanvas/actions';
 
 const PROJECTS_ROOT_STORE_KEY = "APP_PROJECTS";
 type RootStorage = {
@@ -18,6 +22,25 @@ interface ProjectStore {
 }
 
 export class LocalStorage implements ProjectStore {
+
+    constructor(){
+        let rs = this.getRootStore();
+        if(!rs){
+            this.saveRootStore({
+                nextProjectID: 2,
+                projects: [{id: 1, name: "Test", lastEdited: Date.now()}]
+            })
+            this.SaveProjectByID(1, {
+                layout: LayoutInitial,
+                scenario: ScenarioInitial,
+                canvas: {
+                    ...CanvasInitial,
+                    canvasSize: [1200, 800]
+                }
+            })
+        }
+    }
+
     private formatProjectKey (n:number):string {
         return `PROJECT-${n}`;
     }
@@ -144,5 +167,6 @@ export class LocalStorage implements ProjectStore {
         return -1
     }
 }
+
 
 export const DefaultLocalStorage = new LocalStorage();

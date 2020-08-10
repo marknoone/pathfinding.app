@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { LayoutState, LayoutAction, LayoutActionTypes } from './constants'
 
-const initialState: LayoutState = {
+export const initialState: LayoutState = {
     isTopbarCollapsed: false,
     isComponentPanelCollapsed: false,
     isSimulationPanelCollapsed: false,

@@ -17,7 +17,7 @@ const scenarioReducer = combineReducers({
     simulationConfig: SimulationReducer,
 });
 
-const initialState = {
+export const initialState = {
     activeScenarioIdx: 0,
     scenarios: [{
         name: "Scenario-1",

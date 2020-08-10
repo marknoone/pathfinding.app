@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { CanvasState, CanvasAction, CanvasActionTypes } from './constants'
 
-const initialState: CanvasState = {
+export const initialState: CanvasState = {
     boxSize: 30,
     scale: [1.0, 1.0],
     coords: [250, 250],

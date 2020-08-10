@@ -1,4 +1,4 @@
-import { takeLatest, select, put } from 'redux-saga/effects';
+import { takeLatest, select, put, call, take } from 'redux-saga/effects';
 import { AppState, AppActionTypes } from '../../../store';
 import { ProjectAction, ProjectActionTypes } from '../../store/project/constants';
 import { DefaultLocalStorage } from './localStorage';
@@ -43,9 +43,10 @@ export function* CreateNewProjectInLocalStoreSaga(action:ProjectAction){
 export function* LoadFromLocalStoreSaga(action:ProjectAction){
     if(action.payload.id){
         const state = yield select((s:AppState) => s);
-        const proj = DefaultLocalStorage.GetProjectDataByID(action.payload.id);
+        const proj = yield DefaultLocalStorage.GetProjectDataByID(action.payload.id);
+        console.log(proj);
         if(proj)
-            put({type: AppActionTypes.SET_PROJECT_STATE, payload: { state: {
+            yield put({type: AppActionTypes.SET_PROJECT_STATE, payload: { state: {
                 ...state,
                 ...proj
             }}});

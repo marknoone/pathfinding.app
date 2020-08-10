@@ -2,9 +2,7 @@ import { LayoutState } from "../../store/layout/constants";
 import { ScenarioState } from "../../../editor/constants";
 import { CanvasState } 
     from "../../../editor/components/workspace/components/pathfindingCanvas/constants";
-import { InspectorState } 
-    from "../../../editor/components/rightPanel/components/inspectorView/constants";
-
+    
 export type ProjectState = ProjectSummary
 export type ProjectSummary = {
     id: number,
@@ -15,7 +13,6 @@ export type ProjectSummary = {
 export type ProjectData = {
     layout: LayoutState,
     scenario: ScenarioState,
-    inspector: InspectorState,
     canvas: CanvasState,
 }
 
