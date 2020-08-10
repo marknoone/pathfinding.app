@@ -1,9 +1,11 @@
 import React from 'react';
 import Modal from '../modal';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { DefaultJSONExporter, DefaultXMLExporter } from '../../../app/pkg/exporter';
 import CSS from 'csstype';
+import { AppState } from '../../../store';
 
 const LiElem: CSS.Properties = {
     padding: '21px 15px',
@@ -26,18 +28,24 @@ const Label: CSS.Properties = {
 }
 
 const ExportProjectModal: React.FunctionComponent = (props) => {
-    const dispatch = useDispatch();
+    const {modals, toasts, project, inspector, ...projectState} = useSelector((a:AppState) => a);
     return  <Modal title="Export Project"
         size={{w: '520px', h: '261px'}}
         render={() =>{
             return <ul style={{padding: 0, margin: 0, listStyle: 'none'}}>
                 <li style={LiElem} onClick={() => {}}>
                     <p style={Label}>XML</p>
-                    <div style={Icon}><FontAwesomeIcon icon={faDownload} /></div>
+                    <div style={Icon} 
+                    onClick={() => DefaultXMLExporter.Export(projectState)}>
+                        <FontAwesomeIcon icon={faDownload} />
+                    </div>
                 </li>
                 <li style={LiElem} onClick={() => {}}>
                     <p style={Label}>JSON</p>
-                    <div style={Icon}><FontAwesomeIcon icon={faDownload} /></div>
+                    <div style={Icon} 
+                    onClick={() => DefaultJSONExporter.Export(projectState)}>
+                        <FontAwesomeIcon icon={faDownload} />
+                    </div>
                 </li>
             </ul>;
         }

@@ -21,7 +21,7 @@ export type AppAction = {
 }
 
 export enum AppActionTypes  {
-    SET_PROJECT_STATE = "@global/SET_PROJECT_STATE",
+    SET_PROJECT_STATE = "@global/SET_PROJECT_STATE"
 }
 
 export type AppState = {
