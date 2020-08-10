@@ -1,1 +1,1 @@
-export { LocalStoreSaga } from './local';
+export { LocalStoreSaga } from './saga';
