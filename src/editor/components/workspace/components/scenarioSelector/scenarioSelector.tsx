@@ -31,6 +31,7 @@ const ScenarioSelector: React.FunctionComponent = (props) => {
             <DropdownMenu 
                 render={ () =>  <span style={{backgroundColor: '#FBFBFB'}}><FontAwesomeIcon icon={faEllipsisV} /></span> } 
                 isActive={isShowing.side}
+                onOutsideClick={() => { setIsShowing( isShowing => ({...isShowing, side: !isShowing.side})) }}
                 anchor={{bottom: '8px', left: '20px'}}
                 sections={[
                     { entries: [{ title: "Add Scenario", onClick: () => { dispatch(AddEmptyScenario()); {} }}]},

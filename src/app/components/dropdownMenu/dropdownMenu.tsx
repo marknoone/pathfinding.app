@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from "react";
 import { DropdownMenuSection } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
@@ -20,6 +20,7 @@ type DropdownMenuProps = {
 
     isActive: boolean
     onBtnClick?: () => void
+    onOutsideClick?: () => void
     anchor?: {
         top?: string,
         bottom?: string,
@@ -29,7 +30,25 @@ type DropdownMenuProps = {
 }
 
 const DropdownMenu: React.FunctionComponent<DropdownMenuProps> = (props) => {
-    return <div style={BaseStyle}>
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent): void {
+            if(!props.isActive) return;
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+                if(props.onOutsideClick)  { props.onOutsideClick(); return; }
+                else if(props.onBtnClick) { props.onBtnClick();     return; }
+            }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [wrapperRef, props.isActive, props.onBtnClick, props.onOutsideClick]);
+
+    return <div style={BaseStyle} ref={wrapperRef}>
         <div className="dropdown-hover" style={MenuBtn} onClick={(e: React.MouseEvent<HTMLDivElement>) => {
             e.preventDefault();
             if(props.onBtnClick)
