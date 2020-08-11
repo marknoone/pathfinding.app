@@ -132,7 +132,7 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         </div>
 
         {/* Toggle Buttons */}
-        <div style={ToolbarSection}>
+        {/* <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
                     <button onClick={()=>{}} style={ToolbarBtn}>
@@ -155,7 +155,7 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
                     </button>
                 </li>
             </ul>
-        </div>
+        </div> */}
 
         {/* Window Interactions */}
         <div style={WindowInteractionButtons}>

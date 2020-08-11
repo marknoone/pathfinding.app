@@ -31,12 +31,13 @@ export function* SaveToLocalStoreSaga(){
     // Toast and modal state not saved in local store.
     const {toasts, modals, project, ...state} = yield select((s:AppState) => s);
     DefaultLocalStorage.SaveProjectByID(project.id, state);
+    yield put({type: ProjectActionTypes.SET_PROJECT_LAST_EDIT, payload: { lastEdited: Date.now() }})
 }
 
 export function* CreateNewProjectInLocalStoreSaga(action:ProjectAction){
     if(action.payload.name){
         const newID = DefaultLocalStorage.AddNewProject(action.payload.name);
-        put({type: ProjectActionTypes.SET_PROJECT_ID, payload: { id: newID }})
+        yield put({type: ProjectActionTypes.SET_PROJECT_ID, payload: { id: newID }})
     }
 }
 

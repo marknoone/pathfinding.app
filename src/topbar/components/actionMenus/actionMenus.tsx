@@ -14,34 +14,36 @@ import {
 
 const ActionMenus: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
-    const menuVals = useSelector((state:AppState) => state.layout.actionMenus, shallowEqual)
-    const sectionDefintions = GetMenuSectionDefinitions(dispatch);
+    const layout = useSelector((state:AppState) => state.layout, shallowEqual);
+    const canvas = useSelector((state:AppState) => state.canvas, shallowEqual);
+    const sectionDefintions = GetMenuSectionDefinitions(dispatch, canvas, layout);
+
 
     return <>
         <DropdownMenu 
             render={ () => <DropdownMenuTextBtn title="File"/> } 
-            isActive={menuVals.isFileShowing}
-            onBtnClick={() => { dispatch(SetFileMenuValue(!menuVals.isFileShowing)) }}
+            isActive={layout.actionMenus.isFileShowing}
+            onBtnClick={() => { dispatch(SetFileMenuValue(!layout.actionMenus.isFileShowing)) }}
             sections={sectionDefintions["File"]}/>
         <DropdownMenu 
             render={ () => <DropdownMenuTextBtn title="Edit"/> } 
-            isActive={menuVals.isEditShowing}
-            onBtnClick={() => { dispatch(SetEditMenuValue(!menuVals.isEditShowing)) }}
+            isActive={layout.actionMenus.isEditShowing}
+            onBtnClick={() => { dispatch(SetEditMenuValue(!layout.actionMenus.isEditShowing)) }}
             sections={sectionDefintions["Edit"]}/>
         <DropdownMenu 
             render={ () => <DropdownMenuTextBtn title="View"/> }  
-            isActive={menuVals.isViewShowing}
-            onBtnClick={() => { dispatch(SetViewMenuValue(!menuVals.isViewShowing)) }}
+            isActive={layout.actionMenus.isViewShowing}
+            onBtnClick={() => { dispatch(SetViewMenuValue(!layout.actionMenus.isViewShowing)) }}
             sections={sectionDefintions["View"]}/>
         <DropdownMenu 
             render={ () => <DropdownMenuTextBtn title="Extras"/> }  
-            isActive={menuVals.isExtraShowing}
-            onBtnClick={() => { dispatch(SetExtrasMenuValue(!menuVals.isExtraShowing)) }}
+            isActive={layout.actionMenus.isExtraShowing}
+            onBtnClick={() => { dispatch(SetExtrasMenuValue(!layout.actionMenus.isExtraShowing)) }}
             sections={sectionDefintions["Extras"]}/>
         <DropdownMenu 
             render={ () => <DropdownMenuTextBtn title="Help"/> } 
-            isActive={menuVals.isHelpShowing}
-            onBtnClick={() => { dispatch(SetHelpMenuValue(!menuVals.isHelpShowing)) }}
+            isActive={layout.actionMenus.isHelpShowing}
+            onBtnClick={() => { dispatch(SetHelpMenuValue(!layout.actionMenus.isHelpShowing)) }}
             sections={sectionDefintions["Help"]}/>
     </>;
 }

@@ -1,6 +1,6 @@
-import { ModalActionTypes, ModalType } from './constants';
+import { ModalActionTypes } from './constants';
 
-export const showModal = ({modalProps, modalType}: {modalProps:any, modalType:ModalType}) => ({
+export const showModal = ({modalProps, modalType}: {modalProps:any, modalType:number}) => ({
     type: ModalActionTypes.OPEN_MODAL,
     payload: {
         type: modalType,

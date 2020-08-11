@@ -9,7 +9,12 @@ const shortcutMap = {
     HEAVY_NUDGE_LEFT: "Shift+ArrowLeft",
     HEAVY_NUDGE_RIGHT: "Shift+ArrowRight",
     HEAVY_NUDGE_UP: "Shift+ArrowUp",
-    HEAVY_NUDGE_DOWN: "Shift+ArrowDown"
+    HEAVY_NUDGE_DOWN: "Shift+ArrowDown",
+
+    // Document Shortcuts
+    NEW_PROJECT: "Ctrl+n",
+    OPEN_PROJECT: "Ctrl+o",
+    SAVE_PROJECT: "Ctrl+s",
 
 }
 

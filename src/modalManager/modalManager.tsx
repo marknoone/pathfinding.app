@@ -7,7 +7,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { AboutAppModal, AlertModal, ConfirmModal, DeleteModal, DirEditModal, 
     ExportProjectModal, GridSizeModal, KeyboardShortcutsModal,
     OpenProjectModal, PresetsModal, RenameProjectModal, ScenarioRenameModal, 
-    ScenarioEditModal 
+    ScenarioEditModal, CreateProjectModal
 } from './modals';
 
 type ModalMap = { [key:number]: React.FunctionComponent<any>};
@@ -20,6 +20,7 @@ const MODALS:ModalMap  = {
     [ModalType.EXPORT_PROJECT_MODAL]:     ExportProjectModal,
     [ModalType.GRID_SIZE_MODAL]:          GridSizeModal,
     [ModalType.KEYBOARD_SHORTCUTS_MODAL]: KeyboardShortcutsModal,
+    [ModalType.CREATE_PROJECT_MODAL]:     CreateProjectModal,
     [ModalType.OPEN_PROJECT_MODAL]:       OpenProjectModal,
     [ModalType.PRESETS_MODAL]:            PresetsModal,
     [ModalType.RENAME_PROJECT_MODAL]:     RenameProjectModal,
