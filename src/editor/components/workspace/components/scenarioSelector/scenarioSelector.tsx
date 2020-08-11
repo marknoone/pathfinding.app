@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { AppState } from '../../../../../store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
@@ -24,10 +24,6 @@ const ScenarioSelector: React.FunctionComponent = (props) => {
         const names = state.scenario.scenarios.map( s => s.name );
         return {idx: state.scenario.activeScenarioIdx, names: names }
     }, shallowEqual);
-
-    useEffect(()=>{
-        console.log(isShowing);
-    });
 
     return <div style={BaseStyle}> 
         <div style={ScenarioIcon} className="scenario-hover"
