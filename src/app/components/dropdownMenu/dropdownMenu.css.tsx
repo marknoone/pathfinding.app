@@ -2,7 +2,8 @@ import CSS from 'csstype';
 
 export const BaseStyle: CSS.Properties = {
     position: 'relative',
-    display: 'inline-block'
+    display: 'inline-block',
+    backgroundColor: 'inherit'
 }
 
 export const MenuBtn: CSS.Properties = {
@@ -12,13 +13,12 @@ export const MenuBtn: CSS.Properties = {
     color: '#000',
     cursor: 'pointer',
     padding: '2px 2px',
-    fontSize: '14px'
+    fontSize: '14px',
+    backgroundColor: 'inherit'
 }
 
 export const MenuContainer: CSS.Properties = {
     position: 'absolute',
-    top: '30px',
-    left: 0,
     minWidth: '280px',
     backgroundColor: '#Fefefe',
     boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.4)',

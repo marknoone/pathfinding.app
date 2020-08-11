@@ -20,6 +20,12 @@ type DropdownMenuProps = {
 
     isActive: boolean
     onBtnClick?: () => void
+    anchor?: {
+        top?: string,
+        bottom?: string,
+        left?: string,
+        right?: string,
+    }
 }
 
 const DropdownMenu: React.FunctionComponent<DropdownMenuProps> = (props) => {
@@ -34,7 +40,11 @@ const DropdownMenu: React.FunctionComponent<DropdownMenuProps> = (props) => {
         {
             props.isActive? 
             (
-                <div style={MenuContainer}>
+                <div style={{
+                    ...MenuContainer,
+                    ...(props.anchor && {...props.anchor}),
+                    ...(!props.anchor && {top: '30px', left: 0,})
+                }}>
                     {
                         props.sections.map( (section, i) => 
                                 <ul style={DropdownSection} key={i}>
