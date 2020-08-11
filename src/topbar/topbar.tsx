@@ -1,11 +1,13 @@
 import React from 'react';
 import { AppState } from '../store';
-import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { ToolbarComponent } from './components/toolbar';
-import { ActionMenus } from './components/actionMenus';
-import { ChangeStatus } from './components/changeStatus';
 import { showModal } from '../modalManager/actions';
 import { ModalType } from '../modalManager/constants';
+import { ActionMenus } from './components/actionMenus';
+import { ToolbarComponent } from './components/toolbar';
+import { ChangeStatus } from './components/changeStatus';
+import { faRoad } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import {
     LogoContainer,
     ToolbarContainer,
@@ -33,7 +35,7 @@ const TopBar: React.FunctionComponent = (props) => {
             {
                 isCollapsed? null: 
                 <div style={LogoContainer}>
-                    <img style={Logo} src="https://via.placeholder.com/300.png" alt=""/>
+                    <div style={Logo}><FontAwesomeIcon icon={faRoad} /></div>
                 </div>
             }
             <div style={TopSectionInnerContainer}>

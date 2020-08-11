@@ -12,12 +12,18 @@ export const LogoContainer: CSS.Properties = {
     height: '64px',
     width: '64px',
     textAlign: 'center',
-    padding: '14px 14px' 
+    padding: '14px 14px'
 }
 
 export const Logo: CSS.Properties = {
-    height: '36px',
     width: '36px',
+    height: '36px',
+    color: '#fbfbfb',
+    fontSize: '20px',
+    lineHeight: '32px',
+    borderRadius: '6px',
+    backgroundColor: '#079992',
+    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
 }
 
 export const WindowTitle: CSS.Properties = {
