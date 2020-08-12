@@ -9,7 +9,7 @@ type RootStorage = {
 }
 
 interface ProjectStore {
-    AddNewProject:(name: string) => number
+    AddNewProject:(name: string) => ProjectSummary | null
     DeleteProjectByID: (idx:number) => void
     GetProjectSummaries: () => ProjectSummary[]
     GetProjectID: (projectName:string) => number
@@ -145,16 +145,17 @@ export class LocalStorage implements ProjectStore {
         }
     }
     
-    AddNewProject(name: string):number {
+    AddNewProject(name: string):ProjectSummary | null {
         const root = this.getRootStore();
         if(root){
+            const obj = {id: root.nextProjectID, name: name, lastEdited: Date.now()}
             this.saveRootStore({nextProjectID: root.nextProjectID+1, projects: [
-                ...root.projects, {id: root.nextProjectID, name: name, lastEdited: Date.now()}
+                ...root.projects, obj
             ]})
-            return root.nextProjectID;
+            return obj;
         }
     
-        return -1
+        return null
     }
 }
 

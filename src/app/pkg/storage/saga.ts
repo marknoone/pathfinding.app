@@ -2,6 +2,12 @@ import { takeLatest, select, put, call, take } from 'redux-saga/effects';
 import { AppState, AppActionTypes } from '../../../store';
 import { ProjectAction, ProjectActionTypes, ProjectSummary, ProjectData } from '../../store/project/constants';
 import { DefaultLocalStorage } from './localStorage';
+import { initialState as LayoutInitial } from '../../../app/store/layout/reducers';
+import { initialState as ScenarioInitial } from '../../../editor/reducer';
+import { initialState as InspectorInitial } from '../../../editor/components/rightPanel/components/inspectorView/reducer';
+import { initialState as ToastInitial } from '../../../toastManager/reducer';
+import { initialState as ModalInitial } from '../../../modalManager/reducer';
+import { initialState as CanvasInitial } from '../../../editor/components/workspace/components/pathfindingCanvas/reducer';
 
 export function* LocalStoreSaga() {
     yield takeLatest(ProjectActionTypes.SAVE_PROJECT, SaveToLocalStoreSaga);
@@ -36,8 +42,16 @@ export function* SaveToLocalStoreSaga(){
 
 export function* CreateNewProjectInLocalStoreSaga(action:ProjectAction){
     if(action.payload.name){
-        const newID = DefaultLocalStorage.AddNewProject(action.payload.name);
-        yield put({type: ProjectActionTypes.SET_PROJECT_ID, payload: { id: newID }})
+        const proj = DefaultLocalStorage.AddNewProject(action.payload.name);
+        yield put({type: AppActionTypes.SET_PROJECT_STATE, payload: { state: {
+            project: {...proj},
+            layout: LayoutInitial,
+            scenario: ScenarioInitial,
+            inspector: InspectorInitial,
+            canvas: CanvasInitial,
+            toasts: ToastInitial,
+            modals: ModalInitial
+        }}})
     }
 }
 

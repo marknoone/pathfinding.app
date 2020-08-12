@@ -33,7 +33,7 @@ const Input: CSS.Properties = {
 }
 
 type ADTRMProps = { routeID: number; }
-const AddDepartureToRouteModal: React.FunctionComponent<ADTRMProps> = ({ routeID }) =>{
+const AddDepartureToRouteModal: React.FunctionComponent<ADTRMProps> = ({ routeID }) => {
     const dispatch = useDispatch();
     const getRouteByID = useMemo(makeGetRouteByIDSelector, [])
     const route = useSelector((state: AppState) =>  getRouteByID(state, routeID))
