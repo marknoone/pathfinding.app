@@ -10,3 +10,8 @@ export const SetInspectingObject = (type:ComponentTypes, id: number):InspectorAc
     payload: {elementID: id, componentType: type}
 })
 
+export const SetInspectingIsActive = (val: boolean):InspectorAction => ({
+    type: InspectorActionTypes.SET_INSPECTOR_IS_ACTIVE,
+    payload: {isActive: val}
+})
+

@@ -5,9 +5,11 @@ import { EditorComponent } from '../editor';
 import { ModalManager } from '../modalManager';
 import { ToastPortal } from '../toastManager';
 import { shortcutMap, handlerMap } from './pkg/keyboardShortcuts';
+import { useDispatch } from 'react-redux';
 
 const App: React.FunctionComponent = (props) => {
-  return <HotKeys keyMap={shortcutMap} handlers={handlerMap}>
+  const dispatch = useDispatch();
+  return <HotKeys keyMap={shortcutMap} handlers={handlerMap(dispatch)}>
     <TopBar />
     <EditorComponent />
     <ModalManager />

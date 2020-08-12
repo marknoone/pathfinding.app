@@ -10,6 +10,7 @@ import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, 
     from '../../inspectorView.css';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArchive } from '@fortawesome/free-solid-svg-icons';
+import { SetInspectingIsActive } from '../../actions';
 
 const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
     const vehicle = useSelector((state: AppState) =>  getVehicleByID(state, props.id))
     const [editingObj, setEditingObj] = useState<Vehicle>(vehicle)
     useEffect(() => {
+        if(!vehicle) { dispatch(SetInspectingIsActive(false)); return; }
         if(props.id !== editingObj.id)
             setEditingObj(vehicle);
     });

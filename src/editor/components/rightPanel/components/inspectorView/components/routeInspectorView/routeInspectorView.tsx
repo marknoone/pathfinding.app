@@ -9,6 +9,7 @@ import { Route, Station, Colours, ColourSet, TransitOptions, TransitModes } from
 import { makeGetRouteByIDSelector } from '../../../../../leftPanel/components/componentView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
 from '../../inspectorView.css';
+import { SetInspectingIsActive } from '../../actions';
 
 const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
     const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (prop
         3: { id: 3, name: "Station-3", coordinates: {x: 250, y: 250} }
     });
     useEffect(() => {
+        if(!route) { dispatch(SetInspectingIsActive(false)); return; }
         if(props.id !== editingObj.id)
             setEditingObj(route);
     });

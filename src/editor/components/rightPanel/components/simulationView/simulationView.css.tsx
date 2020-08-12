@@ -11,7 +11,8 @@ export const SimText: CSS.Properties = {
     fontSize: "14px",
     fontWeight: 400,
     color: '#464646',
-    margin: '0px 0px 5px 0px'
+    margin: '0px 0px 5px 0px',
+    display: 'inline-block'
 }
 
 export const SimHeader: CSS.Properties = {

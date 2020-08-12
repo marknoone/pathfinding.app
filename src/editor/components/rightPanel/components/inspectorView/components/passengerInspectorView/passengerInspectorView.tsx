@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import React, { useState, useMemo, useEffect } from 'react';
 import { AppState } from '../../../../../../../store';
+import { SetInspectingIsActive } from '../../actions';
 import { InspectorSubViewProps } from '../../inspectorView';
 import { Passenger } from '../../../../../leftPanel/components/passengerView/constants';
 import { UpdatePassengerWithID } from '../../../../../leftPanel/components/passengerView/actions';
@@ -15,6 +16,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
         getPassengerElemByID(state, props.id)) as Passenger;
     const [editingObj, setEditingObj] = useState<Passenger>(passenger)
     useEffect(() => {
+        if(!passenger) { dispatch(SetInspectingIsActive(false)); return; }
         if(props.id !== editingObj.id)
             setEditingObj(passenger);
     });

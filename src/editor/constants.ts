@@ -7,10 +7,10 @@ import {
 } from './components/leftPanel/components/componentView/constants'
 
 export enum ComponentTypes {
-    STATION   = 0,
-    ROUTE     = 1,
-    VEHICLE   = 2,
-    PASSENGER = 3
+    STATION   = 1,
+    ROUTE     = 2,
+    VEHICLE   = 3,
+    PASSENGER = 4
 }
 
 export type ScenarioAction = {

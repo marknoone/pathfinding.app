@@ -39,10 +39,14 @@ import {
 } from './toolbar.css';
 import './toolbar.hover.anim.css';
 import { SetCanvasScale } from '../../../editor/components/workspace/components/pathfindingCanvas/actions';
+import { ComponentTypes } from '../../../editor/constants';
+import { DeletePassenger } from '../../../editor/components/leftPanel/components/passengerView/actions';
+import { DeleteStationWithID, DeleteRouteWithID, DeleteVehicleWithID } from '../../../editor/components/leftPanel/components/componentView/actions';
 
 
 const ToolbarComponent: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
+    const inspector = useSelector((s:AppState) => s.inspector);
     const currentScale = useSelector((s:AppState) => s.canvas.scale[0]);
     const toolbarMenus = useSelector((state:AppState) => state.layout.toolbar, shallowEqual)
     const isCollapsed = useSelector((state: AppState) => state.layout.isTopbarCollapsed);
@@ -96,7 +100,7 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         </div>
 
         {/* Undo/Redo Buttons */}
-        <div style={ToolbarSection}>
+        {/* <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
                     <button onClick={()=>{}} style={ToolbarBtn}>
@@ -107,7 +111,7 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
                     <button onClick={()=>{}} style={ToolbarBtn} ><FontAwesomeIcon icon={faRedo}/></button>
                 </li>
             </ul>
-        </div>
+        </div> */}
 
         {/* Add Element Button */}
         <div style={ToolbarSection}>
@@ -124,7 +128,21 @@ const ToolbarComponent: React.FunctionComponent = (props) => {
         <div style={ToolbarSection}>
             <ul style={ToolbarBtnList}>
                 <li style={ToolbarBtnListElem} className="toolbar-btn-hover">
-                    <button onClick={()=>{}} style={ToolbarBtn}>
+                    <button onClick={()=> {
+                        if(!inspector.active) return;
+                        switch(inspector.componentType){
+                            case ComponentTypes.PASSENGER:
+                                dispatch(DeletePassenger(inspector.elementID)); break;
+                            case ComponentTypes.STATION:
+                                dispatch(DeleteStationWithID(inspector.elementID)); break;
+                            case ComponentTypes.ROUTE:
+                                dispatch(DeleteRouteWithID(inspector.elementID)); break;
+                            case ComponentTypes.VEHICLE:
+                                dispatch(DeleteVehicleWithID(inspector.elementID)); break;
+                            default: 
+                                return;
+                        }
+                    }} style={ToolbarBtn}>
                         <FontAwesomeIcon icon={faTrash}/>
                     </button>
                 </li>

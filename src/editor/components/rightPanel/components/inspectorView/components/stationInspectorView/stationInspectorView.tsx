@@ -1,12 +1,11 @@
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import React, { useState, useMemo, useEffect } from 'react';
 import { AppState } from '../../../../../../../store';
+import React, { useState, useMemo, useEffect } from 'react';
 import { InspectorSubViewProps } from '../../inspectorView';
-import { Station, Colours } from '../../../../../leftPanel/components/componentView/constants';
-import { makeGetStationByIDSelector } from '../../../../../leftPanel/components/componentView/selectors';
-import { SelectionInput } from '../../../../../../../app/components/selectionInput';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { Station } from '../../../../../leftPanel/components/componentView/constants';
 import { UpdateStationByID } from '../../../../../leftPanel/components/componentView/actions';
-import { ColourSet } from '../../../../../leftPanel/components/componentView/constants'; 
+import { SetInspectingIsActive } from '../../actions';
+import { makeGetStationByIDSelector } from '../../../../../leftPanel/components/componentView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
     from '../../inspectorView.css';
 
@@ -16,6 +15,7 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
     const station = useSelector((state: AppState) =>  getStationByID(state, props.id), shallowEqual)
     const [editingObj, setEditingObj] = useState<Station>(station);
     useEffect(() => {
+        if(!station) { dispatch(SetInspectingIsActive(false)); return; }
         if(props.id !== editingObj.id || editingObj.coordinates !== station.coordinates)
             setEditingObj(station);
     });

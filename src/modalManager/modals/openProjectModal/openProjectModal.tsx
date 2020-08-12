@@ -3,11 +3,13 @@ import Modal from '../modal';
 import { useDispatch } from 'react-redux';
 import { DefaultLocalStorage } from '../../../app/pkg/storage/localStorage';
 import { LoadProject } from '../../../app/store/project/actions';
+import { showModal } from '../../actions';
 import { ProjectSummary } from '../../../app/store/project/constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faPlus } from '@fortawesome/free-solid-svg-icons';
 import CSS from 'csstype';
 import './hover.anim.css';
+import { ModalType } from '../../constants';
 
 const LiElem: CSS.Properties = {
     margin: 0,
@@ -73,6 +75,11 @@ const OpenProjectModal: React.FunctionComponent = (props) => {
                         </li>
                     })
                 }
+                <li className="summary-hover-anim"style={LiElem}
+                    onClick={() => dispatch(showModal({modalProps: {}, modalType: ModalType.CREATE_PROJECT_MODAL}))}>
+                    <span style={{...Icon, fontSize: '14px'}}><FontAwesomeIcon icon={faPlus} /></span>
+                    <p style={ProjectName}> Create A New Project</p>
+                </li>
             </ul>;
         }
     }/>  

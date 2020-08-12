@@ -2,13 +2,9 @@ import { Reducer } from 'redux';
 import { ModalActionTypes, ModalAction, ModalState } from './constants';
 
 const initialState = {
-    isModalOpen: false,
-    modalType: 6,
-    modalProps: {
-        scenarioID: 0,
-        dirID: 0,
-        message: "Hello world!"
-    }
+    isModalOpen: true,
+    modalType: 10,
+    modalProps: {}
 }
   
 const ModalReducer: Reducer<ModalState, ModalAction> = (state = initialState, action) => {

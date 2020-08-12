@@ -8,8 +8,20 @@ import { StationInspectorView } from './components/stationInspectorView';
 import { PassengerInspectorView } from './components/passengerInspectorView';
 
 const InspectorView: React.FunctionComponent = (props) => {
+    const isActive = useSelector((state: AppState) => state.inspector.active)
     const inspectingID = useSelector((state: AppState) => state.inspector.elementID)
     const inspectingType = useSelector((state: AppState) => state.inspector.componentType)
+
+    if(!isActive)
+        return <div style={{padding: '16px 8px'}}>
+            <p style={{
+                fontFamily: "'Open-sans', sans-serif",
+                fontSize: '16px',
+                fontWeight: 400,
+                color: '#464646'
+            }}>Please select a scene object.</p>
+        </div>
+
 
     switch(inspectingType){
         case ComponentTypes.PASSENGER:

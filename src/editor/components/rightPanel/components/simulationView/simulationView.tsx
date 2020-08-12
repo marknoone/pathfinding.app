@@ -36,7 +36,7 @@ const SimulationView: React.FunctionComponent = (props) => {
     return <div style={BaseStyle}>
         <div style={SimSection}>
             <p style={SimHeader}>Algorithm</p>
-            <p style={SimText}> Currently selected:
+            <p style={SimText}> Currently selected:</p> 
             <DropdownMenu 
                 render={ () => <>
                     <span style={{...SimText, fontWeight: 600, color: '#464646'}}>{AlgorithmNames[config.algorithm]}</span>
@@ -51,7 +51,6 @@ const SimulationView: React.FunctionComponent = (props) => {
                             { title: "CMT-Dijkstra",    onClick: () => setAlg(Algorithms.CMTDijkstra)},
                     ]},
                 ]}/>
-            </p> 
             {/* <p style={SimHeader}>Options:</p> */}
         </div>
         <div style={{...SimSection}}>

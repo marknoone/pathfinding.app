@@ -25,11 +25,11 @@ export const GetMenuSectionDefinitions = (dispatch: Dispatch<any>, panelVals: {l
         "panels":[
             {
                 entries: [
-                    { title: "Passenger/Component Panel", value: panelVals.lp, onClick: () => { 
+                    { title: "Passenger/Component Panel", value: !panelVals.lp, onClick: () => { 
                         dispatch(SetComponentPanelCollapse(!panelVals.lp)); 
                         dispatch(SetToolbarLayoutSelectValue(false)); 
                     }},
-                    { title: "Inspector/Simulation Panel", value: panelVals.rp, onClick: () => { 
+                    { title: "Inspector/Simulation Panel", value: !panelVals.rp, onClick: () => { 
                         dispatch(SetSimulationPanelCollapse(!panelVals.rp)); 
                         dispatch(SetToolbarLayoutSelectValue(false)); 
                     }},

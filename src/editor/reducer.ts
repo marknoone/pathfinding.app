@@ -21,34 +21,13 @@ export const initialState = {
     activeScenarioIdx: 0,
     scenarios: [{
         name: "Scenario-1",
-        stations:   { nextId: 6, data: {
-            1: { id: 1, name: "Station-1", colour: "#ff9f43", coordinates: {x: 50, y: 50} },
-            2: { id: 2, name: "Station-2", colour: "#1dd1a1", coordinates: {x: 150, y: 150} },
-            3: { id: 3, name: "Station-3", colour: "#ee5253", coordinates: {x: 250, y: 250} },
-            4: { id: 4, name: "Station-4", colour: "#2e86de", coordinates: {x: 350, y: 350} },
-            5: { id: 5, name: "Station-5", colour: "#1dd1a1", coordinates: {x: 450, y: 450} },
-        }},
-        
-        routes:     { nextId: 3, data: {
-            1: { id: 1, name: "Route-1", mode: TransitModes.BUS, color: Colours.FUEL_TOWN, stations: [2, 5], departures: [40000] },
-            2: { id: 2, name: "Route-2", mode: TransitModes.TRAIN, color: Colours.PASTEL_RED, stations: [1, 4], departures: [40000] },
-        }},
+        stations:   { nextId: 1, data: {}},
+        routes:     { nextId: 1, data: {}},
 
-        vehicles:   { nextId: 4, data: {
-            1: { id: 1, name: "Vehicle-1", capacity: 32, glyph: faArchive },
-            2: { id: 2, name: "Vehicle-2", capacity: 4,  glyph: faArchive },
-            3: { id: 3, name: "Vehicle-3", capacity: 16, glyph: faArchive },
-        }},
+        vehicles:   { nextId: 1, data: {}},
 
-        passengers: { nextId: 6, tree: {
-            0 : {id: 0, name: "All Passengers", children: [1, 2, 3]},
-
-            1 : {id: 1, name: "Passenger-1", start: {x: 25, y: 25}, destination: {x: 75, y: 75}, tod: 38000},
-            2 : {id: 2, name: "Passenger-2", start: {x: 125, y: 125}, destination: {x: 175, y: 175}, tod: 39000},
-            3 : {id: 3, name: "Batch-1", children: [4, 5]},
-            
-            4 : {id: 4, name: "Passenger-3", start: {x: 225, y: 225}, destination: {x: 275, y: 275}, tod: 34000},
-            5 : {id: 5, name: "Passenger-4", start: {x: 325, y: 325}, destination: {x: 375, y: 375}, tod: 32000},
+        passengers: { nextId: 1, tree: {
+            0 : {id: 0, name: "All Passengers", children: []},
         } as PassengerTree },
 
         simulationConfig: {

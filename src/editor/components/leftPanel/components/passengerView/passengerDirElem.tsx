@@ -6,7 +6,9 @@ import { makeGetChildElemsByIDSelector } from './selectors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PassengerDirectory, isPassengerDirectory } from './constants';
 import { AddEmptyDirectoryToDirectory, AddEmptyPassengerToDirectory } from './actions';
-import { faCaretRight, faCaretDown, faFolderPlus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight, faCaretDown, faFolderPlus, faUserPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { showModal } from '../../../../../modalManager/actions';
+import { ModalType } from '../../../../../modalManager/constants';
 import {
     PassengerDirectoryStyle,
     ListElement,
@@ -39,6 +41,10 @@ const PassengerDirectoryElement: React.FunctionComponent<PDProps> = (props) => {
             {
                 isHovering?
                     <div style={HoverIcon}>
+                        <div style={{...Icon, fontSize: '11px'}} onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            e.preventDefault();
+                            dispatch(showModal({modalProps: { dirID: props.dir.id }, modalType: ModalType.DIR_EDIT_MODAL}))
+                        }}><FontAwesomeIcon icon={faEdit} /></div>
                         <div style={{...Icon, fontSize: '11px'}} onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                             e.preventDefault();
                             dispatch(AddEmptyPassengerToDirectory(props.dir.id))

@@ -41,7 +41,7 @@ const ChangeStatus: React.FunctionComponent<ChangeStatusProps> = (props) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentSeconds(Date.now());
-        }, 60000);
+        }, 5000);
         return () => clearInterval(interval);
     }, []);
 
