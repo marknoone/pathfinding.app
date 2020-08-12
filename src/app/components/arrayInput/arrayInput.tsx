@@ -9,6 +9,7 @@ type OAProps<T> = {
     name: string
     isOrdered? :boolean
     value: { [key:number]: T }
+    onAdd?: () => void
     onChange: (obj: { [key:number]: T }) => void
 }
 
@@ -20,7 +21,7 @@ function ArrayInput<T extends HasName>(
         var newState = {...props.value};
         switch(action){
             case 0: // Add item
-                // newState[Object.keys.length] = 
+                if(props.onAdd) props.onAdd();
                 break;
             case 1: // Delete item
                 for(var i = 1; i <= Object.keys(props.value).length; i++){

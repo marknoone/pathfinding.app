@@ -1,5 +1,7 @@
 export { AboutAppModal } from './aboutAppModal';
 export { AlertModal } from './alertModal';
+export { AddDepartureToRouteModal } from './addDepartureToRouteModal';
+export { AddStationToRouteModal } from './addStationToRouteModal';
 export { ConfirmModal } from './confirmModal';
 export { DeleteModal } from './deleteModal';
 export { DirEditModal } from './dirEditModal';

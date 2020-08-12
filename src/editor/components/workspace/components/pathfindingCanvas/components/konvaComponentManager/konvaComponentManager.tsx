@@ -53,11 +53,14 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                 const idx = parseInt(k, 10)
                 if(isNaN(idx)) return null;
 
-                var returnedElems = [];
+                var returnedElems: JSX.Element[] = [];
                 const route = props.routes[idx];
-                for(var i = 1; i < route.stations.length; i++){
-                    const curr = props.stations[route.stations[i]];
-                    const prev = props.stations[route.stations[i-1]];
+                const sortedKeys = Object.keys(route.stations).sort();
+                sortedKeys.forEach((key, i) => {
+                    if( i < 1) return;
+                    const prevKey = sortedKeys[i-1]
+                    const curr = props.stations[route.stations[+key]];
+                    const prev = props.stations[route.stations[+prevKey]];
                     const routeID = `route-${route.id}-${i}`
                     stationRouteMap[curr.id].end.push(routeID);
                     stationRouteMap[prev.id].start.push(routeID);
@@ -74,7 +77,7 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                                 props.inspecting.componentType === ComponentTypes.ROUTE 
                                 && props.inspecting.elementID === route.id
                             }/>);
-                }
+                });
 
                 return returnedElems; 
             })

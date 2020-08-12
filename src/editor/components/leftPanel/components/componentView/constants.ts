@@ -53,6 +53,11 @@ export const ColourSet = [
     { s: "Fuel Town", value: Colours.FUEL_TOWN },      { s: "Imperial Primer", value: Colours.IMPERIAL_PRIMER }
 ];
 
+export type TimestampSelection = {
+    name: string
+    value: number
+}
+
 export type Station = {
     id: number
     name: string
@@ -68,8 +73,8 @@ export type Route = {
     mode: TransitModes
     color: Colours
 
-    stations: number[]
-    departures: number[]
+    stations: { [order: number]: number }
+    departures: { [order: number]: TimestampSelection }
 }
 
 export type Vehicle = {

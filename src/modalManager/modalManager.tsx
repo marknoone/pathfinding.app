@@ -4,7 +4,8 @@ import { AppState } from '../store';
 import { closeModal } from './actions';
 import { ModalType } from './constants';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { AboutAppModal, AlertModal, ConfirmModal, DeleteModal, DirEditModal, 
+import { AboutAppModal, AlertModal, AddDepartureToRouteModal, AddStationToRouteModal, 
+    ConfirmModal, DeleteModal, DirEditModal, 
     ExportProjectModal, GridSizeModal, KeyboardShortcutsModal,
     OpenProjectModal, PresetsModal, RenameProjectModal, ScenarioRenameModal, 
     ScenarioEditModal, CreateProjectModal
@@ -12,20 +13,22 @@ import { AboutAppModal, AlertModal, ConfirmModal, DeleteModal, DirEditModal,
 
 type ModalMap = { [key:number]: React.FunctionComponent<any>};
 const MODALS:ModalMap  = {
-    [ModalType.ABOUT_APP_MODAL]:          AboutAppModal,
-    [ModalType.ALERT_MODAL]:              AlertModal,
-    [ModalType.CONFIRM_MODAL]:            ConfirmModal,
-    [ModalType.DELETE_MODAL]:             DeleteModal,
-    [ModalType.DIR_EDIT_MODAL]:           DirEditModal,
-    [ModalType.EXPORT_PROJECT_MODAL]:     ExportProjectModal,
-    [ModalType.GRID_SIZE_MODAL]:          GridSizeModal,
-    [ModalType.KEYBOARD_SHORTCUTS_MODAL]: KeyboardShortcutsModal,
-    [ModalType.CREATE_PROJECT_MODAL]:     CreateProjectModal,
-    [ModalType.OPEN_PROJECT_MODAL]:       OpenProjectModal,
-    [ModalType.PRESETS_MODAL]:            PresetsModal,
-    [ModalType.RENAME_PROJECT_MODAL]:     RenameProjectModal,
-    [ModalType.SCENARIO_EDIT_MODAL]:      ScenarioEditModal,
-    [ModalType.SCENARIO_RENAME_MODAL]:    ScenarioRenameModal
+    [ModalType.ABOUT_APP_MODAL]:                AboutAppModal,
+    [ModalType.ALERT_MODAL]:                    AlertModal,
+    [ModalType.ADD_DEPARTURE_TO_ROUTE_MODAL]:   AddDepartureToRouteModal,
+    [ModalType.ADD_STATION_TO_ROUTE_MODAL]:     AddStationToRouteModal,
+    [ModalType.CONFIRM_MODAL]:                  ConfirmModal,
+    [ModalType.DELETE_MODAL]:                   DeleteModal,
+    [ModalType.DIR_EDIT_MODAL]:                 DirEditModal,
+    [ModalType.EXPORT_PROJECT_MODAL]:           ExportProjectModal,
+    [ModalType.GRID_SIZE_MODAL]:                GridSizeModal,
+    [ModalType.KEYBOARD_SHORTCUTS_MODAL]:       KeyboardShortcutsModal,
+    [ModalType.CREATE_PROJECT_MODAL]:           CreateProjectModal,
+    [ModalType.OPEN_PROJECT_MODAL]:             OpenProjectModal,
+    [ModalType.PRESETS_MODAL]:                  PresetsModal,
+    [ModalType.RENAME_PROJECT_MODAL]:           RenameProjectModal,
+    [ModalType.SCENARIO_EDIT_MODAL]:            ScenarioEditModal,
+    [ModalType.SCENARIO_RENAME_MODAL]:          ScenarioRenameModal
 };
 
 ReactModal.setAppElement("#root");

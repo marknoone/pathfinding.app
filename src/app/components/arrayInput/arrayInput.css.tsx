@@ -28,7 +28,8 @@ export const AddIcon: CSS.Properties = {
     right: '5px',
     marginRight: '3px',
     color: '#464646',
-    fontSize: '14px'
+    fontSize: '14px',
+    cursor: 'pointer'
 }
 
 export const ElementList: CSS.Properties = {

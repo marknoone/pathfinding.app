@@ -5,22 +5,26 @@ import { InspectorSubViewProps } from '../../inspectorView';
 import { ArrayInput } from '../../../../../../../app/components/arrayInput';
 import { SelectionInput } from '../../../../../../../app/components/selectionInput';
 import { UpdateRouteByID } from '../../../../../leftPanel/components/componentView/actions';
-import { Route, Station, Colours, ColourSet, TransitOptions, TransitModes } from '../../../../../leftPanel/components/componentView/constants';
-import { makeGetRouteByIDSelector } from '../../../../../leftPanel/components/componentView/selectors';
+import { Route, Station, Colours, ColourSet, TransitOptions, TransitModes, TimestampSelection } from '../../../../../leftPanel/components/componentView/constants';
+import { makeGetRouteByIDSelector, getStations } from '../../../../../leftPanel/components/componentView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
 from '../../inspectorView.css';
 import { SetInspectingIsActive } from '../../actions';
+import { showModal } from '../../../../../../../modalManager/actions';
+import { ModalType } from '../../../../../../../modalManager/constants';
 
 const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
     const dispatch = useDispatch();
     const getRouteByID = useMemo(makeGetRouteByIDSelector, [])
     const route = useSelector((state: AppState) =>  getRouteByID(state, props.id))
+    const stations = useSelector((state: AppState) => getStations(state))
     const [editingObj, setEditingObj] = useState<Route>(route)
     const [dummy, setDummy] = useState<{[key:number]: Station}>({
         1: { id: 1, name: "Station-1", coordinates: {x: 50, y: 50} },
         2: { id: 2, name: "Station-2", coordinates: {x: 150, y: 150} },
         3: { id: 3, name: "Station-3", coordinates: {x: 250, y: 250} }
     });
+
     useEffect(() => {
         if(!route) { dispatch(SetInspectingIsActive(false)); return; }
         if(props.id !== editingObj.id)
@@ -56,12 +60,14 @@ const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (prop
             <div style={FormEntry}>
                 <p style={InputLabel}>Stations:</p>
                 <ArrayInput<Station> isOrdered={true} value={dummy} name="Route Stations List:"
+                    onAdd={() => dispatch(showModal({modalProps: {routeID: route.id}, modalType: ModalType.ADD_STATION_TO_ROUTE_MODAL}))}
                     onChange={(e: {[key:number]: Station}) => { setDummy(e); }}/>
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Departures:</p>
-                <ArrayInput<Station> value={dummy} name="Route Departures List:"
-                    onChange={(e: {[key:number]: Station}) => { setDummy(e); }}/>
+                <ArrayInput<TimestampSelection> value={route.departures} name="Route Departures List:"
+                    onAdd={() => dispatch(showModal({modalProps: {routeID: route.id}, modalType: ModalType.ADD_DEPARTURE_TO_ROUTE_MODAL}))}
+                    onChange={(e: {[key:number]: TimestampSelection}) => { dispatch(UpdateRouteByID({...route, departures: e})); }}/>
             </div>
         </div>
         <div style={FormButtons}>
