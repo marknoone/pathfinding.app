@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { ProjectState, ProjectAction, ProjectActionTypes } from './constants'
 
-const initialState: ProjectState = {
+export const initialState: ProjectState = {
     id: 0,
     name: "Untitled Project",
     lastEdited: Date.now()

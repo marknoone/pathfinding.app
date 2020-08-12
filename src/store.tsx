@@ -7,6 +7,13 @@ import { InspectorState } from './editor/components/rightPanel/components/inspec
 import { ToastState } from './toastManager/constants';
 import { ModalState } from './modalManager/constants';
 import { CanvasState } from './editor/components/workspace/components/pathfindingCanvas/constants';
+import { initialState as ProjectInitial } from './app/store/project/reducer';
+import { initialState as LayoutInitial } from './app/store/layout/reducers';
+import { initialState as ScenarioInitial } from './editor/reducer';
+import { initialState as InspectorInitial } from './editor/components/rightPanel/components/inspectorView/reducer';
+import { initialState as ToastInitial } from './toastManager/reducer';
+import { initialState as ModalInitial } from './modalManager/reducer';
+import { initialState as CanvasInitial } from './editor/components/workspace/components/pathfindingCanvas/reducer';
 import InspectorReducer from './editor/components/rightPanel/components/inspectorView/reducer';
 import CanvasReducer from './editor/components/workspace/components/pathfindingCanvas/reducer';
 import LayoutReducer from './app/store/layout/reducers';
@@ -14,6 +21,16 @@ import ProjectReducer from './app/store/project/reducer';
 import ScenarioReducer from './editor/reducer';
 import ToastReducer from './toastManager/reducer';
 import ModalReducer from './modalManager/reducer';
+
+export const GlobalInitial = {
+    project: ProjectInitial,
+    layout: LayoutInitial,
+    scenario: ScenarioInitial,
+    inspector: InspectorInitial,
+    canvas: CanvasInitial,
+    toasts: ToastInitial,
+    modals: ModalInitial
+}
 
 export type AppAction = {
     type: string,

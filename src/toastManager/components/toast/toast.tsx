@@ -24,7 +24,6 @@ const toastDeps = {
 
 const Toast: React.FunctionComponent<ToastProps> = (props) => {
     const {bg, primary, icon} = toastDeps[props.t.type];
-    console.log(Date.now() - props.t.createdAt);
     const [lifetimeTimer, setLifetimeTimer] = useState<NodeJS.Timeout>(
         (Date.now() - props.t.createdAt) > 0?
         setTimeout(() => {
