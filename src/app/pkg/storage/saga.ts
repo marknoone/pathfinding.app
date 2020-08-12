@@ -29,7 +29,7 @@ export function* SetLocalStoreProjectLastEdit(action:ProjectAction) {
 
 export function* SaveToLocalStoreSaga(){
     // Toast and modal state not saved in local store.
-    const {toasts, modals, project, ...state} = yield select((s:AppState) => s);
+    const {toasts, modals, project, layout, ...state} = yield select((s:AppState) => s);
     DefaultLocalStorage.SaveProjectByID(project.id, state);
     yield put({type: ProjectActionTypes.SET_PROJECT_LAST_EDIT, payload: { lastEdited: Date.now() }})
 }
@@ -47,11 +47,10 @@ export function* LoadFromLocalStoreSaga(action:ProjectAction){
         const proj = yield DefaultLocalStorage.GetProjectDataByID(action.payload.id);
         const summaries = yield DefaultLocalStorage.GetProjectSummaries() as ProjectSummary[];
         const summary = summaries.find((s: ProjectSummary) => s.id == action.payload.id);
-        if(proj)
-            yield put({type: AppActionTypes.SET_PROJECT_STATE, payload: { state: {
-                ...state,
-                ...proj,
-                project: summary? {...summary}:{...state.project},
-            }}});
+        yield put({type: AppActionTypes.SET_PROJECT_STATE, payload: { state: {
+            ...state,
+            ...proj,
+            project: summary? {...summary}:{...state.project},
+        }}});
     }
 }
