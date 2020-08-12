@@ -26,20 +26,20 @@ function ArrayInput<T extends HasName>(
             case 1: // Delete item
                 for(var i = 1; i <= Object.keys(props.value).length; i++){
                     if(i > idx) 
-                        newState[i-1] = { ...props.value[i], id: i-1};
+                        newState[i-1] = { ...props.value[i]};
                 }
                 delete newState[Object.keys(props.value).length];
                 break;
             case 2: // Increment item
                 if(idx > 1){
-                    newState[idx-1] = { ...props.value[idx], id: idx-1};
-                    newState[idx] = { ...props.value[idx-1], id: idx};
+                    newState[idx-1] = { ...props.value[idx]};
+                    newState[idx] = { ...props.value[idx-1]};
                 }
                 break;
             case 3: // Decrement item
                 if(idx < Object.keys(props.value).length){
-                    newState[idx+1] = { ...props.value[idx], id: idx+1};
-                    newState[idx] = { ...props.value[idx+1], id: idx};
+                    newState[idx+1] = { ...props.value[idx]};
+                    newState[idx] = { ...props.value[idx+1]};
                 }
                 break;
         }

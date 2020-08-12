@@ -11,7 +11,6 @@ export type ProjectSummary = {
 }
 
 export type ProjectData = {
-    layout: LayoutState,
     scenario: ScenarioState,
     canvas: CanvasState,
 }

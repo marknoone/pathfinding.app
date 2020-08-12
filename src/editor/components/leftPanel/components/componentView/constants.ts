@@ -58,6 +58,11 @@ export type TimestampSelection = {
     value: number
 }
 
+export type StationSelection = {
+    id: number
+    name: string
+}
+
 export type Station = {
     id: number
     name: string
@@ -73,7 +78,7 @@ export type Route = {
     mode: TransitModes
     color: Colours
 
-    stations: { [order: number]: number }
+    stations: { [order: number]: StationSelection }
     departures: { [order: number]: TimestampSelection }
 }
 

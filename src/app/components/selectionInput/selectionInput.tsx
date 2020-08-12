@@ -39,8 +39,8 @@ function SelectionInput<T>(
             isShowing?
             <div style={OptionsContainer}>
                 <ul style={OptionList}> 
-                    { options.map( el => 
-                        <li 
+                    { options.map( (el, i) => 
+                        <li key={i}
                           className="selection-input-hover"
                           style={OptionListElem}
                           onClick={() => {

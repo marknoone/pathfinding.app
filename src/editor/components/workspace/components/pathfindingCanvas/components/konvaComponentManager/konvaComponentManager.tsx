@@ -57,10 +57,10 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                 const route = props.routes[idx];
                 const sortedKeys = Object.keys(route.stations).sort();
                 sortedKeys.forEach((key, i) => {
-                    if( i < 1) return;
+                    if( i < 1) return; // Skip first element...
                     const prevKey = sortedKeys[i-1]
-                    const curr = props.stations[route.stations[+key]];
-                    const prev = props.stations[route.stations[+prevKey]];
+                    const curr = props.stations[route.stations[+key].id];
+                    const prev = props.stations[route.stations[+prevKey].id];
                     const routeID = `route-${route.id}-${i}`
                     stationRouteMap[curr.id].end.push(routeID);
                     stationRouteMap[prev.id].start.push(routeID);

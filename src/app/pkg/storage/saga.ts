@@ -1,6 +1,6 @@
 import { takeLatest, select, put, call, take } from 'redux-saga/effects';
 import { AppState, AppActionTypes } from '../../../store';
-import { ProjectAction, ProjectActionTypes, ProjectSummary } from '../../store/project/constants';
+import { ProjectAction, ProjectActionTypes, ProjectSummary, ProjectData } from '../../store/project/constants';
 import { DefaultLocalStorage } from './localStorage';
 
 export function* LocalStoreSaga() {
