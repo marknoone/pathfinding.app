@@ -55,7 +55,13 @@ const SimulationView: React.FunctionComponent = (props) => {
         </div>
         <div style={{...SimSection}}>
             <p style={SimHeader}>Controls (Speed: {Playspeeds[config.playSpeedIdx]}x, Frame: {config.simFrame})</p>
-            <button style={{...SimBtn, backgroundColor: '#ff9f43', marginTop: '24px'}}>Bake</button>
+            <button disabled={config.algorithm !== Algorithms.CMTDijkstra} 
+            style={{
+                ...SimBtn, 
+                marginTop: '24px',
+                cursor: config.algorithm !== Algorithms.CMTDijkstra?  'not-allowed':'pointer',
+                backgroundColor: config.algorithm !== Algorithms.CMTDijkstra?  '#666':'#ff9f43'
+            }}>Bake</button>
             <button style={{...SimBtn, backgroundColor: '#10ac84'}}>Simulate</button>
             <div style={SimPlaybackCtrl}>
                 <ul style={SimPlaybackCtrlList}>
