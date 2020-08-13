@@ -77,6 +77,13 @@ const PassengerReducer: Reducer<PassengerState, PassengerAction> = (state = init
             }: state;
         case PassengerActionTypes.DELETE_PASSENGER_FROM_SCENARIO:
             const {[action.payload.id]:p, ...r} = state.tree;
+            Object.keys(r).forEach(k => {
+                const obj = r[+k];
+                if(isPassengerDirectory(obj)){
+                    obj.children = obj.children.filter(elem => elem !== action.payload.id)
+                }
+                r[+k] = {...obj}
+            });
             return {
                 ...state,
                 tree: r
