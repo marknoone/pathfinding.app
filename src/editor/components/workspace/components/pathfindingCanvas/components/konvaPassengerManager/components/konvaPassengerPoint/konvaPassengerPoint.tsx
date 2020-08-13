@@ -67,7 +67,12 @@ const KonvaPassengerDeparture: React.FunctionComponent<KPDProps> = (props) => {
             <Circle fill={"#0984e3"} radius={15} />:
             null
         }
-        <Circle radius={15} fill={props.color}/>
+        <Circle radius={15} fill={props.color}
+            shadowColor={'black'}
+            shadowBlur={4}
+            shadowOffset={{ x: 0, y: 1 }}
+            shadowOpacity={0.3}
+        />
         <Path fill="#fff" 
             x={props.iconCoord.x} 
             y={props.iconCoord.y} 

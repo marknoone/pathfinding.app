@@ -34,14 +34,16 @@ const Input: CSS.Properties = {
 type SRMProps = { scenarioID: number }
 const ScenarioRenameModal: React.FunctionComponent<SRMProps> = ({ scenarioID }) => {
     const dispatch = useDispatch();
-    const name = useSelector((s:AppState) => s.scenario.scenarios[scenarioID].name);
+    const activeIdx = useSelector((s:AppState) => s.scenario.activeScenarioIdx);
+    var sID = scenarioID? scenarioID: activeIdx;
+    const name = useSelector((s:AppState) => s.scenario.scenarios[sID].name);
     const [scenarioName, setScenarioName] = useState<string>(name);
 
     return  <Modal title="Rename Scenario"
         size={{ w: '520px', h: '240px'}}
         primaryAction={{
             name: "Save",
-            func: () => dispatch(SetScenarioNameByIdx(scenarioID, scenarioName))
+            func: () => dispatch(SetScenarioNameByIdx(sID, scenarioName))
         }}
         render={() =>{
             return <div style={{padding: '8px 16px'}}>

@@ -14,6 +14,8 @@ import {
     ScenarioTitle
 } from './scenarioSelector.css';
 import './hover.anim.css';
+import { showModal } from '../../../../../modalManager/actions';
+import { ModalType } from '../../../../../modalManager/constants';
 
 
 
@@ -36,10 +38,14 @@ const ScenarioSelector: React.FunctionComponent = (props) => {
                 sections={[
                     { entries: [{ title: "Add Scenario", onClick: () => { dispatch(AddEmptyScenario()); {} }}]},
                     { entries: [
-                        {title: "Delete", onClick: () => {} },
-                        {title: "Rename", onClick: () => {} }
+                        {title: "Delete", onClick: () => {dispatch(showModal({modalProps: {
+                            title: "Confirm Deletion", 
+                            msg: "Are you sure you want to delete this scenario?", 
+                            onSuccess: () => {}
+                        }, modalType: ModalType.CONFIRM_MODAL}))} },
+                        {title: "Rename", onClick: () => dispatch(showModal({modalProps: {}, modalType: ModalType.SCENARIO_RENAME_MODAL})) }
                     ]},
-                    { entries: [{ title: "Duplicate",  onClick: () => {} }]}
+                    // { entries: [{ title: "Duplicate",  onClick: () => {} }]}
                 ]}/>
         </div> 
         <ul style={ScenarioList}>
