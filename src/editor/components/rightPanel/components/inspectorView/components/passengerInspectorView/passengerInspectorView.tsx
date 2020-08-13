@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import React, { useState, useMemo, useEffect } from 'react';
 import { AppState } from '../../../../../../../store';
 import { SetInspectingIsActive } from '../../actions';
@@ -8,16 +8,19 @@ import { UpdatePassengerWithID } from '../../../../../leftPanel/components/passe
 import { makeGetPassengerElemByIDSelector } from '../../../../../leftPanel/components/passengerView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
     from '../../inspectorView.css';
+import _ from 'lodash';
 
 const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
     const dispatch = useDispatch();
     const getPassengerElemByID = useMemo(makeGetPassengerElemByIDSelector, [])
     const passenger = useSelector((state: AppState) =>  
-        getPassengerElemByID(state, props.id)) as Passenger;
+        getPassengerElemByID(state, props.id), shallowEqual) as Passenger;
     const [editingObj, setEditingObj] = useState<Passenger>(passenger)
+    
     useEffect(() => {
         if(!passenger) { dispatch(SetInspectingIsActive(false)); return; }
-        if(props.id !== editingObj.id)
+        if(props.id !== editingObj.id || !_.isEqual(passenger.destination, editingObj.destination) 
+        || !_.isEqual(passenger.start, editingObj.start))
             setEditingObj(passenger);
     });
 
@@ -60,7 +63,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                     placeholder={"X:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
-                            setEditingObj({...editingObj, start: {
+                            setEditingObj({...editingObj, destination: {
                                 ...editingObj.destination, x: num 
                             }}) 
                     }}/>
@@ -68,7 +71,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                     placeholder={"Y:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
-                            setEditingObj({...editingObj, start: {
+                            setEditingObj({...editingObj, destination: {
                                 ...editingObj.destination, y: num 
                             }}) 
                     }}/>

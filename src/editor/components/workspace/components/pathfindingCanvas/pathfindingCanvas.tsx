@@ -13,13 +13,17 @@ import {
 } from './actions';
 import { SetInspectingObject } from '../../../rightPanel/components/inspectorView/actions';
 import { ComponentTypes } from '../../../../constants';
+import { KonvaPassengerManager } from './components/konvaPassengerManager';
+import { UpdatePassengerWithID } from '../../../leftPanel/components/passengerView/actions';
 
+type PCProps = { dimensions: number[] }
 type PCState = {coords: number[], scale: {x: number, y: number}}
-type PCProps={ dimensions: number[] }
 const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
     const dispatch = useDispatch();
     const canvasOpts = useSelector((state: AppState) => state.canvas, shallowEqual);
     const inspecting = useSelector((state:AppState) => state.inspector, shallowEqual);
+    const passengers = useSelector((state: AppState) => state.scenario.scenarios
+        [ state.scenario.activeScenarioIdx ].passengers.tree, shallowEqual);
     const stations = useSelector((state: AppState) => state.scenario.scenarios
         [ state.scenario.activeScenarioIdx ].stations, shallowEqual);
     const routes = useSelector((state: AppState) => state.scenario.scenarios
@@ -53,6 +57,11 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
             onStationCoordChange={(id, chg) => { 
                 dispatch(UpdateStationByID({ ...stations.data[id], coordinates:{ x: chg.x, y: chg.y }}))
             }}/>
+        <KonvaPassengerManager passengers={passengers} inspecting={inspecting} coords={canvasOpts.coords}
+            scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} gridBlockSize={canvasOpts.boxSize}
+            onPassengerClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.PASSENGER, id))}
+            onPassengerChange={(p) => { dispatch(UpdatePassengerWithID({...p}))
+            }} />
         <KonvaVehicleManager coords={canvasOpts.coords}  
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}}/>
     </Stage>;
