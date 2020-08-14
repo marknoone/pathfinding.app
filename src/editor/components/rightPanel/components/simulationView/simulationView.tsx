@@ -30,7 +30,7 @@ const SimulationView: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
     const [isDropdownShowing, setIsDropdownShowing] = useState(false);
     const config = useSelector((s:AppState) => 
-        s.scenario.scenarios[s.scenario.activeScenarioIdx].simulationConfig, shallowEqual)
+        s.scenario.scenarios[s.scenario.activeScenarioIdx].simulation, shallowEqual)
     
     const setAlg = (a: Algorithms) => { dispatch(SetSimulationAlgorithm(a)); setIsDropdownShowing(false); } 
     return <div style={BaseStyle}>
@@ -54,7 +54,7 @@ const SimulationView: React.FunctionComponent = (props) => {
             {/* <p style={SimHeader}>Options:</p> */}
         </div>
         <div style={{...SimSection}}>
-            <p style={SimHeader}>Controls (Speed: {Playspeeds[config.playSpeedIdx]}x, Frame: {config.simFrame})</p>
+            <p style={SimHeader}>Controls (Speed: {Playspeeds[config.playSpeedIdx]}x, Time: {config.simClock})</p>
             <button disabled={config.algorithm !== Algorithms.CMTDijkstra} 
             style={{
                 ...SimBtn, 

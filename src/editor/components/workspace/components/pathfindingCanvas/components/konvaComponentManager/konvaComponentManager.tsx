@@ -39,13 +39,13 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
             id="grid-shadow-rect" 
             x={0} y={0}
             visible={false}
-            width={props.gridBlockSize * 2}
-            height={props.gridBlockSize * 2}
+            width={props.gridBlockSize}
+            height={props.gridBlockSize}
             fill={'#FF7B17'}
             opacity={0.6}
             stroke={'#CF6412'}
             strokeWidth={3}
-            dash={[20, 2]}
+            dash={[10, 2]}
         />
         {
             /* Draw routes */

@@ -4,7 +4,7 @@ import { KonvaVehicle } from './components/konvaVehicle';
 import { update } from 'lodash';
 
 type KVMProps = {
-    coords: number[], 
+    coords: number[],
     scale: { 
         x: number, 
         y:number 

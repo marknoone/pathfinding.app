@@ -7,16 +7,23 @@ import {
     Playspeeds
 } from './constants';
 
-export const initialState = {
-    isPlaying: false,
-    simFrame: 0,
+export const initialState: SimulationState = {
+    simClock: 0,
+    playSpeedIdx: 4,
     algorithm: Algorithms.Dijkstra,
-    playSpeedIdx: 4
+    
+    isPlaying: false,
+    isSimulating: false,
+    isBaking: false,
+    
+    data: null
 }
+
 
 const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = initialState, action) => {
     switch(action.type) {
         case SimulationActionTypes.SET_IS_PLAYING:
+            if(!action.payload) return state;
             return action.payload.isPlaying !== undefined? {
                 ...state,
                 isPlaying: action.payload.isPlaying
@@ -36,11 +43,13 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                     playSpeedIdx: newSpeedIdx
             } : state;
         case SimulationActionTypes.SET_SIMULATION_ALGORITHM:
+            if(!action.payload) return state;
             return action.payload.algorithm?{
                 ...state,
                 algorithm: action.payload.algorithm
             } : state;
         case SimulationActionTypes.SET_SIMULATION_FRAME:
+            if(!action.payload) return state;
             return action.payload.simFrame?{
                 ...state,
                 simFrame: action.payload.simFrame
@@ -48,13 +57,21 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
         case SimulationActionTypes.INC_SIMULATION_FRAME:
             return !state.isPlaying? {
                 ...state,
-                simFrame: state.simFrame + 1
+                simFrame: state.simClock + 1
             } : state;
         case SimulationActionTypes.DEC_SIMULATION_FRAME:
             return !state.isPlaying? {
                 ...state,
-                simFrame: state.simFrame - 1
+                simFrame: state.simClock - 1
             } : state;
+        case SimulationActionTypes.BAKE_SCENARIO:
+            return {
+                ...state
+            };
+        case SimulationActionTypes.SIMULATE_SCENARIO:
+            return {
+                ...state
+            };
         default:
             return state;
     }

@@ -45,7 +45,7 @@ const KonvaRoute: React.FunctionComponent<KRProps> = (props) => {
             id={props.id}
             points={[...props.from, ...props.to]}
             stroke={props.colour}
-            strokeWidth={8}
+            strokeWidth={6}
             onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {
                 const stage = e.target.getStage()
                 if(stage)

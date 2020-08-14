@@ -5,6 +5,7 @@ import SimulationReducer from './components/rightPanel/components/simulationView
 import { ScenarioState, ScenarioAction, ScenarioActionTypes } from './constants' 
 import { PassengerTree } from './components/leftPanel/components/passengerView/constants';
 import { TransitModes, ColourSet, Colours } from './components/leftPanel/components/componentView/constants';
+import { initialState as SimulationInitialState} from './components/rightPanel/components/simulationView/reducer';
 import { RouteReducer, StationReducer,  VehicleReducer} 
     from './components/leftPanel/components/componentView/reducer';
 import { faArchive } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +15,7 @@ const scenarioReducer = combineReducers({
     routes:     RouteReducer,
     vehicles:   VehicleReducer,
     passengers: PassengerReducer,
-    simulationConfig: SimulationReducer,
+    simulation: SimulationReducer,
 });
 
 export const initialState = {
@@ -30,12 +31,7 @@ export const initialState = {
             0 : {id: 0, name: "All Passengers", children: []},
         } as PassengerTree },
 
-        simulationConfig: {
-            isPlaying: false,
-            simFrame: 1,
-            algorithm: Algorithms.Dijkstra,
-            playSpeedIdx: 4
-        }
+        simulation: SimulationInitialState
     }]
 }
 
@@ -76,7 +72,7 @@ export const scenarioStateReducer: Reducer<ScenarioState, any> = (state = initia
                         passengers: { nextId: 1, tree: { 
                             0 : {id: 0, name: "All Passengers", children: []}
                         }},
-                        simulationConfig: {}
+                        simulation: {}
                     }
                 ]
             };

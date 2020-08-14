@@ -34,8 +34,8 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
             const layer = e.target.getLayer() as Konva.Layer;
             const shadowRect = layer.findOne("#grid-shadow-rect");
             shadowRect.position({
-                x: Math.round(e.target.x()-30 / props.boxSize) * props.boxSize,
-                y: Math.round(e.target.y()-30 / props.boxSize) * props.boxSize
+                x: Math.round(e.target.x()-(props.boxSize/2) / props.boxSize) * props.boxSize,
+                y: Math.round(e.target.y()-(props.boxSize/2) / props.boxSize) * props.boxSize
             });
             shadowRect.show();
              
@@ -44,8 +44,8 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
             const layer = e.target.getLayer() as Konva.Layer
             const shadowRect = layer.findOne("#grid-shadow-rect");
             shadowRect.position({
-                x: Math.round((e.target.x()-30) / props.boxSize) * props.boxSize,
-                y: Math.round((e.target.y()-30) / props.boxSize) * props.boxSize
+                x: Math.round((e.target.x()-(props.boxSize/2)) / props.boxSize) * props.boxSize,
+                y: Math.round((e.target.y()-(props.boxSize/2)) / props.boxSize) * props.boxSize
             });
 
             if(props.startLineIDs.length > 0) {
@@ -83,8 +83,8 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
         onDragEnd={(e: KonvaEventObject<MouseEvent>) => {
             const layer = e.target.getLayer() as Konva.Layer;
             const shadowRect = layer.findOne("#grid-shadow-rect");
-            const x = Math.round((shadowRect.x()+30) / props.boxSize) * props.boxSize,
-                  y = Math.round((shadowRect.y()+30) / props.boxSize) * props.boxSize;
+            const x = Math.round(shadowRect.x()+(props.boxSize/2)),
+                  y = Math.round(shadowRect.y()+(props.boxSize/2));
             e.target.position({x: x, y: y});
             shadowRect.hide();
             props.onChange({x, y});
@@ -96,13 +96,13 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
     >
         {
             props.isHighlighted?
-            <Circle fill={"#0984e3"} radius={30} />:
+            <Circle fill={"#0984e3"} radius={18} />:
             null
         }
-        <Circle fill={props.colour} radius={25} />
-        <Circle radius={17} fill="#ffffff" />
-        <Path x={-6} y={-10} fill="#ddd"
-            scale={{x: 0.04, y: 0.04}}
+        <Circle fill={props.colour} radius={15} />
+        <Circle radius={11} fill="#ffffff" />
+        <Path x={-4} y={-8} fill="#ddd"
+            scale={{x: 0.03, y: 0.03}}
             data={svgPathData} 
         />
     </Group>

@@ -40,5 +40,5 @@ export type Scenario = {
     routes:             RoutesState
     vehicles:           VehiclesState
     passengers:         PassengerState
-    simulationConfig:   SimulationState
+    simulation:   SimulationState
 }
