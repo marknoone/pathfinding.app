@@ -130,6 +130,7 @@ export const RouteReducer: Reducer<RoutesState, RouteAction> = (state = initialR
                         mode: TransitModes.BUS,
                         color: Colours.FUEL_TOWN,
                         isLocked: false,
+                        vehicleID: -1,
                     
                         stations: [],
                         departures: [],

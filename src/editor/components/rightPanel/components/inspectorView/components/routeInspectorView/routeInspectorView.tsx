@@ -1,24 +1,28 @@
-import React, { useState, useMemo, useEffect } from 'react';
 import { AppState } from '../../../../../../../store';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { SetInspectingIsActive } from '../../actions';
 import { InspectorSubViewProps } from '../../inspectorView';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { showModal } from '../../../../../../../modalManager/actions';
+import { ModalType } from '../../../../../../../modalManager/constants';
 import { ArrayInput } from '../../../../../../../app/components/arrayInput';
 import { SelectionInput } from '../../../../../../../app/components/selectionInput';
 import { UpdateRouteByID } from '../../../../../leftPanel/components/componentView/actions';
-import { Route, Station, Colours, ColourSet, TransitOptions, TransitModes, TimestampSelection, StationSelection } from '../../../../../leftPanel/components/componentView/constants';
-import { makeGetRouteByIDSelector, getStations } from '../../../../../leftPanel/components/componentView/selectors';
+import { Route, Colours, ColourSet, TransitOptions, TransitModes, TimestampSelection, 
+    StationSelection, VehicleSelection, Vehicle } from '../../../../../leftPanel/components/componentView/constants';
+import { makeGetRouteByIDSelector } from '../../../../../leftPanel/components/componentView/selectors';
 import { BaseStyle, InspectorForm, FormButtons, SubmitBtn, ResetBtn, FormEntry, InputLabel, InputText } 
-from '../../inspectorView.css';
-import { SetInspectingIsActive } from '../../actions';
-import { showModal } from '../../../../../../../modalManager/actions';
-import { ModalType } from '../../../../../../../modalManager/constants';
+    from '../../inspectorView.css';
 import _ from 'lodash';
 
 const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (props) => {
     const dispatch = useDispatch();
     const getRouteByID = useMemo(makeGetRouteByIDSelector, []);
     const route = useSelector((state: AppState) =>  getRouteByID(state, props.id), shallowEqual);
+    const vehicles = useSelector((state: AppState) =>  
+        state.scenario.scenarios[state.scenario.activeScenarioIdx].vehicles.data, shallowEqual);
     const [editingObj, setEditingObj] = useState<Route>(route);
+    const vehicleOpts = Object.keys(vehicles).map((k:string) => { const v = vehicles[+k]; return {s: v.name, value: v.id}})
 
     useEffect(() => {
         if(!route) { dispatch(SetInspectingIsActive(false)); return; }
@@ -57,6 +61,12 @@ const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (prop
                 <SelectionInput<Colours> value={editingObj.color}
                     options={ColourSet} disabled={route.isLocked}
                     onChange={(e: Colours) => { setEditingObj({...route, ...editingObj, color: e })}}/>
+            </div>
+            <div style={FormEntry}>
+                <p style={InputLabel}>Route Vehicle:</p>
+                <SelectionInput<number> value={editingObj.vehicleID}
+                    options={vehicleOpts} disabled={route.isLocked}
+                    onChange={(e: number) => { setEditingObj({...route, ...editingObj, vehicleID: e })}}/>
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Stations:</p>

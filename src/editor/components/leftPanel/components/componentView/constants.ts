@@ -66,6 +66,11 @@ export type StationSelection = {
     name: string
 }
 
+export type VehicleSelection = {
+    id: number
+    name: string
+}
+
 export type Station = {
     id: number
     name: string
@@ -79,6 +84,7 @@ export type Station = {
 export type Route = {
     id: number
     name: string
+    vehicleID: number
     mode: TransitModes
     isLocked: boolean
     color: Colours
