@@ -99,6 +99,14 @@ export type Vehicle = {
     capacity: number
     isLocked: boolean
     glyph: IconDefinition
+    LOS: {
+        A: number
+        B: number
+        C: number
+        D: number
+        E: number
+        F: number
+    }
 }
 
 export enum TransitModes {

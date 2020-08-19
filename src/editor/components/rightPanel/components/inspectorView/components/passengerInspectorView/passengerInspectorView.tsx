@@ -36,7 +36,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <input type="text" style={{
                     ...InputText,
                     ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'pointer' })
+                    ...(!passenger.isLocked && { cursor: 'text' })
                 }} disabled={passenger.isLocked} value={editingObj.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setEditingObj({...editingObj, name: e.target.value})
@@ -47,7 +47,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <input type="text" style={{
                     ...InputText,
                     ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'pointer' })
+                    ...(!passenger.isLocked && { cursor: 'text' })
                 }} disabled={passenger.isLocked} value={editingObj.start.x}
                     placeholder={"X:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
@@ -59,7 +59,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <input type="text" style={{
                     ...InputText,
                     ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'pointer' })
+                    ...(!passenger.isLocked && { cursor: 'text' })
                 }} disabled={passenger.isLocked} value={editingObj.start.y}
                     placeholder={"Y:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
@@ -74,7 +74,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <input type="text" style={{
                     ...InputText,
                     ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'pointer' })
+                    ...(!passenger.isLocked && { cursor: 'text' })
                 }} disabled={passenger.isLocked} value={editingObj.destination.x}
                     placeholder={"X:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
@@ -86,7 +86,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <input type="text" style={{
                     ...InputText,
                     ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'pointer' })
+                    ...(!passenger.isLocked && { cursor: 'text' })
                 }} disabled={passenger.isLocked} value={editingObj.destination.y}
                     placeholder={"Y:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
@@ -101,7 +101,7 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <input type="text" style={{
                     ...InputText,
                     ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'pointer' })
+                    ...(!passenger.isLocked && { cursor: 'text' })
                 }} disabled={passenger.isLocked} value={editingObj.tod}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 

@@ -7,7 +7,8 @@ export const BaseStyle: CSS.Properties = {
 export const InspectorForm: CSS.Properties = {}
 
 export const FormEntry: CSS.Properties = {
-    marginBottom: '20px'
+    marginBottom: '16px',
+    position: 'relative'
 }
 
 export const InputLabel: CSS.Properties = {
@@ -25,6 +26,12 @@ export const InputText: CSS.Properties = {
     fontSize: '14px',
     fontWeight: 500,
     width: '325px',
+}
+
+export const LOSInputText: CSS.Properties = {
+    position: 'absolute',
+    right: '4px',
+    width: '260px'
 }
 
 export const FormButtons: CSS.Properties = {

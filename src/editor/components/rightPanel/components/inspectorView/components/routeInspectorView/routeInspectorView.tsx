@@ -44,7 +44,7 @@ const RouteInspectorView: React.FunctionComponent<InspectorSubViewProps> = (prop
                 <input type="text" style={{
                     ...InputText,
                     ...(route.isLocked && { cursor: 'not-allowed' }),
-                    ...(!route.isLocked && { cursor: 'pointer' })
+                    ...(!route.isLocked && { cursor: 'text' })
                 }} disabled={route.isLocked} value={editingObj.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setEditingObj({...editingObj, name: editingObj.name})

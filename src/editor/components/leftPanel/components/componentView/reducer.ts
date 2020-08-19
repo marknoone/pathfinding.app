@@ -17,9 +17,13 @@ export const VehicleReducer: Reducer<VehiclesState, VehicleAction> = (state = in
                     [state.nextId]: {
                         id: state.nextId,
                         name: `Vehicle-${state.nextId}`,
-                        capacity: 0,
+                        capacity: 6,
                         glyph: faBus,
-                        isLocked: false
+                        isLocked: false,
+                        LOS:{
+                            A: 1, B: 2, C: 3,
+                            D: 4, E: 5, F: 6,
+                        }
                     }
                 }
             };
