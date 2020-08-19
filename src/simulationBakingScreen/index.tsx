@@ -1,1 +1,1 @@
-export { default as SimulationBakingScreen } from './simulationBakingScreen';
+export { default as SimulationBakingScreen } from './simulationBakingPortal';

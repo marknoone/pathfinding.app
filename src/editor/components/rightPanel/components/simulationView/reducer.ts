@@ -15,8 +15,12 @@ export const initialState: SimulationState = {
     isPlaying: false,
     isSimulating: false,
     isBaking: false,
-    data: null,
+    bakedFrames: {
+        total: 45,
+        current: 1
+    },
 
+    data: null,
     options:{
         stopTime: 2,
         distanceMul: 1.5,
@@ -88,12 +92,43 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                 }
             } : state;
         case SimulationActionTypes.BAKE_SCENARIO:
+            if(!action.payload) return state;
+            return action.payload.isBaking? {
+                ...state,
+                isBaking: action.payload.isBaking,
+                bakedFrames: {
+                    ...state.bakedFrames,
+                    total: 
+                        action.payload.simFrame? 
+                        action.payload.simFrame: 
+                        state.bakedFrames.total
+                }
+            }: state;
+        case SimulationActionTypes.SET_BAKED_FRAMES:
+            if(!action.payload) return state;
+            return action.payload.simFrame? {
+                ...state,
+                bakedFrames: {
+                    ...state.bakedFrames,
+                    current: action.payload.simFrame
+                }
+            }: state;
+        case SimulationActionTypes.CANCEL_BAKING:
             return {
-                ...state
+                ...state,
+                isBaking: false,
+                isSimulating: false,
+                data: null,
+                bakedFrames: {
+                    current: 0,
+                    total: 0
+                }
             };
         case SimulationActionTypes.SIMULATE_SCENARIO:
             return {
-                ...state
+                ...state,
+                isSimulating: true,
+                isBaking: true
             };
         default:
             return state;

@@ -9,8 +9,18 @@ export const SimulateScenario = ():SimulationAction => ({
     type: SimulationActionTypes.SIMULATE_SCENARIO
 })
 
-export const BakeScenario = ():SimulationAction => ({
-    type: SimulationActionTypes.BAKE_SCENARIO
+export const SetBakeScenario = (isBaking:boolean, totalFrames?: number):SimulationAction => ({
+    type: SimulationActionTypes.BAKE_SCENARIO,
+    payload: {isBaking: isBaking, simFrame: totalFrames}
+})
+
+export const CancelBaking = ():SimulationAction => ({
+    type: SimulationActionTypes.CANCEL_BAKING
+})
+
+export const SetBakedFrames = (bakedFrames: number):SimulationAction => ({
+    type: SimulationActionTypes.BAKE_SCENARIO,
+    payload: {simFrame: bakedFrames}
 })
 
 export const IncSimulationFrame = ():SimulationAction => ({

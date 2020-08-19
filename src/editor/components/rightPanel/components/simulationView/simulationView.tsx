@@ -7,7 +7,7 @@ import { DropdownMenu } from '../../../../../app/components/dropdownMenu';
 import { faPlay, faForward, faStepForward, faBackward, 
     faStepBackward, faCaretDown, faStop} from '@fortawesome/free-solid-svg-icons';
 import { SetSimulationAlgorithm, IncPlaySpeed, DecPlaySpeed, IncSimulationFrame, 
-    DecSimulationFrame, SetIsPlaying, SetSimOptions } from './actions';
+    DecSimulationFrame, SetIsPlaying, SetSimOptions, SimulateScenario } from './actions';
 import {
     BaseStyle,
     InputText,
@@ -54,7 +54,6 @@ const SimulationView: React.FunctionComponent = (props) => {
                             { title: "CMT-Dijkstra",    onClick: () => setAlg(Algorithms.CMTDijkstra)},
                     ]},
                 ]}/>
-            {/* <p style={SimHeader}>Options:</p> */}
         </div>
         <div style={{...SimSection}}>
             <p style={SimHeader}>Controls (Speed: {Playspeeds[config.playSpeedIdx]}x, Time: {config.simClock})</p>
@@ -65,7 +64,7 @@ const SimulationView: React.FunctionComponent = (props) => {
                 cursor: config.algorithm !== Algorithms.CMTDijkstra?  'not-allowed':'pointer',
                 backgroundColor: config.algorithm !== Algorithms.CMTDijkstra?  '#666':'#ff9f43'
             }}>Bake</button>
-            <button style={{...SimBtn, backgroundColor: '#10ac84'}}>Simulate</button>
+            <button style={{...SimBtn, backgroundColor: '#10ac84'}} onClick={() => dispatch(SimulateScenario())}>Simulate</button>
             <div style={SimPlaybackCtrl}>
                 <ul style={SimPlaybackCtrlList}>
                     <li style={SimPlaybackCtrlElem} onClick={() => dispatch(DecSimulationFrame())}> <FontAwesomeIcon icon={faStepBackward}/> </li>

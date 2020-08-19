@@ -1,6 +1,7 @@
 export type SimulationAction = {
     type: string
     payload?: {
+        isBaking?: boolean
         isPlaying?: boolean
         simFrame?: number
         algorithm?: Algorithms
@@ -27,12 +28,16 @@ export type SimulationState = {
     algorithm: Algorithms
     playSpeedIdx: number
 
-    isBaking: boolean
     isSimulating: boolean
     isPlaying: boolean
+    
+    isBaking: boolean
+    bakedFrames: {
+        current: number,
+        total: number
+    }
 
     options: SimulationOptions
-
     data: {
         passengerSimData: PassengerSimData,
         stationSimData: StationSimData
@@ -49,8 +54,10 @@ export enum SimulationActionTypes {
     INC_PLAY_SPEED = "@@simulation/INC_PLAY_SPEED",
     DEC_PLAY_SPEED = "@@simulation/DEC_PLAY_SPEED",
     SET_IS_PLAYING = "@@simulation/SET_IS_PLAYING",
-    SIMULATE_SCENARIO   = "@simulation/SIMULATE_SCENARIO",
-    BAKE_SCENARIO       = "@simulation/BAKE_SCENARIO"
+    SIMULATE_SCENARIO   = "@@simulation/SIMULATE_SCENARIO",
+    BAKE_SCENARIO       = "@@simulation/BAKE_SCENARIO",
+    SET_BAKED_FRAMES       = "@@simulation/SET_BAKED_FRAMES",
+    CANCEL_BAKING       = "@@simulation/CANCEL_BAKING"
 }
 
 export enum Algorithms {

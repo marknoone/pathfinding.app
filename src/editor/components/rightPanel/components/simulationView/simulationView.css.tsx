@@ -59,7 +59,8 @@ export const SimBtn: CSS.Properties = {
     margin: 'auto',
     marginBottom: '12px',
     textAlign: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    outline: 0
 }
 
 export const SimPlaybackCtrl: CSS.Properties = {
