@@ -3,6 +3,7 @@ import Konva from 'konva';
 import { Circle, Path, Group } from "react-konva";
 import { KonvaEventObject } from 'konva/types/Node';
 import { svgPathData } from '@fortawesome/free-solid-svg-icons/faMapPin';
+import { Vector2d } from 'konva/types/types';
 
 type KSProps = { 
     colour: string, 
@@ -13,6 +14,7 @@ type KSProps = {
     startLineIDs: string[],
     endLineIDs: string[],
 
+    dragBoundFunc: (pos: Vector2d) => Vector2d
     onClick?: (e: KonvaEventObject<MouseEvent>) => void
     onChange: (newCoords: {x: number,  y: number}) => void
 }
@@ -20,6 +22,7 @@ type KSProps = {
 const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
     return <Group draggable
         x={props.coords[0]} y={props.coords[1]}
+        dragBoundFunc={props.dragBoundFunc}
         onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {
             const stage = e.target.getStage()
             if(stage)

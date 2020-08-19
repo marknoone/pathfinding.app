@@ -6,6 +6,7 @@ import { KonvaPassengerPoint } from './components/konvaPassengerPoint';
 import { InspectorState } from '../../../../../rightPanel/components/inspectorView/constants';
 import { svgPathData as flagSVG } from '@fortawesome/free-solid-svg-icons/faFlag';
 import { svgPathData as crosshairSVG } from '@fortawesome/free-solid-svg-icons/faCrosshairs';
+import { CreateBoundingFunc } from '../../pathfindingCanvas';  
 import { PassengerTree, isPassengerDirectory, Passenger } 
     from '../../../../../leftPanel/components/passengerView/constants';
 
@@ -16,6 +17,7 @@ type KPMProps = {
         x: number, 
         y: number
     },
+    dimensions: number[],
 
     passengers: PassengerTree, 
     inspecting: InspectorState,
@@ -28,8 +30,11 @@ const KonvaPassengerManager: React.FunctionComponent<KPMProps> = (props) => {
     if(props.inspecting.componentType !== ComponentTypes.PASSENGER) return null;
     const passengerObj = props.passengers[props.inspecting.elementID];
     if(isPassengerDirectory(passengerObj)) return null;
+    const dragFunc = CreateBoundingFunc(props.coords, props.dimensions);
 
-    return <Layer  x={props.coords[0]} y={props.coords[1]} scale={props.scale}>
+    return <Layer  x={props.coords[0]} y={props.coords[1]} 
+        scale={props.scale}
+    >
         <Circle
             id="grid-shadow-circ" 
             x={15} y={15}
@@ -46,12 +51,14 @@ const KonvaPassengerManager: React.FunctionComponent<KPMProps> = (props) => {
             coords={[passengerObj.start.x, passengerObj.start.y]} boxSize={props.gridBlockSize}
             onClick={() => activeSubComponent === 1? setActiveSubComponent(0):setActiveSubComponent(1)} 
             onChange={(e: {x:number, y:number}) => props.onPassengerChange({...passengerObj, start: e})}
+            dragBoundFunc={dragFunc}
         /> 
         <KonvaPassengerPoint isHighlighted={activeSubComponent === 2} svgData= {crosshairSVG} 
             iconCoord={{x: -8.5, y: -9.5}} iconScale={{x: 0.035, y:0.035}} color={"#10ac84"}
             coords={[passengerObj.destination.x, passengerObj.destination.y]} boxSize={props.gridBlockSize}
             onClick={() => activeSubComponent === 2? setActiveSubComponent(0):setActiveSubComponent(2)} 
             onChange={(e: {x:number, y:number}) => props.onPassengerChange({...passengerObj, destination: e})}
+            dragBoundFunc={dragFunc}
         />
         <KonvaPassengerPath />
     </Layer>

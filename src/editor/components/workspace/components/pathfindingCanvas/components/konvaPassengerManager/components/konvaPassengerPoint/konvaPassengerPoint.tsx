@@ -2,6 +2,7 @@ import React from 'react';
 import { Group, Circle, Path } from 'react-konva';
 import { KonvaEventObject } from 'konva/types/Node';
 import Konva from 'konva';
+import { Vector2d } from 'konva/types/types';
 
 
 type KPDProps = { 
@@ -14,12 +15,14 @@ type KPDProps = {
     iconScale: {x: number, y:number},
 
     onClick?: () => void
+    dragBoundFunc: (pos: Vector2d) => Vector2d
     onChange?: (e: {x:number, y:number}) => void 
 }
 
 const KonvaPassengerDeparture: React.FunctionComponent<KPDProps> = (props) => {
     return <Group draggable
         x={props.coords[0]} y={props.coords[1]}
+        dragBoundFunc={props.dragBoundFunc}
         onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {
             const stage = e.target.getStage()
             if(stage)

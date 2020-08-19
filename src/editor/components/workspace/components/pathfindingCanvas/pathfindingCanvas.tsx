@@ -15,6 +15,7 @@ import { SetInspectingObject } from '../../../rightPanel/components/inspectorVie
 import { ComponentTypes } from '../../../../constants';
 import { KonvaPassengerManager } from './components/konvaPassengerManager';
 import { UpdatePassengerWithID } from '../../../leftPanel/components/passengerView/actions';
+import { Vector2d } from 'konva/types/types';
 
 type PCProps = { dimensions: number[] }
 type PCState = {coords: number[], scale: {x: number, y: number}}
@@ -51,7 +52,7 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
             ))}/>
         <KonvaComponentManager gridBlockSize={canvasOpts.boxSize} inspecting={inspecting}
             coords={canvasOpts.coords} stations={stations.data} routes={routes.data} 
-            scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} 
+            scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} dimensions={canvasOpts.canvasSize} 
             onRouteClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.ROUTE, id))}
             onStationClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.STATION, id))}
             onStationCoordChange={(id, chg) => { 
@@ -60,11 +61,22 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
         <KonvaPassengerManager passengers={passengers} inspecting={inspecting} coords={canvasOpts.coords}
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} gridBlockSize={canvasOpts.boxSize}
             onPassengerClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.PASSENGER, id))}
-            onPassengerChange={(p) => { dispatch(UpdatePassengerWithID({...p}))
-            }} />
+            onPassengerChange={(p) => { dispatch(UpdatePassengerWithID({...p}))}} dimensions={canvasOpts.canvasSize} />
         <KonvaVehicleManager coords={canvasOpts.coords}  
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}}/>
     </Stage>;
+}
+
+export const CreateBoundingFunc = (coord: number[], dimens: number[]) => (pos: Vector2d) => {;
+    var newX = pos.x > coord[0] ? pos.x : coord[0];
+    newX = newX < dimens[0]+coord[0] ? newX : dimens[0] + coord[0];
+    var newY = pos.y > coord[1] ? pos.y : coord[1];
+    newY = newY < dimens[1] + coord[1] ? newY : dimens[1] + coord[1];
+
+    return {
+        x: newX,
+        y: newY,
+    };
 }
 
 export default PathfindingCanvas;

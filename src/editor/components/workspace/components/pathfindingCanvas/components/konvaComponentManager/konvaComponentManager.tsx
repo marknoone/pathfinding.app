@@ -7,10 +7,12 @@ import { StationDataObj, RouteDataObj }
 import { InspectorState } from '../../../../../rightPanel/components/inspectorView/constants';
 import { ComponentTypes } from '../../../../../../constants';
 import { KonvaEventObject } from 'konva/types/Node';
+import { CreateBoundingFunc } from '../../pathfindingCanvas';
 
 type KCMProps = { 
     coords: number[], 
     gridBlockSize: number, 
+    dimensions: number[],
     scale: { 
         x: number, 
         y:number 
@@ -33,8 +35,11 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
         if(isNaN(idx)) return null;
         stationRouteMap[idx] = {start: [], end:[]}
     });
+    const dragFunc = CreateBoundingFunc(props.coords, props.dimensions);
 
-    return <Layer x={props.coords[0]} y={props.coords[1]} scale={props.scale}>
+    return <Layer x={props.coords[0]} y={props.coords[1]} 
+        scale={props.scale}
+    >
         <Rect
             id="grid-shadow-rect" 
             x={0} y={0}
@@ -91,6 +96,7 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                 if(isNaN(idx)) return null;
                 const stn = props.stations[idx];
                 return <KonvaStation key={stn.id} colour="#464646" 
+                    dragBoundFunc={dragFunc}
                     startLineIDs={stationRouteMap[stn.id].start} 
                     endLineIDs={stationRouteMap[stn.id].end}
                     coords={[stn.coordinates.x, stn.coordinates.y]}
