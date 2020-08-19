@@ -10,7 +10,8 @@ export const PassengerDirectoryStyle: CSS.Properties = {
 
 export const PassengerElementStyle: CSS.Properties = {
     height: '26px',
-    padding: '0px 8px'
+    padding: '0px 8px',
+    position: 'relative'
 }
 
 export const PassengerIcon: CSS.Properties = {
@@ -58,7 +59,8 @@ export const DirName: CSS.Properties = {
 
 export const HoverIcon: CSS.Properties = {
     display: 'inline-block',
-    float: 'right',
+    position: 'absolute',
+    right: '16px',
     verticalAlign: 'top',
     paddingRight: '8px'
 }

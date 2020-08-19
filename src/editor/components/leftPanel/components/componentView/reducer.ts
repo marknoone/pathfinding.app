@@ -18,7 +18,8 @@ export const VehicleReducer: Reducer<VehiclesState, VehicleAction> = (state = in
                         id: state.nextId,
                         name: `Vehicle-${state.nextId}`,
                         capacity: 0,
-                        glyph: faBus
+                        glyph: faBus,
+                        isLocked: false
                     }
                 }
             };
@@ -36,6 +37,17 @@ export const VehicleReducer: Reducer<VehiclesState, VehicleAction> = (state = in
         case VehicleActionTypes.DELETE_VEHICLE:
             const {[action.payload.id]: val, ...rest} = state.data
             return { ...state, data: rest };
+        case VehicleActionTypes.SET_VEHICLE_LOCK:
+            return action.payload.lock !== undefined? { 
+                ...state, 
+                data: {
+                    ...state.data,
+                    [action.payload.id]:{
+                        ...state.data[action.payload.id],
+                        isLocked: action.payload.lock
+                    }
+                } 
+            }: state;
         case VehicleActionTypes.UPDATE_VEHICLE:
             return action.payload.obj?{
                 ...state,
@@ -61,7 +73,8 @@ export const StationReducer: Reducer<StationsState, StationAction> = (state = in
                         id: state.nextId,
                         name: `Station-${state.nextId}`,
                         colour: "#464646",
-                        coordinates: { x: 0, y: 0 }
+                        coordinates: { x: 0, y: 0 },
+                        isLocked: false
                     }
                 }
             };
@@ -79,6 +92,17 @@ export const StationReducer: Reducer<StationsState, StationAction> = (state = in
         case StationActionTypes.DELETE_STATION:
             const {[action.payload.id]: val, ...rest} = state.data
             return { ...state, data: rest };
+        case StationActionTypes.SET_STATION_LOCK:
+            return action.payload.lock !== undefined? { 
+                ...state, 
+                data: {
+                    ...state.data,
+                    [action.payload.id]:{
+                        ...state.data[action.payload.id],
+                        isLocked: action.payload.lock
+                    }
+                } 
+            }: state;
         case StationActionTypes.UPDATE_STATION:
             return action.payload.obj?{
                 ...state,
@@ -105,6 +129,7 @@ export const RouteReducer: Reducer<RoutesState, RouteAction> = (state = initialR
                         name: `Route-${state.nextId}`,
                         mode: TransitModes.BUS,
                         color: Colours.FUEL_TOWN,
+                        isLocked: false,
                     
                         stations: [],
                         departures: [],
@@ -125,6 +150,17 @@ export const RouteReducer: Reducer<RoutesState, RouteAction> = (state = initialR
         case RouteActionTypes.DELETE_ROUTE:
             const {[action.payload.id]: val, ...rest} = state.data
             return { ...state, data: rest };
+        case RouteActionTypes.SET_ROUTE_LOCK:
+            return action.payload.lock !== undefined? { 
+                ...state, 
+                data: {
+                    ...state.data,
+                    [action.payload.id]:{
+                        ...state.data[action.payload.id],
+                        isLocked: action.payload.lock
+                    }
+                } 
+            }: state;
         case RouteActionTypes.UPDATE_ROUTE:
             return action.payload.obj?{
                 ...state,

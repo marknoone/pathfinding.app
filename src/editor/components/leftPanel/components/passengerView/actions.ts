@@ -44,3 +44,8 @@ export const DeletePassengerDirectory = (id: number):PassengerAction => ({
     type: PassengerActionTypes.DELETE_DIRECTORY_FROM_SCENARIO,
     payload: {id: id}
 })
+
+export const SetPassengerLock = (id: number, val:boolean):PassengerAction => ({
+    type: PassengerActionTypes.SET_PASSENGER_LOCK_BY_ID,
+    payload: {id: id, lock: val}
+})

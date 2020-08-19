@@ -50,6 +50,7 @@ const PassengerReducer: Reducer<PassengerState, PassengerAction> = (state = init
                         tod: pass.tod,
                         start: pass.start,
                         destination: pass.destination,
+                        isLocked: pass.isLocked,
                     }
                 }
             }: state;
@@ -72,6 +73,7 @@ const PassengerReducer: Reducer<PassengerState, PassengerAction> = (state = init
                         tod: 0,
                         start: {x: 0, y: 0},
                         destination: {x: 0, y: 0},
+                        isLocked: false,
                     }
                 }
             }: state;
@@ -88,6 +90,17 @@ const PassengerReducer: Reducer<PassengerState, PassengerAction> = (state = init
                 ...state,
                 tree: r
             }
+        case PassengerActionTypes.SET_PASSENGER_LOCK_BY_ID:
+            return action.payload.lock !== undefined?{
+                ...state,
+                tree: {
+                    ...state.tree,
+                    [action.payload.id]: {
+                        ...state.tree[action.payload.id],
+                        isLocked: action.payload.lock
+                    }
+                }
+            }: state;
         case PassengerActionTypes.UPDATE_DIRECTORY_WITH_ID:
             if(!action.payload.item)
                 return state;

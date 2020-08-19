@@ -8,29 +8,32 @@ export type StationsState = { nextId: number, data: StationDataObj }
 export type RoutesState =   { nextId: number, data: RouteDataObj   }
 export type VehiclesState = { nextId: number, data: VehicleDataObj }
 
-export type StationAction = { type: string; payload: { id: number, obj?: Station } }
-export type RouteAction =   { type: string; payload: { id: number, obj?: Route } }
-export type VehicleAction = { type: string; payload: { id: number, obj?: Vehicle } }
+export type StationAction = { type: string; payload: { id: number, lock?: boolean, obj?: Station } }
+export type RouteAction =   { type: string; payload: { id: number, lock?: boolean, obj?: Route } }
+export type VehicleAction = { type: string; payload: { id: number, lock?: boolean, obj?: Vehicle } }
 
 export enum VehicleActionTypes {  
     ADD_NEW_EMPTY_VEHICLE = "@@vehicle/ADD_NEW_EMPTY_VEHICLE",
     ADD_NEW_VEHICLE = "@@vehicle/ADD_NEW_VEHICLE",
     DELETE_VEHICLE = "@@vehicle/DELETE_VEHICLE",
-    UPDATE_VEHICLE = "@@vehicle/UPDATE_VEHICLE"
+    UPDATE_VEHICLE = "@@vehicle/UPDATE_VEHICLE",
+    SET_VEHICLE_LOCK = "@@vehicle/SET_VEHICLE_LOCK",
 }
 
 export enum StationActionTypes {  
     ADD_NEW_EMPTY_STATION = "@@station/ADD_NEW_EMPTY_STATION",
     ADD_NEW_STATION = "@@station/ADD_NEW_STATION",
     DELETE_STATION = "@@station/DELETE_STATION",
-    UPDATE_STATION = "@@station/UPDATE_STATION"
+    UPDATE_STATION = "@@station/UPDATE_STATION",
+    SET_STATION_LOCK = "@@vehicle/SET_STATION_LOCK",
 }
 
 export enum RouteActionTypes {  
     ADD_NEW_EMPTY_ROUTE = "@@route/ADD_NEW_EMPTY_ROUTE",
     ADD_NEW_ROUTE = "@@route/ADD_NEW_ROUTE",
     DELETE_ROUTE = "@@route/DELETE_ROUTE",
-    UPDATE_ROUTE = "@@route/UPDATE_ROUTE"
+    UPDATE_ROUTE = "@@route/UPDATE_ROUTE",
+    SET_ROUTE_LOCK = "@@vehicle/SET_ROUTE_LOCK",
 }
 
 export enum Colours {
@@ -66,6 +69,7 @@ export type StationSelection = {
 export type Station = {
     id: number
     name: string
+    isLocked: boolean
     coordinates: {
         x: number,
         y: number,
@@ -76,6 +80,7 @@ export type Route = {
     id: number
     name: string
     mode: TransitModes
+    isLocked: boolean
     color: Colours
 
     stations: { [order: number]: StationSelection }
@@ -86,6 +91,7 @@ export type Vehicle = {
     id: number
     name: string
     capacity: number
+    isLocked: boolean
     glyph: IconDefinition
 }
 

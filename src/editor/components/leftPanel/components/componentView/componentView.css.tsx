@@ -38,15 +38,25 @@ export const AddIcon: CSS.Properties = {
     cursor: 'pointer'
 }
 
+export const LockIcon: CSS.Properties = {
+    display: 'inline-block',
+    position: 'absolute',
+    right: '16px',
+    verticalAlign: 'top',
+    paddingRight: '8px',
+    fontSize: '14px'
+}
+
 export const CategoryChildren: CSS.Properties = {
     padding: '0px 0px'
 }
 
 export const CCChild: CSS.Properties = {
+    position: 'relative',
     fontSize: '13px',
     fontFamily: "'Montserrat', sans-serif",
     fontWeight: 500,
     padding: '2px 0px 2px 20px',
     color: 'rgb(102, 102, 102',
-    cursor: 'pointer'
+    cursor: 'pointer',
 }

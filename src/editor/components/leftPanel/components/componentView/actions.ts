@@ -25,6 +25,11 @@ export const UpdateVehicleByID = (val: Vehicle):VehicleAction => ({
     payload: {id: val.id, obj: val}
 })
 
+export const SetVehicleLock = (id: number, val: boolean):VehicleAction => ({
+    type: VehicleActionTypes.SET_VEHICLE_LOCK,
+    payload: {id: id, lock: val}
+})
+
 // Station Actions -----------------------------------------------------------
 export const AddEmptyStationComponent = ():StationAction => ({
     type: StationActionTypes.ADD_NEW_EMPTY_STATION,
@@ -46,6 +51,11 @@ export const UpdateStationByID = (val: Station):StationAction => ({
     payload: {id: val.id, obj: val}
 })
 
+export const SetStationLock = (id: number, val: boolean):StationAction => ({
+    type: StationActionTypes.SET_STATION_LOCK,
+    payload: {id: id, lock: val}
+})
+
 // Route Actions -----------------------------------------------------------
 export const AddEmptyRouteComponent = ():RouteAction => ({
     type: RouteActionTypes.ADD_NEW_EMPTY_ROUTE,
@@ -65,5 +75,10 @@ export const DeleteRouteWithID = (id: number):RouteAction => ({
 export const UpdateRouteByID = (val: Route):RouteAction => ({
     type: RouteActionTypes.UPDATE_ROUTE,
     payload: {id: val.id, obj: val}
+})
+
+export const SetRouteLock = (id: number, val: boolean):RouteAction => ({
+    type: RouteActionTypes.SET_ROUTE_LOCK,
+    payload: {id: id, lock: val}
 })
 
