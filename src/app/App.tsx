@@ -4,6 +4,7 @@ import { HotKeys } from "react-hotkeys";
 import { EditorComponent } from '../editor';
 import { ModalManager } from '../modalManager';
 import { ToastPortal } from '../toastManager';
+import { SimulationBakingScreen } from '../simulationBakingScreen';
 import { shortcutMap, handlerMap } from './pkg/keyboardShortcuts';
 import { useDispatch } from 'react-redux';
 
@@ -14,6 +15,7 @@ const App: React.FunctionComponent = (props) => {
     <EditorComponent />
     <ModalManager />
     <ToastPortal /> 
+    <SimulationBakingScreen />
   </HotKeys>;
 }
 
