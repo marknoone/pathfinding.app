@@ -15,8 +15,21 @@ export const initialState: SimulationState = {
     isPlaying: false,
     isSimulating: false,
     isBaking: false,
-    
-    data: null
+    data: null,
+
+    options:{
+        stopTime: 2,
+        distanceMul: 1.5,
+        mmLanguage: "",
+        congestionInterval: 60,
+        passengerCompliance: 100,
+        modeSpeeds: {
+            foot: 1.0,
+            bus: 10.0,
+            train: 15.0,
+            tram: 12.5,
+        }
+    }
 }
 
 
@@ -63,6 +76,16 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
             return !state.isPlaying? {
                 ...state,
                 simFrame: state.simClock - 1
+            } : state;
+        case SimulationActionTypes.SET_SIMULATION_OPTS:
+            console.log(action);
+            if(!action.payload) return state;
+            return action.payload.opts? {
+                ...state,
+                options: {
+                    ...state.options,
+                    ...action.payload.opts
+                }
             } : state;
         case SimulationActionTypes.BAKE_SCENARIO:
             return {

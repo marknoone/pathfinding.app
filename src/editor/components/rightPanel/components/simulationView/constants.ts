@@ -4,6 +4,21 @@ export type SimulationAction = {
         isPlaying?: boolean
         simFrame?: number
         algorithm?: Algorithms
+        opts?: SimulationOptions
+    }
+}
+
+export type SimulationOptions = {
+    stopTime: number,
+    distanceMul: number,
+    mmLanguage: string,
+    congestionInterval: number,
+    passengerCompliance: number,
+    modeSpeeds: {
+        foot: number,
+        bus: number,
+        train: number,
+        tram: number,
     }
 }
 
@@ -16,6 +31,8 @@ export type SimulationState = {
     isSimulating: boolean
     isPlaying: boolean
 
+    options: SimulationOptions
+
     data: {
         passengerSimData: PassengerSimData,
         stationSimData: StationSimData
@@ -26,6 +43,7 @@ export type SimulationState = {
 export enum SimulationActionTypes {
     SET_SIMULATION_ALGORITHM = "@@simulation/SET_SIMULATION_ALGORITHM",
     SET_SIMULATION_FRAME = "@@simulation/SET_SIMULATION_ALGORITHM",
+    SET_SIMULATION_OPTS = "@@simulation/SET_SIMULATION_OPTS",
     INC_SIMULATION_FRAME = "@@simulation/INC_SIMULATION_FRAME",
     DEC_SIMULATION_FRAME = "@@simulation/DEC_SIMULATION_FRAME",
     INC_PLAY_SPEED = "@@simulation/INC_PLAY_SPEED",

@@ -1,7 +1,8 @@
 import { 
     Algorithms,
     SimulationActionTypes,
-    SimulationAction
+    SimulationAction,
+    SimulationOptions
 } from './constants';
 
 export const SimulateScenario = ():SimulationAction => ({
@@ -41,4 +42,9 @@ export const SetIsPlaying = (val: boolean):SimulationAction => ({
 export const SetSimulationAlgorithm = (alg: Algorithms):SimulationAction => ({
     type: SimulationActionTypes.SET_SIMULATION_ALGORITHM,
     payload: {algorithm: alg}
+})
+
+export const SetSimOptions = (opts: SimulationOptions): SimulationAction => ({
+    type: SimulationActionTypes.SET_SIMULATION_OPTS,
+    payload: {opts: opts}
 })

@@ -7,11 +7,14 @@ import { DropdownMenu } from '../../../../../app/components/dropdownMenu';
 import { faPlay, faForward, faStepForward, faBackward, 
     faStepBackward, faCaretDown, faStop} from '@fortawesome/free-solid-svg-icons';
 import { SetSimulationAlgorithm, IncPlaySpeed, DecPlaySpeed, IncSimulationFrame, 
-    DecSimulationFrame, SetIsPlaying } from './actions';
+    DecSimulationFrame, SetIsPlaying, SetSimOptions } from './actions';
 import {
     BaseStyle,
+    InputText,
+    SimOptionInput,
     SimText,
     SimSection,
+    SimOption,
     SimHeader,
     SimBtn,
     SimPlaybackCtrl,
@@ -31,7 +34,7 @@ const SimulationView: React.FunctionComponent = (props) => {
     const [isDropdownShowing, setIsDropdownShowing] = useState(false);
     const config = useSelector((s:AppState) => 
         s.scenario.scenarios[s.scenario.activeScenarioIdx].simulation, shallowEqual)
-    
+ 
     const setAlg = (a: Algorithms) => { dispatch(SetSimulationAlgorithm(a)); setIsDropdownShowing(false); } 
     return <div style={BaseStyle}>
         <div style={SimSection}>
@@ -72,6 +75,148 @@ const SimulationView: React.FunctionComponent = (props) => {
                     <li style={SimPlaybackCtrlElem} onClick={() => dispatch(IncSimulationFrame())}> <FontAwesomeIcon icon={faStepForward}/> </li>
                 </ul>
             </div>
+        </div>
+        <div style={{marginTop: '36px'}}>
+            <ul style={{listStyle: 'none', padding: '0px 10px', margin: 0}}>
+                <li style={SimOption}>
+                    <p style={SimHeader}>Stop time per passenger (secs.):</p>
+                    <input type="text" style={InputText} value={config.options.stopTime.toFixed(2)}
+                     onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = ev.target.value === ""? 0: parseFloat(ev.target.value); 
+                        if (!isNaN(num))
+                            dispatch(SetSimOptions({
+                                ...config.options, 
+                                stopTime: num
+                            }))
+                    }}/>
+                </li>  
+                <li style={SimOption}>
+                    <p style={SimHeader}>Distance Multiplyer:</p>
+                    <input type="text" style={InputText} value={config.options.distanceMul.toFixed(2)}
+                     onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = ev.target.value === "" ? 1.2: parseFloat(ev.target.value);
+                        
+                        if (!isNaN(num))
+                            dispatch(SetSimOptions({
+                                ...config.options, 
+                                distanceMul: num,
+                            }))
+                    }}/>
+                </li>              
+                <li style={SimOption}>
+                    <p style={SimHeader}>Transit Mode Speeds:</p>
+                    <div style={{position: 'relative', margin: '8px 0px'}}>
+                        <p style={{...SimText, fontSize: '12px'}}>Foot:</p>
+                        <input type="text" value={config.options.modeSpeeds.foot.toFixed(2)}
+                            style={SimOptionInput} 
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                const num: number = ev.target.value === ""? 0: parseFloat(ev.target.value); 
+                                if (!isNaN(num))
+                                    dispatch(SetSimOptions({
+                                        ...config.options, 
+                                        modeSpeeds: {
+                                            ...config.options.modeSpeeds,
+                                            foot: num
+                                        },
+                                    }))
+                            }}/>
+                    </div>
+                    <div style={{position: 'relative', margin: '8px 0px'}}>
+                        <p style={{...SimText, fontSize: '12px'}}>Bus:</p>
+                        <input type="text" value={config.options.modeSpeeds.bus.toFixed(2)}
+                            style={SimOptionInput}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                const num: number = ev.target.value === ""? 0: parseFloat(ev.target.value);
+                                if (!isNaN(num))
+                                    dispatch(SetSimOptions({
+                                        ...config.options, 
+                                        modeSpeeds: {
+                                            ...config.options.modeSpeeds,
+                                            bus: num
+                                        },
+                                    }))
+                            }}/>
+                    </div>
+                    <div style={{position: 'relative', margin: '8px 0px'}}>
+                        <p style={{...SimText, fontSize: '12px'}}>Tram:</p>
+                        <input type="text"  value={config.options.modeSpeeds.tram.toFixed(2)}
+                            style={SimOptionInput}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                const num: number = ev.target.value === ""? 0: parseFloat(ev.target.value);
+                                if (!isNaN(num))
+                                    dispatch(SetSimOptions({
+                                        ...config.options, 
+                                        modeSpeeds: {
+                                            ...config.options.modeSpeeds,
+                                            tram: num
+                                        },
+                                    }))
+                            }}/>
+                    </div>
+                    <div style={{position: 'relative', margin: '8px 0px'}}>
+                        <p style={{...SimText, fontSize: '12px'}}>Train:</p>
+                        <input type="text" value={config.options.modeSpeeds.train.toFixed(2)}
+                            style={SimOptionInput}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                const num: number = ev.target.value === ""? 0: parseFloat(ev.target.value); 
+                                if (!isNaN(num))
+                                    dispatch(SetSimOptions({
+                                        ...config.options, 
+                                        modeSpeeds: {
+                                            ...config.options.modeSpeeds,
+                                            train: num
+                                        },
+                                    }))
+                            }}/>
+                    </div>
+                </li>
+                <li style={SimOption}>
+                    <p style={SimHeader}>Algorithm MM Language:</p>
+                    <input type="text" style={{
+                        ...InputText, cursor: 
+                        (config.algorithm !== Algorithms.MultiModalTimeDependentDijkstra 
+                        && config.algorithm !== Algorithms.CMTDijkstra)?  'not-allowed':'pointer'
+                    }} value={config.options.mmLanguage} disabled={
+                        config.algorithm !== Algorithms.MultiModalTimeDependentDijkstra 
+                        && config.algorithm !== Algorithms.CMTDijkstra }
+                        onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                            dispatch(SetSimOptions({
+                                ...config.options, 
+                                mmLanguage: ev.target.value,
+                            }))
+                        }}/>
+                </li>
+                <li style={SimOption}>
+                    <p style={SimHeader}>Congestion Interval:</p>
+                    <input type="text" style={{
+                        ...InputText, 
+                        cursor: config.algorithm !== Algorithms.CMTDijkstra?  'not-allowed':'pointer'
+                    }} value={config.options.congestionInterval.toFixed(2)}  disabled={ config.algorithm !== Algorithms.CMTDijkstra }
+                    onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = ev.target.value === ""? 0: parseFloat(ev.target.value);
+                        if (!isNaN(num))
+                            dispatch(SetSimOptions({
+                                ...config.options, 
+                                congestionInterval: num,
+                            }))
+                    }}/>
+                </li>
+                <li style={SimOption}>
+                    <p style={SimHeader}>Passenger Compliance (Percent):</p>
+                    <input type="text" style={{
+                        ...InputText, 
+                        cursor: config.algorithm !== Algorithms.CMTDijkstra?  'not-allowed':'pointer'
+                    }} value={config.options.passengerCompliance.toFixed(2)}  disabled={ config.algorithm !== Algorithms.CMTDijkstra }
+                    onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                        const num: number = ev.target.value === ""? 0: parseFloat(ev.target.value); 
+                        if (!isNaN(num))
+                            dispatch(SetSimOptions({
+                                ...config.options, 
+                                passengerCompliance: num,
+                            }))
+                    }}/>
+                </li>
+            </ul>
         </div>
     </div>;
 }

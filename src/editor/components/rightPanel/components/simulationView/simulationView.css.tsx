@@ -6,6 +6,10 @@ export const SimSection: CSS.Properties = {
     padding: '4px 15px',
 }
 
+export const SimOption: CSS.Properties = {
+    padding: '8px 0px',
+}
+
 export const SimText: CSS.Properties = {
     fontFamily: "'Open-Sans', sans-serif",
     fontSize: "14px",
@@ -13,6 +17,24 @@ export const SimText: CSS.Properties = {
     color: '#464646',
     margin: '0px 0px 5px 0px',
     display: 'inline-block'
+}
+
+export const InputText: CSS.Properties = {
+    borderRadius: '6px',
+    border: '1px solid #ddd',
+    padding: '5px 5px',
+    fontFamily: "'Open-sans', sans-serif",
+    fontSize: '14px',
+    fontWeight: 500,
+    width: 'calc(100% - 8px)',
+}
+
+export const SimOptionInput: CSS.Properties = {
+    ...InputText, 
+    position: 'absolute',
+    right: '8px',
+    width: '240px', 
+    marginLeft: '8px', 
 }
 
 export const SimHeader: CSS.Properties = {
