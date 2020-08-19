@@ -9,6 +9,8 @@ type OAProps<T> = {
     name: string
     isOrdered? :boolean
     value: { [key:number]: T }
+    disabled?:boolean
+    
     onAdd?: () => void
     onChange: (obj: { [key:number]: T }) => void
 }
@@ -18,6 +20,7 @@ function ArrayInput<T extends HasName>(
 ) : JSX.Element {
 
     const handleAction = (idx: number, action: number) => {
+        if(props.disabled) return 
         var newState = {...props.value};
         switch(action){
             case 0: // Add item
@@ -46,7 +49,11 @@ function ArrayInput<T extends HasName>(
         props.onChange(newState);
     }
 
-    return <div style={BaseStyle}>
+    return <div style={{
+            ...BaseStyle, 
+            ...(props.disabled && {backgroundColor: '#ddd'}),
+            ...(!props.disabled && {backgroundColor: '#fff'}),
+        }}>
         <div style={ArrayToolbar}>
             <p style={ViewTitle}>{props.name}</p>
             <div style={AddIcon}><FontAwesomeIcon icon={faPlus} onClick={() => {
@@ -59,7 +66,11 @@ function ArrayInput<T extends HasName>(
                     return <li style={Element} key={k}>
                         <p style={ElementNumber}>{k}.</p>
                         <p style={ElementName}>{item.name}</p>
-                        <div style={ElemIcons}>{
+                        <div style={{
+                            ...ElemIcons,
+                            ...(props.disabled && { cursor: 'not-allowed' }),
+                            ...(!props.disabled && { cursor: 'pointer' }),
+                        }}>{
                                 props.isOrdered?<>
                                     <FontAwesomeIcon icon={faAngleUp} style={{marginRight: '8px'}}
                                         onClick={() => {handleAction(+k, 2)}} />

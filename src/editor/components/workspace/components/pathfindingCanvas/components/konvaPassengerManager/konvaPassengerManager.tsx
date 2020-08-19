@@ -51,14 +51,14 @@ const KonvaPassengerManager: React.FunctionComponent<KPMProps> = (props) => {
             coords={[passengerObj.start.x, passengerObj.start.y]} boxSize={props.gridBlockSize}
             onClick={() => activeSubComponent === 1? setActiveSubComponent(0):setActiveSubComponent(1)} 
             onChange={(e: {x:number, y:number}) => props.onPassengerChange({...passengerObj, start: e})}
-            dragBoundFunc={dragFunc}
+            dragBoundFunc={dragFunc} disabled={passengerObj.isLocked}
         /> 
         <KonvaPassengerPoint isHighlighted={activeSubComponent === 2} svgData= {crosshairSVG} 
             iconCoord={{x: -8.5, y: -9.5}} iconScale={{x: 0.035, y:0.035}} color={"#10ac84"}
             coords={[passengerObj.destination.x, passengerObj.destination.y]} boxSize={props.gridBlockSize}
             onClick={() => activeSubComponent === 2? setActiveSubComponent(0):setActiveSubComponent(2)} 
             onChange={(e: {x:number, y:number}) => props.onPassengerChange({...passengerObj, destination: e})}
-            dragBoundFunc={dragFunc}
+            dragBoundFunc={dragFunc} disabled={passengerObj.isLocked}
         />
         <KonvaPassengerPath />
     </Layer>

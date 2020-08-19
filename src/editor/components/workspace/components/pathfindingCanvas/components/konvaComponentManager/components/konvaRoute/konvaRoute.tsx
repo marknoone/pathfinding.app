@@ -5,8 +5,8 @@ import { KonvaEventObject } from 'konva/types/Node';
 type KRProps = { 
     id: string, 
     name: string, 
-    colour: string
-    isHighlighted: boolean
+    colour: string,
+    isHighlighted: boolean,
 
     to: number[], 
     from: number[], 

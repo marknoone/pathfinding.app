@@ -5,13 +5,11 @@ export const BaseStyle: CSS.Properties = {
 }
 
 export const SelectionValue: CSS.Properties = {
-    backgroundColor: 'white',
     border: '1px solid #ddd',
     padding: '5px 10px',
     width: '325px',
     borderRadius: '6px',
-    height: '32px',
-    cursor: 'pointer'
+    height: '32px'
 }
 
 export const SelectionPElem: CSS.Properties = {

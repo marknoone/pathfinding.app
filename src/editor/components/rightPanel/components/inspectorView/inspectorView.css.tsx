@@ -33,7 +33,6 @@ export const FormButtons: CSS.Properties = {
 
 export const SubmitBtn: CSS.Properties = {
     fontFamily: "'Montserrat', sans-serif",
-    backgroundColor: '#0abde3',
     fontSize: '14px',
     fontWeight: 500,
     borderRadius: '6px',

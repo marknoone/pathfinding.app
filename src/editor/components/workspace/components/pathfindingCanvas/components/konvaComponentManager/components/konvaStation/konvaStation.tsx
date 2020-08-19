@@ -10,6 +10,7 @@ type KSProps = {
     boxSize: number,
     coords: number[],
     isHighlighted: boolean,
+    disabled?: boolean,
 
     startLineIDs: string[],
     endLineIDs: string[],
@@ -20,7 +21,7 @@ type KSProps = {
 }
 
 const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
-    return <Group draggable
+    return <Group draggable={!props.disabled}
         x={props.coords[0]} y={props.coords[1]}
         dragBoundFunc={props.dragBoundFunc}
         onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {

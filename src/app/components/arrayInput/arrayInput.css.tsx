@@ -1,8 +1,7 @@
 import CSS from 'csstype';
 
 export const BaseStyle: CSS.Properties = {
-    border: '1px solid #ddd',
-    backgroundColor: '#fff',
+    border: '1px solid #ddd'
 }
 
 export const ArrayToolbar: CSS.Properties = {

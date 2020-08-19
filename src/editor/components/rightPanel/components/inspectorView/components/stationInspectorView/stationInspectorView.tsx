@@ -25,12 +25,17 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
         <div style={InspectorForm}>
             <div style={FormEntry}>
                 <p style={InputLabel}>ID:</p>
-                <input type="text" style={InputText} disabled={true} value={editingObj.id}
+                <input type="text" style={{...InputText, cursor: 'not-allowed'}} 
+                    disabled={true} value={editingObj.id}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {}}/>
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Name:</p>
-                <input type="text" style={InputText} value={editingObj.name}
+                <input type="text" style={{
+                    ...InputText,
+                    ...(station.isLocked && { cursor: 'not-allowed' }),
+                    ...(!station.isLocked && { cursor: 'pointer' })
+                }} value={editingObj.name} disabled={station.isLocked}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setEditingObj({...editingObj, name: e.target.value})
                     }}/>
@@ -43,7 +48,11 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div> */}
             <div style={FormEntry}>
                 <p style={InputLabel}>NodeID:</p>
-                <input type="text" style={InputText} value={editingObj.coordinates.x}
+                <input type="text" style={{
+                    ...InputText,
+                    ...(station.isLocked && { cursor: 'not-allowed' }),
+                    ...(!station.isLocked && { cursor: 'pointer' })
+                }} value={editingObj.coordinates.x} disabled={station.isLocked}
                     placeholder="X" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -51,7 +60,11 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                                 ...editingObj.coordinates, x: num
                             }})
                     }}/>
-                <input type="text" style={InputText} value={editingObj.coordinates.y}
+                <input type="text" style={{
+                    ...InputText, marginTop: '4px',
+                    ...(station.isLocked && { cursor: 'not-allowed' }),
+                    ...(!station.isLocked && { cursor: 'pointer' })
+                }} value={editingObj.coordinates.y} disabled={station.isLocked}
                     placeholder="Y" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -62,7 +75,11 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div>
         </div>
         <div style={FormButtons}>
-            <button style={SubmitBtn} onClick={() => dispatch(
+            <button style={{
+                ...SubmitBtn,
+                ...(station.isLocked && {backgroundColor: '#666', cursor: 'not-allowed'}),
+                ...(!station.isLocked && {backgroundColor: '#0abde3', cursor: 'pointer'})
+            }} onClick={() => dispatch(
                 UpdateStationByID(editingObj)
             )}>Save</button>
             <button style={ResetBtn} onClick={() => setEditingObj(station)}>Reset</button>

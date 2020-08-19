@@ -13,6 +13,7 @@ type KPDProps = {
     isHighlighted: boolean,
     iconCoord: {x: number, y:number},
     iconScale: {x: number, y:number},
+    disabled?: boolean
 
     onClick?: () => void
     dragBoundFunc: (pos: Vector2d) => Vector2d
@@ -20,7 +21,7 @@ type KPDProps = {
 }
 
 const KonvaPassengerDeparture: React.FunctionComponent<KPDProps> = (props) => {
-    return <Group draggable
+    return <Group draggable={!props.disabled}
         x={props.coords[0]} y={props.coords[1]}
         dragBoundFunc={props.dragBoundFunc}
         onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {

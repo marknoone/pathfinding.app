@@ -10,10 +10,12 @@ import {
     OptionListElem 
 }   from './selectionInput.css';
 import './hover.anim.css';
+import { ProjectActionTypes } from '../../store/project/constants';
 
 type SelectionValue = string | number;
 type SelectionProps<T> = { 
     value: T, 
+    disabled? :boolean
     options: { 
         s: string, 
         value: T
@@ -23,11 +25,15 @@ type SelectionProps<T> = {
 }
 
 function SelectionInput<T>(
-    {value, options, onChange}: React.PropsWithChildren<SelectionProps<T>>
+    {value, disabled, options, onChange}: React.PropsWithChildren<SelectionProps<T>>
 ) : JSX.Element {
     const [isShowing, setIsShowing] = useState(false)
     return <div style={BaseStyle}>
-        <div style={SelectionValue} onClick={() => setIsShowing(!isShowing)}>
+        <div style={{
+            ...SelectionValue,
+            ...(disabled && {backgroundColor: '#e5e5e5', cursor: 'not-allowed'}),
+            ...(!disabled && {backgroundColor: 'white', cursor: 'pointer'}),
+        }} onClick={() => {if(!disabled) setIsShowing(!isShowing)}}>
             <p style={SelectionPElem}>
                 { options.find(val => val.value === value)?.s }
                 <span style={{float: 'right', marginRight: '5px'}}>
@@ -36,7 +42,7 @@ function SelectionInput<T>(
             </p>
         </div>
         {
-            isShowing?
+            isShowing && !disabled?
             <div style={OptionsContainer}>
                 <ul style={OptionList}> 
                     { options.map( (el, i) => 

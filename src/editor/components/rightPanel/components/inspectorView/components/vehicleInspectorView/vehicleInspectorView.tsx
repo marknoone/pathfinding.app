@@ -27,19 +27,29 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
         <div style={InspectorForm}>
             <div style={FormEntry}>
                 <p style={InputLabel}>ID:</p>
-                <input type="text" style={InputText} disabled={true} value={editingObj.id}
+                <input type="text" style={{...InputText, cursor: 'not-allowed'}} disabled={true} value={editingObj.id}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {}}/>
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Name:</p>
-                <input type="text" style={InputText} value={editingObj.name}
+                <input type="text" style={{
+                    ...InputText,
+                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
+                    ...(!vehicle.isLocked && { cursor: 'pointer' })
+                }} value={editingObj.name}
+                    disabled={vehicle.isLocked}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setEditingObj({...editingObj, name: e.target.value})
                     }}/>
             </div>
             <div style={FormEntry}>
                 <p style={InputLabel}>Capacity:</p>
-                <input type="text" style={InputText} value={editingObj.capacity}
+                <input type="text" style={{
+                    ...InputText,
+                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
+                    ...(!vehicle.isLocked && { cursor: 'pointer' })
+                }}  value={editingObj.capacity}
+                    disabled={vehicle.isLocked}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, capacity: num}) }
@@ -48,6 +58,7 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             <div style={FormEntry}>
                 <p style={InputLabel}>Glyph:</p>
                 <SelectionInput<IconDefinition> value={editingObj.glyph}
+                    disabled={vehicle.isLocked}
                     options={[
                         { s: "Archive", value: faArchive}
                     ]}
@@ -55,7 +66,11 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             </div>
         </div>
         <div style={FormButtons}>
-            <button  style={SubmitBtn} onClick={() => dispatch(
+            <button  style={{
+                ...SubmitBtn,
+                ...(vehicle.isLocked && {backgroundColor: '#666', cursor: 'not-allowed'}),
+                ...(!vehicle.isLocked && {backgroundColor: '#0abde3', cursor: 'pointer'})
+            }} disabled={vehicle.isLocked} onClick={() => dispatch(
                 UpdateVehicleByID(editingObj)
             )}>Save</button>
             <button  style={ResetBtn} onClick={() => setEditingObj(vehicle)}>Reset</button>
