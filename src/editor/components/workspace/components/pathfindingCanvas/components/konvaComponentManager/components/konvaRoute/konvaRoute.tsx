@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from 'react-konva';
+import { Line, RegularPolygon } from 'react-konva';
 import { KonvaEventObject } from 'konva/types/Node';
 
 type KRProps = { 
@@ -15,10 +15,10 @@ type KRProps = {
 }
 
 const KonvaRoute: React.FunctionComponent<KRProps> = (props) => {
-    // const angle = Math.atan2(
-    //     (props.to[1] - props.from[1]),
-    //     (props.to[0] - props.from[0])
-    // ) * (180/Math.PI);
+    const angle = Math.atan2(
+        (props.to[1] - props.from[1]),
+        (props.to[0] - props.from[0])
+    ) * (180/Math.PI);
     return <>
         {/* Use a hover tooltip */}
         {
@@ -45,6 +45,7 @@ const KonvaRoute: React.FunctionComponent<KRProps> = (props) => {
             id={props.id}
             points={[...props.from, ...props.to]}
             stroke={props.colour}
+            fill={props.colour}
             strokeWidth={6}
             onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {
                 const stage = e.target.getStage()
@@ -60,6 +61,18 @@ const KonvaRoute: React.FunctionComponent<KRProps> = (props) => {
                 if(props.onClick)
                     props.onClick(e);
             }}
+        />
+        <RegularPolygon
+            rotation={angle + 90}
+            id={props.id + "-polygon"}
+            x={(props.from[0]+props.to[0])/2} 
+            y={(props.from[1]+props.to[1])/2}
+            points={[...props.from, ...props.to]}
+            stroke={props.colour}
+            fill={props.colour}
+            sides={3}
+            radius={15}
+
         />
         
     </>
