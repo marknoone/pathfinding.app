@@ -1,5 +1,6 @@
 import React, { useState }from 'react';
 import { Algorithms, Playspeeds } from './constants';
+import { getGraph } from './selectors';
 import { AppState } from '../../../../../store';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,6 +33,7 @@ const AlgorithmNames = {
 const SimulationView: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
     const [isDropdownShowing, setIsDropdownShowing] = useState(false);
+    const g = useSelector(getGraph);
     const config = useSelector((s:AppState) => 
         s.scenario.scenarios[s.scenario.activeScenarioIdx].simulation, shallowEqual)
  

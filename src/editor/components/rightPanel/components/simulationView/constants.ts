@@ -1,3 +1,6 @@
+import { TransitModes } from "../../../leftPanel/components/componentView/constants";
+import { IDQueue } from '../../../../../app/pkg/queue/queue';
+
 export type SimulationAction = {
     type: string
     payload?: {
@@ -95,4 +98,48 @@ export type VehicleSimData = {
     passengerCnt:   {[simStep: number]: { val: number }},
 }
 
-export type Graph = { nodes: {[boxID: number]:{}}}
+
+// Simulation types...
+export type Node = {
+    id: number,
+    queue: IDQueue | null
+    center: {x: number, y: number},
+}
+
+export type Edge = {
+    to: number, 
+    mode: TransitModes,
+    
+    weight: (timeSecs: number) => number,
+    congestion?: (timeSecs: number) => number,
+}
+
+export type Graph = { 
+    nodes: { [nID: number]: Node   },
+    edges: { [nID: number]: Edge[] },
+}
+
+export type BSMatrix = number[][]
+
+export type ActivePassenger = {
+    currentMode: TransitModes
+    currentVehicle: string
+    lastStatusChg: number
+    status: "TRAVELLING" | "WAITING" | "ONBOARD"
+
+    path: string[]
+    destNode: string
+    coords: {x: number, y: number}
+}
+
+export type ActiveVehicle = {
+    destStation: string
+    activatedOn: number
+    lastStatusChg: number
+    status: "STOPPED" | "INTRANSIT"
+
+    coords: {x: number, y: number}
+    alightingPassengers: IDQueue
+}   
+
+export interface EvaluationMiddleware {}
