@@ -1,3 +1,15 @@
-const TD_Dijkstra = () => {};
+import { PathfindingAlg } from './index';
+import { Graph } from "../constants";
 
-export default TD_Dijkstra;
+class TDPathfinding implements PathfindingAlg {
+    graph: Graph
+    constructor(g: Graph){
+        this.graph = g;
+    }
+
+    Execute(s: number, d: number, depTime:number){
+        return [];
+    }
+};
+
+export default TDPathfinding;

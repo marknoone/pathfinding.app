@@ -1,5 +1,5 @@
 import { TransitModes } from "../../../leftPanel/components/componentView/constants";
-import { IDQueue } from '../../../../../app/pkg/queue/queue';
+import { IDQueue } from '../../../../../app/pkg/queues';
 
 export type SimulationAction = {
     type: string
@@ -123,15 +123,19 @@ export type Graph = {
 export type BSMatrix = number[][]
 
 export type ActivePassenger = {
-    currentMode: TransitModes
-    currentVehicle: string
+    currentMode: TransitModes | null
+    currentVehicle: string | null
     lastStatusChg: number
-    status: "TRAVELLING" | "WAITING" | "ONBOARD"
+    status: "TRAVELLING" | "WAITING" | "NOTREADY" | "COMPLETED"
 
-    path: string[]
+    path: Path
     destNode: string
     coords: {x: number, y: number}
 }
+
+export type Path = {
+   nodeID: number 
+}[]
 
 export type ActiveVehicle = {
     destStation: string

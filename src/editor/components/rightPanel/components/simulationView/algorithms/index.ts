@@ -1,9 +1,9 @@
-import { Graph } from "../constants";
+import { Graph, Path } from "../constants";
 
 export interface PathfindingAlg {
     Execute(
-        start: {x:number, y: number},
-        dest: {x:number, y: number},
-        g:Graph
-    );
+        startNodeID: number,
+        destNodeID: number,
+        depTime: number
+    ): Path;
 } 

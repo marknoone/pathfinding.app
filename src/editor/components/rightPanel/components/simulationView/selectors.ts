@@ -45,30 +45,6 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
 
         // 2. Iterate through and connect nodes above, 
         //      below, and of either side if present.
-        const findNodeWithCoordinates = (
-            coords: {x: number, y:number}, 
-            predicates?: ((n: Node)=>boolean)[] 
-        ):(number|null) => {
-            const id = Object.keys(graph.nodes).find((k: string) => {
-                const n = graph.nodes[+k], h = bSize/2;
-                const l=n.center.x-h, r=n.center.x+h, 
-                    t=n.center.y-h, b=n.center.y+h;
-                
-                if(coords.x < l || coords.x < 0) return false;
-                if(coords.y < t || coords.y < 0) return false;
-                if(coords.x > r || coords.x > cWidth) return false;
-                if(coords.y > b || coords.y > cHeight) return false;
-                if(predicates){ 
-                    for(let idx = 0; idx < predicates.length; idx++)
-                        if(predicates[idx](n)) { return false; }
-                }
-
-                return true
-            });
-
-            return id?+id:null;
-        }
-
         Object.keys(graph.nodes).forEach((k:string)=>{
             const id = +k, node = graph.nodes[id];
             const candidates = [
@@ -80,8 +56,8 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
 
             
             let edges: Edge[] =[]
-            candidates.forEach((c) => {
-                const n = findNodeWithCoordinates(c, [(n:Node) => n.id === id]);
+            candidates.forEach((cand) => {
+                const n = findNodeWithCoordinates(graph, bSize, c.canvasSize, cand, [(n:Node) => n.id === id]);
                 if(n){
                     const weight = (
                         dist(node.center, graph.nodes[n].center) * opts.distanceMul
@@ -114,8 +90,8 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
                     const currentStnID = route.stations[+sortedKeys[i]],
                         currStn = s.stations.data[currentStnID.id]; 
                     
-                    const prevStnNodeID = findNodeWithCoordinates(prevStn.coordinates); 
-                    const currStnNodeID = findNodeWithCoordinates(currStn.coordinates);
+                    const prevStnNodeID = findNodeWithCoordinates(graph, bSize, c.canvasSize, prevStn.coordinates); 
+                    const currStnNodeID = findNodeWithCoordinates(graph, bSize, c.canvasSize, currStn.coordinates);
 
                     if(prevStnNodeID && currStnNodeID){
                         const weight = (
@@ -150,3 +126,31 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
         return graph;
     }
 );
+
+export const findNodeWithCoordinates = (
+    graph: Graph,
+    boxSize: number,
+    dimensions: number[],
+    coords: {x: number, y:number}, 
+    predicates?: ((n: Node)=>boolean)[] 
+):(number|null) => {
+    const [cWidth, cHeight] = dimensions;
+    const id = Object.keys(graph.nodes).find((k: string) => {
+        const n = graph.nodes[+k], h = boxSize/2;
+        const l=n.center.x-h, r=n.center.x+h, 
+            t=n.center.y-h, b=n.center.y+h;
+        
+        if(coords.x < l || coords.x < 0) return false;
+        if(coords.y < t || coords.y < 0) return false;
+        if(coords.x > r || coords.x > cWidth) return false;
+        if(coords.y > b || coords.y > cHeight) return false;
+        if(predicates){ 
+            for(let idx = 0; idx < predicates.length; idx++)
+                if(predicates[idx](n)) { return false; }
+        }
+
+        return true
+    });
+
+    return id?+id:null;
+}

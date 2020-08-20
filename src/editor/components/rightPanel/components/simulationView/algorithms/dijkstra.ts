@@ -1,69 +1,67 @@
-// import { Graph } from "../constants";
+import { Graph, Edge } from "../constants";
+import { PathfindingAlg } from './index';
+import { PriorityQueue } from '../../../../../../app/pkg/queues';
 
-const Dijkstra = () => {
+class DijkstraPathfinding implements PathfindingAlg {
+    graph: Graph
+    nodeCnt: number
+    pq: PriorityQueue<number>
+    settled: Set<number>
+    dist: { [nID:number] :number }
 
+    constructor(g:Graph){ 
+        this.graph = g;
+        this.dist = {};
+        this.settled = new Set<number>();
+        this.pq = new PriorityQueue<number>(); 
+        this.nodeCnt = Object.keys(g.nodes).length;
+    }
+
+    Execute(s: number, d: number, depTime:number){
+        // Init
+        this.dist = {};
+        this.settled = new Set<number>();
+        this.pq.Clear();
+
+        for (let i = 0; i < this.nodeCnt; i++) 
+            this.dist[i] = Number.MAX_SAFE_INTEGER; 
+
+        // Start PQ/Distance with starting node.
+        this.dist[s] = 0; 
+        this.pq.Enqueue(s, 0); 
+
+        while (this.settled.size <= this.nodeCnt){
+            const currNode = this.pq.Dequeue();
+            if(currNode){
+                this.settled.add(currNode);
+
+                let edgeDistance: number = -1; 
+                let newDistance: number = -1; 
+        
+                this.graph.edges[currNode].forEach((e: Edge) => { 
+                    const n = this.graph.nodes[e.to];
+        
+                    // If current node hasn't already been processed 
+                    if (!this.settled.has(n.id)) { 
+                        edgeDistance = e.weight(); 
+                        newDistance = this.dist[currNode] + edgeDistance; 
+        
+                        // If new distance is cheaper in cost 
+                        if (newDistance < this.dist[n.id]) 
+                            this.dist[n.id] = newDistance; 
+        
+                        // Add the current node to the queue 
+                        this.pq.Enqueue(n.id, this.dist[n.id]); 
+                    } 
+                }); 
+            }
+        }
+
+        return [];
+    }
 };
 
-export default Dijkstra;
+export default DijkstraPathfinding;
 
-// const lowestCostNode = (costs, processed) => {
-//     return Object.keys(costs).reduce((lowest, node) => {
-//       if (lowest === null || costs[node] < costs[lowest]) {
-//         if (!processed.includes(node)) {
-//           lowest = node;
-//         }
-//       }
-//       return lowest;
-//     }, null);
-//   };
 
-// // function that returns the minimum cost and path to reach Finish
-// const dijkstra = (graph) => {
 
-//     // track lowest cost to reach each node
-//     const costs = Object.assign({finish: Infinity}, graph.start);
-  
-//     // track paths
-//     const parents = {finish: null};
-//     for (let child in graph.start) {
-//       parents[child] = 'start';
-//     }
-  
-//     // track nodes that have already been processed
-//     const processed = [];
-  
-//     let node = lowestCostNode(costs, processed);
-  
-//     while (node) {
-//       let cost = costs[node];
-//       let children = graph[node];
-//       for (let n in children) {
-//         let newCost = cost + children[n];
-//         if (!costs[n]) {
-//           costs[n] = newCost;
-//           parents[n] = node;
-//         }
-//         if (costs[n] > newCost) {
-//           costs[n] = newCost;
-//           parents[n] = node;
-//         }
-//       }
-//       processed.push(node);
-//       node = lowestCostNode(costs, processed);
-//     }
-  
-//     let optimalPath = ['finish'];
-//     let parent = parents.finish;
-//     while (parent) {
-//       optimalPath.push(parent);
-//       parent = parents[parent];
-//     }
-//     optimalPath.reverse();
-  
-//     const results = {
-//       distance: costs.finish,
-//       path: optimalPath
-//     };
-  
-//     return results;
-//   };
