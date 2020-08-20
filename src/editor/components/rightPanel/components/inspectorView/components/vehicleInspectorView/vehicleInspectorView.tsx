@@ -16,6 +16,8 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
     const dispatch = useDispatch();
     const getVehicleByID = useMemo(makeGetVehicleByIDSelector, [])
     const vehicle = useSelector((state: AppState) =>  getVehicleByID(state, props.id))
+    const isSimulating = useSelector((state: AppState) =>  
+        state.scenario.scenarios[state.scenario.activeScenarioIdx].simulation.isSimulating)
     const [editingObj, setEditingObj] = useState<Vehicle>(vehicle)
     useEffect(() => {
         if(!vehicle) { dispatch(SetInspectingIsActive(false)); return; }
@@ -23,6 +25,8 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             setEditingObj(vehicle);
     });
     
+
+    const disabled =  vehicle.isLocked || isSimulating;
     return <div style={BaseStyle}>
         <div style={InspectorForm}>
             <div style={FormEntry}>
@@ -34,10 +38,10 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <p style={InputLabel}>Name:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
                 }} value={editingObj.name}
-                    disabled={vehicle.isLocked}
+                    disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setEditingObj({...editingObj, name: e.target.value})
                     }}/>
@@ -46,10 +50,10 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <p style={InputLabel}>Capacity:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
                 }}  value={editingObj.capacity}
-                    disabled={vehicle.isLocked}
+                    disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, capacity: num}) }
@@ -58,7 +62,7 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             <div style={FormEntry}>
                 <p style={InputLabel}>Glyph:</p>
                 <SelectionInput<IconDefinition> value={editingObj.glyph}
-                    disabled={vehicle.isLocked}
+                    disabled={disabled}
                     options={[
                         { s: "Archive", value: faArchive}
                     ]}
@@ -70,9 +74,9 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <input type="text" style={{
                     ...InputText,
                     ...LOSInputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
-                }}  value={editingObj.LOS.A} disabled={vehicle.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }}  value={editingObj.LOS.A} disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, LOS: {...editingObj.LOS, A: num}}) }
@@ -83,9 +87,9 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <input type="text" style={{
                     ...InputText,
                     ...LOSInputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
-                }}  value={editingObj.LOS.B} disabled={vehicle.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }}  value={editingObj.LOS.B} disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, LOS: {...editingObj.LOS, B: num}}) }
@@ -96,9 +100,9 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <input type="text" style={{
                     ...InputText,
                     ...LOSInputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
-                }}  value={editingObj.LOS.C} disabled={vehicle.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }}  value={editingObj.LOS.C} disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, LOS: {...editingObj.LOS, C: num}}) }
@@ -109,9 +113,9 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <input type="text" style={{
                     ...InputText,
                     ...LOSInputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
-                }}  value={editingObj.LOS.D} disabled={vehicle.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }}  value={editingObj.LOS.D} disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, LOS: {...editingObj.LOS, D: num}}) }
@@ -122,9 +126,9 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <input type="text" style={{
                     ...InputText,
                     ...LOSInputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
-                }}  value={editingObj.LOS.E} disabled={vehicle.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }}  value={editingObj.LOS.E} disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, LOS: {...editingObj.LOS, E: num}}) }
@@ -135,9 +139,9 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <input type="text" style={{
                     ...InputText,
                     ...LOSInputText,
-                    ...(vehicle.isLocked && { cursor: 'not-allowed' }),
-                    ...(!vehicle.isLocked && { cursor: 'text' })
-                }}  value={editingObj.LOS.F} disabled={vehicle.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }}  value={editingObj.LOS.F} disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, LOS: {...editingObj.LOS, F: num}}) }
@@ -147,9 +151,9 @@ const VehicleInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
         <div style={FormButtons}>
             <button  style={{
                 ...SubmitBtn,
-                ...(vehicle.isLocked && {backgroundColor: '#666', cursor: 'not-allowed'}),
-                ...(!vehicle.isLocked && {backgroundColor: '#0abde3', cursor: 'pointer'})
-            }} disabled={vehicle.isLocked} onClick={() => dispatch(
+                ...(disabled && {backgroundColor: '#666', cursor: 'not-allowed'}),
+                ...(!disabled && {backgroundColor: '#0abde3', cursor: 'pointer'})
+            }} disabled={disabled} onClick={() => dispatch(
                 UpdateVehicleByID(editingObj)
             )}>Save</button>
             <button  style={ResetBtn} onClick={() => setEditingObj(vehicle)}>Reset</button>

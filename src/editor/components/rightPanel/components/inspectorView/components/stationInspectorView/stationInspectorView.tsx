@@ -13,6 +13,8 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
     const dispatch = useDispatch();
     const getStationByID = useMemo(makeGetStationByIDSelector, [])
     const station = useSelector((state: AppState) =>  getStationByID(state, props.id), shallowEqual)
+    const isSimulating = useSelector((state: AppState) =>  
+        state.scenario.scenarios[state.scenario.activeScenarioIdx].simulation.isSimulating);
     const [editingObj, setEditingObj] = useState<Station>(station);
     useEffect(() => {
         if(!station) { dispatch(SetInspectingIsActive(false)); return; }
@@ -20,7 +22,8 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
             setEditingObj(station);
     });
 
-    
+
+    const disabled =  station.isLocked || isSimulating;
     return <div style={BaseStyle}>
         <div style={InspectorForm}>
             <div style={FormEntry}>
@@ -33,9 +36,9 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <p style={InputLabel}>Name:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(station.isLocked && { cursor: 'not-allowed' }),
-                    ...(!station.isLocked && { cursor: 'text' })
-                }} value={editingObj.name} disabled={station.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} value={editingObj.name} disabled={disabled}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setEditingObj({...editingObj, name: e.target.value})
                     }}/>
@@ -50,9 +53,9 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                 <p style={InputLabel}>NodeID:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(station.isLocked && { cursor: 'not-allowed' }),
-                    ...(!station.isLocked && { cursor: 'text' })
-                }} value={editingObj.coordinates.x} disabled={station.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} value={editingObj.coordinates.x} disabled={disabled}
                     placeholder="X" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -62,9 +65,9 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
                     }}/>
                 <input type="text" style={{
                     ...InputText, marginTop: '4px',
-                    ...(station.isLocked && { cursor: 'not-allowed' }),
-                    ...(!station.isLocked && { cursor: 'text' })
-                }} value={editingObj.coordinates.y} disabled={station.isLocked}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} value={editingObj.coordinates.y} disabled={disabled}
                     placeholder="Y" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -77,8 +80,8 @@ const StationInspectorView: React.FunctionComponent<InspectorSubViewProps> = (pr
         <div style={FormButtons}>
             <button style={{
                 ...SubmitBtn,
-                ...(station.isLocked && {backgroundColor: '#666', cursor: 'not-allowed'}),
-                ...(!station.isLocked && {backgroundColor: '#0abde3', cursor: 'pointer'})
+                ...(disabled && {backgroundColor: '#666', cursor: 'not-allowed'}),
+                ...(!disabled && {backgroundColor: '#0abde3', cursor: 'pointer'})
             }} onClick={() => dispatch(
                 UpdateStationByID(editingObj)
             )}>Save</button>

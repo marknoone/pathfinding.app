@@ -31,6 +31,8 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
         [ state.scenario.activeScenarioIdx ].routes, shallowEqual);
     const vehicles = useSelector((state: AppState) => state.scenario.scenarios
         [ state.scenario.activeScenarioIdx ].vehicles, shallowEqual);
+    const isSimulating = useSelector((state: AppState) =>  
+        state.scenario.scenarios[state.scenario.activeScenarioIdx].simulation.isSimulating)
 
     useLayoutEffect(() => {
         dispatch(SetCanvasCoordinates(
@@ -51,7 +53,7 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
                 s.newScale.x, s.newScale.y
             ))}/>
         <KonvaComponentManager gridBlockSize={canvasOpts.boxSize} inspecting={inspecting}
-            coords={canvasOpts.coords} stations={stations.data} routes={routes.data} 
+            coords={canvasOpts.coords} stations={stations.data} routes={routes.data} disabled={isSimulating}
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} dimensions={canvasOpts.canvasSize} 
             onRouteClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.ROUTE, id))}
             onStationClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.STATION, id))}

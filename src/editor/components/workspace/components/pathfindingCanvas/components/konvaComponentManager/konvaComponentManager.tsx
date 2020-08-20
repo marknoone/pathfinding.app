@@ -17,11 +17,12 @@ type KCMProps = {
         x: number, 
         y:number 
     }
-
+    
     stations: StationDataObj,
     routes: RouteDataObj,
     inspecting: InspectorState
-
+    
+    disabled?: boolean,
     onRouteClick?: (id: number) => void
     onStationClick?: (id: number) => void
     onStationCoordChange: 
@@ -96,7 +97,7 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                 if(isNaN(idx)) return null;
                 const stn = props.stations[idx];
                 return <KonvaStation key={stn.id} colour="#464646" 
-                    dragBoundFunc={dragFunc} disabled={stn.isLocked}
+                    dragBoundFunc={dragFunc} disabled={stn.isLocked || props.disabled}
                     startLineIDs={stationRouteMap[stn.id].start} 
                     endLineIDs={stationRouteMap[stn.id].end}
                     coords={[stn.coordinates.x, stn.coordinates.y]}

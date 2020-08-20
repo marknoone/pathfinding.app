@@ -15,6 +15,8 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
     const getPassengerElemByID = useMemo(makeGetPassengerElemByIDSelector, [])
     const passenger = useSelector((state: AppState) =>  
         getPassengerElemByID(state, props.id), shallowEqual) as Passenger;
+    const isSimulating = useSelector((state: AppState) =>  
+        state.scenario.scenarios[state.scenario.activeScenarioIdx].simulation.isSimulating)
     const [editingObj, setEditingObj] = useState<Passenger>(passenger)
     
     useEffect(() => {
@@ -24,6 +26,8 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
             setEditingObj(passenger);
     });
 
+
+    const disabled =  passenger.isLocked || isSimulating;
     return <div style={BaseStyle}>
         <div style={InspectorForm}>
             <div style={FormEntry}>
@@ -35,9 +39,9 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <p style={InputLabel}>Name:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'text' })
-                }} disabled={passenger.isLocked} value={editingObj.name}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} disabled={disabled} value={editingObj.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         setEditingObj({...editingObj, name: e.target.value})
                     }}/>
@@ -46,9 +50,10 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <p style={InputLabel}>Start:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'text' })
-                }} disabled={passenger.isLocked} value={editingObj.start.x}
+                    ...{marginBottom: '4px'},
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} disabled={disabled} value={editingObj.start.x}
                     placeholder={"X:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -58,9 +63,9 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                     }}/>
                 <input type="text" style={{
                     ...InputText,
-                    ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'text' })
-                }} disabled={passenger.isLocked} value={editingObj.start.y}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} disabled={disabled} value={editingObj.start.y}
                     placeholder={"Y:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -73,9 +78,10 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <p style={InputLabel}>Destination:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'text' })
-                }} disabled={passenger.isLocked} value={editingObj.destination.x}
+                    ...{marginBottom: '4px'},
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} disabled={disabled} value={editingObj.destination.x}
                     placeholder={"X:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -85,9 +91,9 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                     }}/>
                 <input type="text" style={{
                     ...InputText,
-                    ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'text' })
-                }} disabled={passenger.isLocked} value={editingObj.destination.y}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} disabled={disabled} value={editingObj.destination.y}
                     placeholder={"Y:"} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num))
@@ -100,9 +106,9 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
                 <p style={InputLabel}>Time Of Departure:</p>
                 <input type="text" style={{
                     ...InputText,
-                    ...(passenger.isLocked && { cursor: 'not-allowed' }),
-                    ...(!passenger.isLocked && { cursor: 'text' })
-                }} disabled={passenger.isLocked} value={editingObj.tod}
+                    ...(disabled && { cursor: 'not-allowed' }),
+                    ...(!disabled && { cursor: 'text' })
+                }} disabled={disabled} value={editingObj.tod}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const num: number = parseInt(e.target.value, 10); 
                         if (!isNaN(num)){ setEditingObj({...editingObj, tod: num}) }
@@ -112,9 +118,9 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
         <div style={FormButtons}>
             <button style={{
                 ...SubmitBtn,
-                ...(passenger.isLocked && {backgroundColor: '#666', cursor: 'not-allowed'}),
-                ...(!passenger.isLocked && {backgroundColor: '#0abde3', cursor: 'pointer'})
-            }} disabled={passenger.isLocked} onClick={() => dispatch(
+                ...(disabled && {backgroundColor: '#666', cursor: 'not-allowed'}),
+                ...(!disabled && {backgroundColor: '#0abde3', cursor: 'pointer'})
+            }} disabled={disabled} onClick={() => dispatch(
                 UpdatePassengerWithID(editingObj)
             )}>Save</button>
             <button style={ResetBtn} onClick={() => setEditingObj(passenger)}>Reset</button>
