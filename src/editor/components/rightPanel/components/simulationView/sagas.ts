@@ -26,13 +26,13 @@ function* SimulateActiveScenario() {
     const GetPath = ( start: number, dest: number, depTime: number, alg: Algorithms, g:Graph): Path => {
         switch(alg) {
             case Algorithms.Dijkstra: 
-                return Dijkstra.Execute(start, dest, depTime, g);
+                return new Dijkstra(g).Execute(start, dest, depTime);
             case Algorithms.TimeDependentDijkstra: 
-                return TD_Dijkstra.Execute(start, dest, depTime, g);
+                return new TD_Dijkstra(g).Execute(start, dest, depTime);
             case Algorithms.MultiModalTimeDependentDijkstra: 
-                return MM_TD_Dijkstra.Execute(start, dest, depTime, g);
+                return new MM_TD_Dijkstra(g).Execute(start, dest, depTime);
             case Algorithms.CMTDijkstra: 
-                return CMT_Dijkstra.Execute(start, dest, depTime, g);
+                return new CMT_Dijkstra(g).Execute(start, dest, depTime);
             default: 
                 return [];
         }
