@@ -25,45 +25,55 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
     const evaluateRouteLines = (e: KonvaEventObject<MouseEvent>, layer: Layer) => {
         if(props.startLineIDs.length > 0) {
             props.startLineIDs.map( id => {
-                const obj = layer.findOne(`#${id}`)
-                const objTri = layer.findOne(`#${id}-polygon`)
+                const obj = layer.find(`#${id}`)
+                const objTri = layer.find(`#${id}-polygon`)
+                let points:number[] = [];
                 if(!obj) return;
-                const p = obj.attrs["points"]
-                obj.setAttr("points", [
-                    e.target.x(),
-                    e.target.y(),
-                    p[2], p[3],
-                ]);
+                obj.each((o) => {
+                    const p = o.attrs["points"]
+                    points = [
+                        e.target.x(),
+                        e.target.y(),
+                        p[2], p[3],
+                    ]
+                    o.setAttr("points", [...points]);
+                });
                 if(!objTri) return;
-                objTri.setAttr("x", (e.target.x()+p[2])/2);
-                objTri.setAttr("y", (e.target.y()+p[3])/2);
-                objTri.setAttr("rotation",  (Math.atan2(
-                    (p[3] - e.target.y()),
-                    (p[2] - e.target.x())
-                ) * (180/Math.PI)) + 90);
-                    
+                objTri.each((o) => {
+                    o.setAttr("x", (e.target.x()+points[2])/2);
+                    o.setAttr("y", (e.target.y()+points[3])/2);
+                    o.setAttr("rotation",  (Math.atan2(
+                        (points[3] - e.target.y()),
+                        (points[2] - e.target.x())
+                    ) * (180/Math.PI)) + 90);
+                });                    
             });
         }
 
         if(props.endLineIDs.length > 0){
             props.endLineIDs.map( id => {
-                const obj = layer.findOne(`#${id}`)
-                const objTri = layer.findOne(`#${id}-polygon`)
+                const obj = layer.find(`#${id}`)
+                const objTri = layer.find(`#${id}-polygon`)
+                let points:number[] = [];
                 if(!obj) return;
-                const p = obj.attrs["points"]
-                obj.setAttr("points", [
-                    p[0], p[1],
-                    e.target.x(),
-                    e.target.y(),
-                ]);;
+                obj.each((o) => {
+                    const p = o.attrs["points"]
+                    points = [
+                        p[0], p[1],
+                        e.target.x(),
+                        e.target.y(),
+                    ]
+                    o.setAttr("points", [...points]);
+                });
                 if(!objTri) return;
-                objTri.setAttr("x", (e.target.x()+p[0])/2);
-                objTri.setAttr("y", (e.target.y()+p[1])/2);
-                objTri.setAttr("rotation",  (Math.atan2(
-                    (p[1] - e.target.y()),
-                    (p[0] - e.target.x())
-                ) * (180/Math.PI)) - 90);
-                    
+                objTri.each((o) => {
+                    o.setAttr("x", (e.target.x()+points[0])/2);
+                    o.setAttr("y", (e.target.y()+points[1])/2);
+                    o.setAttr("rotation",  (Math.atan2(
+                        (points[1] - e.target.y()),
+                        (points[0] - e.target.x())
+                    ) * (180/Math.PI)) - 90);
+                });                    
             });
         };
     }
