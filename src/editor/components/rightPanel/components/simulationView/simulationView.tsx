@@ -33,7 +33,6 @@ const AlgorithmNames = {
 const SimulationView: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
     const [isDropdownShowing, setIsDropdownShowing] = useState(false);
-    const g = useSelector(getGraph);
     const config = useSelector((s:AppState) => 
         s.scenario.scenarios[s.scenario.activeScenarioIdx].simulation, shallowEqual)
  

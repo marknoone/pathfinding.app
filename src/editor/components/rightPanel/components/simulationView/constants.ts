@@ -110,7 +110,8 @@ export type Edge = {
     to: number, 
     mode: TransitModes,
     
-    weight: (timeSecs: number) => number,
+    weight: () => number,
+    tdWeight: (timeSecs: number) => number,
     congestion?: (timeSecs: number) => number,
 }
 

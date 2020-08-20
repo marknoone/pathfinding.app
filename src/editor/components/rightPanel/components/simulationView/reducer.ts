@@ -23,7 +23,7 @@ export const initialState: SimulationState = {
     data: null,
     options:{
         stopTime: 2,
-        distanceMul: 1.5,
+        distanceMul: 10.0,
         mmLanguage: "",
         congestionInterval: 60,
         passengerCompliance: 100,

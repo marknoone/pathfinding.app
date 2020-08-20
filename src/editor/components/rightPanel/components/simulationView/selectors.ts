@@ -4,6 +4,7 @@ import { Graph, Node, Edge } from './constants';
 import { Scenario } from '../../../../constants';
 import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
 import { TransitModes } from '../../../leftPanel/components/componentView/constants';
+import { AddDepartureToRouteModal } from '../../../../../modalManager/modals';
 
 const getCanvasState = (state: AppState) => state.canvas;
 const getScenarioState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx];
@@ -12,7 +13,16 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
     getCanvasState, 
     (s: Scenario, c: CanvasState) => {
         const bSize = c.boxSize;
+        const opts = s.simulation.options;
         const [cWidth, cHeight] = c.canvasSize;
+        const dist = (a:{x:number, y:number}, b:{x:number, y:number}) =>
+            Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+        const ModeSpeedMap = {
+            [TransitModes.FOOT]:  s.simulation.options.modeSpeeds.foot,
+            [TransitModes.TRAIN]: s.simulation.options.modeSpeeds.train,
+            [TransitModes.TRAM]:  s.simulation.options.modeSpeeds.tram,
+            [TransitModes.BUS]:   s.simulation.options.modeSpeeds.bus,
+        }
 
         // Add all connected walking nodes
         let nodeID = 1;
@@ -73,11 +83,14 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
             candidates.forEach((c) => {
                 const n = findNodeWithCoordinates(c, [(n:Node) => n.id === id]);
                 if(n){
+                    const weight = (
+                        dist(node.center, graph.nodes[n].center) * opts.distanceMul
+                    ) / ModeSpeedMap[TransitModes.FOOT];
                     edges.push({
                         to: n, 
                         mode: TransitModes.FOOT, 
-                        weight: (timeSecs) => 
-                            s.simulation.options.modeSpeeds.foot,
+                        weight: () => Math.round(weight),
+                        tdWeight: (timeSecs) => Math.round(weight), // No departures on foot accesible nodes.
                         congestion: (timeSecs) => 1,
                     })
                 }
@@ -85,7 +98,55 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
             graph.edges[id] = [...edges];
         })
 
-        console.log(graph);
-        return { } as Graph
+        // 3. Iterate through routes and add respective edges
+        Object.keys(s.routes.data).forEach((r:String) => {
+            const id = +r, route = s.routes.data[id];
+
+            const sortedDepKeys = Object.keys(route.departures).sort();
+            let deps = sortedDepKeys.map((k:string) => route.departures[+k].value)
+            console.log(sortedDepKeys);
+            if(Object.keys(route.stations).length > 1){
+                const sortedKeys = Object.keys(route.stations).sort();
+                for(let i = 1; i < sortedKeys.length; i++){
+                    const currDeps = [...deps];
+                    const prevStnID = route.stations[+sortedKeys[i-1]],
+                        prevStn = s.stations.data[prevStnID.id];
+                    const currentStnID = route.stations[+sortedKeys[i]],
+                        currStn = s.stations.data[currentStnID.id]; 
+                    
+                    const prevStnNodeID = findNodeWithCoordinates(prevStn.coordinates); 
+                    const currStnNodeID = findNodeWithCoordinates(currStn.coordinates);
+
+                    if(prevStnNodeID && currStnNodeID){
+                        const weight = (
+                            dist(prevStn.coordinates, currStn.coordinates) * opts.distanceMul
+                        ) / ModeSpeedMap[route.mode];
+
+                        graph.edges[prevStnNodeID] = [
+                            ...graph.edges[prevStnNodeID],
+                            {
+                                to: currStnNodeID, 
+                                mode: route.mode, 
+                                weight: () => Math.round(weight),
+                                tdWeight: (timeSecs) => {
+                                    const sortedDepartures = currDeps.sort();
+                                    const closestDep = sortedDepartures.find((d:number) => timeSecs < d);
+                                    return closestDep? (closestDep - timeSecs) + Math.round(weight): 9999999
+                                },
+                                congestion: (timeSecs) => 1,
+                            }
+                        ]
+
+                        // Add travelling time for next stop departures
+                        deps = deps.map((d: number) => d + Math.round(weight)) 
+                    } else {
+                        console.error("Incomplete route:", route);
+                        console.error("Expect inconsistant results...");
+                    }
+                }
+            }
+        });
+
+        return graph;
     }
 );
