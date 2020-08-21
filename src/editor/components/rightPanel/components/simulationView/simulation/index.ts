@@ -4,13 +4,13 @@ export { default as SimulateScenario } from './simulation';
 
 export type Node = {
     id: number,
-    queue: IDQueue | null
     center: {x: number, y: number},
 }
 
 export type Edge = {
     to: number, 
     mode: TransitModes,
+    routeID: number | null,
     
     weight: () => number,
     tdWeight: (timeSecs: number) => number,
@@ -20,6 +20,7 @@ export type Edge = {
 export type Graph = { 
     nodes: { [nID: number]: Node   },
     edges: { [nID: number]: Edge[] },
+    stationMap: {[sID:number]: number}
 }
 
 export type BSMatrix = number[][]
@@ -31,19 +32,26 @@ export type ActivePassenger = {
     status: "TRAVELLING" | "WAITING" | "NOTREADY" | "COMPLETED"
 
     path: Path
-    destNode: string
+    destNode: number
     coords: {x: number, y: number}
 }
 
-export type Path = {
-   nodeID: number 
-}[]
+export type Path = PathSegment[]
+export type PathSegment = {
+   nodeIDs: number[],
+   mode: TransitModes,
+   route: number | null,
+}
 
 export type ActiveVehicle = {
-    destStation: string
+    ID: number
+    vehicleID: number,
+    routeID: number
+    destStation: number
     activatedOn: number
     lastStatusChg: number
-    status: "STOPPED" | "INTRANSIT"
+    status: "STOPPED" | "INTRANSIT",
+    passengerCnt: number
 
     coords: {x: number, y: number}
     alightingPassengers: IDQueue

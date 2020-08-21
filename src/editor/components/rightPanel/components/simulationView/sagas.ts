@@ -18,17 +18,14 @@ function* SimulateActiveScenario() {
 
     const graph: Graph = yield select((s:AppState) => getGraph(s));
     const canvas: CanvasState = yield select((s:AppState) => s.canvas);
-    const { simulation, passengers, ...rest }: Scenario
-        = yield select((s:AppState) => s.scenario.scenarios[s.scenario.activeScenarioIdx]);
+    const s: Scenario = yield select((s:AppState) => s.scenario.scenarios[s.scenario.activeScenarioIdx]);
     const getNodeAtCoord = (g: Graph, c: CanvasState):CoordEvalFunc => 
         (coords: {x:number, y:number}):(number|null) => 
             findNodeWithCoordinates(g, c.boxSize, c.canvasSize, coords);
-
     
     const simData: (FullSimData | null) = yield call(
         SimulateScenario, 
-        graph, 
-        simulation.options, 
+        graph, s, 
         getNodeAtCoord(graph, canvas),
         withMiddleware({ "EXAMPLE" : ExampleMiddleware})
     );
@@ -42,4 +39,5 @@ function* SimulateActiveScenario() {
         });
     }
 } 
+
 

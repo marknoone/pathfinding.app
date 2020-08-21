@@ -47,6 +47,7 @@ class DijkstraPathfinding implements PathfindingAlg {
                     this.pq.Enqueue(n.id, w);
                     this.dist[n.id] = w; 
                     this.prev[n.id] = currNode;
+                    this.settled.add(n.id);
                 } else {
                     let newDistance = this.dist[currNode] + e.weight();
                     if (newDistance < this.dist[n.id]) {

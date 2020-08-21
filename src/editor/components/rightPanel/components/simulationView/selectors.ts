@@ -4,7 +4,6 @@ import { Graph, Node, Edge } from './simulation';
 import { Scenario } from '../../../../constants';
 import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
 import { TransitModes } from '../../../leftPanel/components/componentView/constants';
-import { AddDepartureToRouteModal } from '../../../../../modalManager/modals';
 
 const getCanvasState = (state: AppState) => state.canvas;
 const getScenarioState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx];
@@ -26,14 +25,13 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
 
         // Add all connected walking nodes
         let nodeID = 1;
-        const graph: Graph = { nodes:{}, edges: [] };
+        const graph: Graph = { nodes:{}, stationMap: {}, edges: [] };
 
         // 1. Create all graph nodes.
         for(let i = 0; (i+bSize) <= cWidth; i+=bSize){
             for(let j = 0; (j+bSize) <= cHeight; j+=bSize){
                 graph.nodes[nodeID] = { 
-                    id: nodeID, 
-                    queue: null,
+                    id: nodeID,
                     center: {
                         x: i + (bSize/2), 
                         y: j + (bSize/2)
@@ -43,7 +41,20 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
             }
         }
 
-        // 2. Iterate through and connect nodes above, 
+        // 2. Create stationNode map.
+        Object.keys(s.stations.data).forEach((stnK:string) => {
+            const stnID = +stnK, stn = s.stations.data[stnID];
+            const nID = findNodeWithCoordinates(
+                graph, bSize, 
+                c.canvasSize, 
+                stn.coordinates
+            );
+            
+            if(nID)
+                graph.stationMap[stnID] = nID;
+        });
+
+        // 3. Iterate through and connect nodes above, 
         //      below, and of either side if present.
         Object.keys(graph.nodes).forEach((k:string)=>{
             const id = +k, node = graph.nodes[id];
@@ -65,6 +76,7 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
                     edges.push({
                         to: n, 
                         mode: TransitModes.FOOT, 
+                        routeID:  null,
                         weight: () => Math.round(weight),
                         tdWeight: (timeSecs) => Math.round(weight), // No departures on foot accesible nodes.
                         congestion: (timeSecs) => 1,
@@ -74,7 +86,7 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
             graph.edges[id] = [...edges];
         })
 
-        // 3. Iterate through routes and add respective edges
+        // 4. Iterate through routes and add respective edges
         Object.keys(s.routes.data).forEach((r:String) => {
             const id = +r, route = s.routes.data[id];
 
@@ -89,8 +101,8 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
                     const currentStnID = route.stations[+sortedKeys[i]],
                         currStn = s.stations.data[currentStnID.id]; 
                     
-                    const prevStnNodeID = findNodeWithCoordinates(graph, bSize, c.canvasSize, prevStn.coordinates); 
-                    const currStnNodeID = findNodeWithCoordinates(graph, bSize, c.canvasSize, currStn.coordinates);
+                    const prevStnNodeID = graph.stationMap[prevStnID.id]; 
+                    const currStnNodeID = graph.stationMap[currentStnID.id];
 
                     if(prevStnNodeID && currStnNodeID){
                         const weight = (
@@ -102,6 +114,8 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
                             {
                                 to: currStnNodeID, 
                                 mode: route.mode, 
+                                routeID: route.id,
+
                                 weight: () => Math.round(weight),
                                 tdWeight: (timeSecs) => {
                                     const sortedDepartures = currDeps.sort();
