@@ -33,7 +33,6 @@ class DijkstraPathfinding implements PathfindingAlg {
 
         // Start PQ/Distance with starting node.
         this.dist[s] = 0; 
-        this.prev[s] = null; 
         this.pq.Enqueue(s, 0); 
 
         while (!this.pq.IsEmpty()){
@@ -44,11 +43,14 @@ class DijkstraPathfinding implements PathfindingAlg {
             this.graph.edges[currNode].forEach((e: Edge) => { 
                 const n = this.graph.nodes[e.to];
                 if (!this.settled.has(n.id)){
-                    this.pq.Enqueue(n.id, this.dist[currNode] + e.weight());
+                    const w = this.dist[currNode] + e.weight()
+                    this.pq.Enqueue(n.id, w);
+                    this.dist[n.id] = w; 
                     this.prev[n.id] = currNode;
                 } else {
                     let newDistance = this.dist[currNode] + e.weight();
                     if (newDistance < this.dist[n.id]) {
+                        this.pq.UpdateElement(n.id, newDistance);
                         this.dist[n.id] = newDistance; 
                         this.prev[n.id] = currNode;
                     }

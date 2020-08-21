@@ -37,6 +37,18 @@ class PriorityQueue<T> {
         return r? r.element: null; 
     } 
 
+    UpdateElement(element: T, priority: number) {
+        const item = this.items.findIndex((el: QElement<T>) => el.element === element);
+        if(item){
+            this.items[item].priority = priority;
+            this.items.sort((a, b) => {
+                if(a.priority > b.priority) return 1;
+                else if(a.priority < b.priority) return -1;
+                else return 0
+            })
+        }
+    }
+
     Front(): T | null {  
         if (this.IsEmpty()) return null; 
         return this.items[0].element; 
