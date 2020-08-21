@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { AppState } from '../../../../../store';
-import { Graph, Node, Edge } from './constants';
+import { Graph, Node, Edge } from './simulation';
 import { Scenario } from '../../../../constants';
 import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
 import { TransitModes } from '../../../leftPanel/components/componentView/constants';
@@ -80,7 +80,6 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
 
             const sortedDepKeys = Object.keys(route.departures).sort();
             let deps = sortedDepKeys.map((k:string) => route.departures[+k].value)
-            console.log(sortedDepKeys);
             if(Object.keys(route.stations).length > 1){
                 const sortedKeys = Object.keys(route.stations).sort();
                 for(let i = 1; i < sortedKeys.length; i++){

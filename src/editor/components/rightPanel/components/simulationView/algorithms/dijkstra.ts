@@ -1,4 +1,4 @@
-import { Graph, Edge } from "../constants";
+import { Graph, Edge } from "../simulation";
 import { PathfindingAlg } from './index';
 import { PriorityQueue } from '../../../../../../app/pkg/queues';
 

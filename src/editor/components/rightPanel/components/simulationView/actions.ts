@@ -15,7 +15,7 @@ export const SetBakeScenario = (isBaking:boolean, totalFrames?: number):Simulati
 })
 
 export const CancelBaking = ():SimulationAction => ({
-    type: SimulationActionTypes.CANCEL_BAKING
+    type: SimulationActionTypes.CANCEL_BAKE
 })
 
 export const SetBakedFrames = (bakedFrames: number):SimulationAction => ({

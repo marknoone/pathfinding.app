@@ -113,7 +113,54 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                     current: action.payload.simFrame
                 }
             }: state;
-        case SimulationActionTypes.CANCEL_BAKING:
+        case SimulationActionTypes.INC_BAKED_FRAMES:
+            return state.isBaking? {
+                ...state,
+                bakedFrames: {
+                    ...state.bakedFrames,
+                    current: state.bakedFrames.current + 1
+                }
+            } : state;
+        case SimulationActionTypes.DEC_BAKED_FRAMES:
+            return state.isBaking? {
+                ...state,
+                bakedFrames: {
+                    ...state.bakedFrames,
+                    current: state.bakedFrames.current - 1
+                }
+            } : state;
+        case SimulationActionTypes.PUSH_PASSENGER_PATHS:
+            if(!action.payload) return state;
+            return action.payload.pPath? {
+                ...state,
+                data: {
+                    frames: { ...(state.data? state.data.frames:{}) },
+                    passengerPaths: {
+                        ...(state.data? state.data.passengerPaths:{}),
+                        [action.payload.pPath.pID]: action.payload.pPath.path
+                    },
+                }
+            }: state;
+        case SimulationActionTypes.PUSH_BAKED_FRAME:
+            if(!action.payload) return state;
+            return action.payload.simFrame && 
+                action.payload.dataFrame &&
+                action.payload.evalFrame? {
+                ...state,
+                data: {
+                    passengerPaths: {
+                        ...(state.data? state.data.passengerPaths:{}),
+                    },
+                    frames: {
+                        ...(state.data? state.data.frames:{}),
+                        [action.payload.simFrame]: {
+                            simulation: action.payload.dataFrame, 
+                            evaluation: action.payload.evalFrame 
+                        }
+                    }
+                }
+            }: state;
+        case SimulationActionTypes.CANCEL_BAKE:
             return {
                 ...state,
                 isBaking: false,
@@ -124,11 +171,24 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                     total: 0
                 }
             };
-        case SimulationActionTypes.SIMULATE_SCENARIO:
+        case SimulationActionTypes.COMPLETE_BAKE:
+            if(!action.payload) return state;
+            return {
+                ...state,
+                isBaking: false,
+                isSimulating: true,
+                data: action.payload.data? action.payload.data: null,
+            };
+        case SimulationActionTypes.INIT_SIMULATION:
+            console.log("Init Sim")
             return {
                 ...state,
                 isSimulating: true,
-                isBaking: true
+                isBaking: true,
+                bakedFrames: {
+                    current: 0,
+                    total: (24*60*60)
+                }
             };
         default:
             return state;

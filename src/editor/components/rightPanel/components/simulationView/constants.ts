@@ -1,5 +1,5 @@
-import { TransitModes } from "../../../leftPanel/components/componentView/constants";
-import { IDQueue } from '../../../../../app/pkg/queues';
+import { EvaluationData } from "./middlewares";
+import { Path } from "./simulation";
 
 export type SimulationAction = {
     type: string
@@ -9,6 +9,10 @@ export type SimulationAction = {
         simFrame?: number
         algorithm?: Algorithms
         opts?: SimulationOptions
+        pPath?: {path: PassengerPath, pID: number}
+        dataFrame?: SimulationFrame
+        evalFrame?: EvaluationData
+        data?: FullSimData
     }
 }
 
@@ -41,11 +45,7 @@ export type SimulationState = {
     }
 
     options: SimulationOptions
-    data: {
-        passengerSimData: PassengerSimData,
-        stationSimData: StationSimData
-        vehicleSimData: VehicleSimData
-    } | null
+    data: FullSimData | null
 }
 
 export enum SimulationActionTypes {
@@ -58,9 +58,15 @@ export enum SimulationActionTypes {
     DEC_PLAY_SPEED = "@@simulation/DEC_PLAY_SPEED",
     SET_IS_PLAYING = "@@simulation/SET_IS_PLAYING",
     SIMULATE_SCENARIO   = "@@simulation/SIMULATE_SCENARIO",
+    INIT_SIMULATION   = "@@simulation/INIT_SIMULATION",
     BAKE_SCENARIO       = "@@simulation/BAKE_SCENARIO",
+    PUSH_PASSENGER_PATHS       = "@@simulation/PUSH_PASSENGER_PATHS",
+    PUSH_BAKED_FRAME       = "@@simulation/PUSH_BAKED_FRAME",
     SET_BAKED_FRAMES       = "@@simulation/SET_BAKED_FRAMES",
-    CANCEL_BAKING       = "@@simulation/CANCEL_BAKING"
+    INC_BAKED_FRAMES       = "@@simulation/INC_BAKED_FRAMES",
+    DEC_BAKED_FRAMES       = "@@simulation/DEC_BAKED_FRAMES",
+    COMPLETE_BAKE       = "@@simulation/COMPLETE_BAKE",
+    CANCEL_BAKE       = "@@simulation/CANCEL_BAKE"
 }
 
 export enum Algorithms {
@@ -72,79 +78,52 @@ export enum Algorithms {
 
 export const Playspeeds = [-32, -16, -4, -2, 1, 2, 4, 16, 32];
 
-export type Coord = {x: number, y: number}
-export type PassengerSimData = {
-    passengerID: number,
-    paths: {
-        [alg: string]: {
-            points:   Coord[],
-            isActive: boolean
+export type PassengerPath = {
+    [alg: string]: {
+        path:   Path,
+        isActive: boolean
+    }
+}
+
+export type FullSimData = {
+    frames: { 
+        [frame: number]:{ 
+            simulation: SimulationFrame, 
+            evaluation: EvaluationData 
         }
     },
 
-    coordinates: {[simStep: number]: { val: number[] }}
+    passengerPaths: {
+        [pID: number]: PassengerPath
+    },
+} 
+
+export type SimulationFrame = {
+    passengers: PassengerSimData,
+    stations: StationSimData,
+    vehicles: VehicleSimData,
 }
 
+export type Coord = { x: number, y: number }
+export type CoordEvalFunc = (coords: Coord) => (number|null)
+
+export type PassengerFrame = { coordinates: Coord }
+export type PassengerSimData = {
+    [passengerID: number]: {
+        [frame: number]: PassengerFrame
+    }
+}
+
+export type StationFrame = { passengerCnt: number }
 export type StationSimData = {
-    stationID: number,
-    passengerCnt: {[simStep: number]: { val: number }}
+    [stationID: number]: {
+        [frameID:number]: StationFrame
+    }
 }
 
+export type VehicleFrame = { angle: number, passengerCnt: number, coordinate: Coord }
 export type VehicleSimData = {
-    vehicleID: number,
-
-    angle:          {[simStep: number]: { val: number }},
-    coordinates:    {[simStep: number]: { val: number[] }},
-    passengerCnt:   {[simStep: number]: { val: number }},
+    [vehicleID: number]: {
+        [frameID:number]: VehicleFrame
+    }
 }
-
-
-// Simulation types...
-export type Node = {
-    id: number,
-    queue: IDQueue | null
-    center: {x: number, y: number},
-}
-
-export type Edge = {
-    to: number, 
-    mode: TransitModes,
-    
-    weight: () => number,
-    tdWeight: (timeSecs: number) => number,
-    congestion?: (timeSecs: number) => number,
-}
-
-export type Graph = { 
-    nodes: { [nID: number]: Node   },
-    edges: { [nID: number]: Edge[] },
-}
-
-export type BSMatrix = number[][]
-
-export type ActivePassenger = {
-    currentMode: TransitModes | null
-    currentVehicle: string | null
-    lastStatusChg: number
-    status: "TRAVELLING" | "WAITING" | "NOTREADY" | "COMPLETED"
-
-    path: Path
-    destNode: string
-    coords: {x: number, y: number}
-}
-
-export type Path = {
-   nodeID: number 
-}[]
-
-export type ActiveVehicle = {
-    destStation: string
-    activatedOn: number
-    lastStatusChg: number
-    status: "STOPPED" | "INTRANSIT"
-
-    coords: {x: number, y: number}
-    alightingPassengers: IDQueue
-}   
-
-export interface EvaluationMiddleware {}

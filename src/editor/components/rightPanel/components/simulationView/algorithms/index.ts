@@ -1,4 +1,4 @@
-import { Graph, Path } from "../constants";
+import { Path } from "../simulation";
 
 export interface PathfindingAlg {
     Execute(

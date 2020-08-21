@@ -37,4 +37,4 @@ class Queue<T> {
     } 
 } 
 
-export default PriorityQueue;
+export default Queue;

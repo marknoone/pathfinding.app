@@ -1,5 +1,5 @@
 import { PathfindingAlg } from './index';
-import { Graph } from "../constants";
+import { Graph } from "../simulation";
 
 class CMTPathfinding implements PathfindingAlg {
     graph: Graph

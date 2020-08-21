@@ -1,5 +1,5 @@
 import { PathfindingAlg } from './index';
-import { Graph } from "../constants";
+import { Graph } from "../simulation";
 
 class MM_TD_Pathfinding implements PathfindingAlg {
     graph: Graph
