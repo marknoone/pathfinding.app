@@ -1,5 +1,5 @@
 import { TransitModes } from "../../../editor/components/leftPanel/components/componentView/constants";
-import { IDQueue } from '../queues';
+import { Queue } from '../queues';
 import { EvaluationData } from './middlewares';
 
 import Simulator from './simulation';
@@ -61,6 +61,12 @@ export const getModeSpeedMap = (s: SimulationOptions):ModeSpeedMap => ({
     [TransitModes.TRAIN]: s.modeSpeeds.train,
     [TransitModes.TRAM]: s.modeSpeeds.tram,
 })
+
+export type StationQueues = {
+    [routeID: number]: { 
+        [stationID:number]: Queue<number>
+    }
+};
 
 export type PassengerPath = {
     [alg: string]: {

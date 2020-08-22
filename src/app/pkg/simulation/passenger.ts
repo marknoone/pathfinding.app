@@ -41,6 +41,7 @@ class ActivePassenger {
     }
 
     // Getters / setters
+    getID = ():number => this.ID;
 }
 
 export default ActivePassenger;
