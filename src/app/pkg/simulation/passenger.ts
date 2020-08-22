@@ -2,7 +2,8 @@ import { Path } from "."
 import Graph from "./graph";
 import { PassengerFrame, Coord } from "."
 import { PathfindingAlg } from "./algorithms"
-import { Algorithms } from "../../../editor/components/rightPanel/components/simulationView/constants"
+import { Algorithms } 
+    from "../../../editor/components/rightPanel/components/simulationView/constants"
 
 class ActivePassenger {
     ID: number

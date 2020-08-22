@@ -1,12 +1,13 @@
 import Graph from "./graph";
 import { getModeSpeedMap, StationQueues } from ".";
-import ActiveVehicle from "./vehicle";
-import ActivePassenger from "./passenger";
 import { Scenario } from "../../../editor/constants";
 import { isPassenger, Passenger, PassengerTree } 
-    from "../../../editor/components/leftPanel/components/passengerView/constants";
+from "../../../editor/components/leftPanel/components/passengerView/constants";
 import { RoutesState } from "../../../editor/components/leftPanel/components/componentView/constants";
 import { Queue } from "../queues";
+import ActiveVehicle from "./vehicle";
+import ActivePassenger from "./passenger";
+import ActiveStation from "./station";
 
 export const getSimulationPassengers = (p: PassengerTree, g: Graph): ActivePassenger[] => {
     let pID = 0;
@@ -46,7 +47,8 @@ export const getSimulationVehicles = (scenario: Scenario): ActiveVehicle[] => {
             simulationVehicles[vID] = new ActiveVehicle(
                 vID, route, 
                 modeSpdMap[route.mode],
-                departure
+                departure,
+                scenario.simulation.options.stopTime
             );
             vID += 1;
         })
@@ -55,7 +57,7 @@ export const getSimulationVehicles = (scenario: Scenario): ActiveVehicle[] => {
     return simulationVehicles;
 }
 
-export const getStationQueues = (routes: RoutesState): StationQueues => 
+export const getStations = (routes: RoutesState): StationQueues => 
     Object.keys(routes.data).reduce((mainAccum, r) => {
         const routeStationQueues = Object.keys(routes.data[+r].stations).reduce((accum, k) => {
             const stn = routes.data[+r].stations[+k];

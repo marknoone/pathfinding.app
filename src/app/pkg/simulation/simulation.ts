@@ -4,7 +4,7 @@ import { put } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
 import { Scenario } from '../../../editor/constants';
 import { EvaluateMiddlewareFunc } from './middlewares';
-import { getSimulationPassengers, getSimulationVehicles, getStationQueues} 
+import { getSimulationPassengers, getSimulationVehicles, getStations} 
     from './selectors';
 import { SimulationActionTypes, Algorithms, SimulationAction } 
     from '../../../editor/components/rightPanel/components/simulationView/constants';
@@ -21,7 +21,7 @@ class Simulator {
     g: Graph
     s: Scenario
     alg: PathfindingAlg
-    stationQueues: StationQueues
+    stations: StationQueues
     simulationVehicles: ActiveVehicle[]
     simulationPassengers: ActivePassenger[]
 
@@ -30,7 +30,7 @@ class Simulator {
         this.g = new Graph(s, scenarioNodeSize, scenarioDimens);
         this.simulationVehicles = getSimulationVehicles(s);
         this.simulationPassengers = getSimulationPassengers(s.passengers.tree, this.g);
-        this.stationQueues = getStationQueues(s.routes);
+        this.stations = getStations(s.routes);
 
         switch(s.simulation.algorithm) {
             case Algorithms.TimeDependentDijkstra: 
@@ -51,7 +51,7 @@ class Simulator {
     
             // Evaluate active vehicles and passengers
             simulationFrame.vehicles = this.simulationVehicles.reduce((accum, av) => {
-                const f = av.Simulate(this.s.stations.data, second);
+                const f = av.Simulate(second, this.s.stations.data, this.stations);
                 return { ...accum, ...(f? { [av.getID()] : f } :{} )}
             }, {});
             
@@ -63,7 +63,7 @@ class Simulator {
             // Evaluate middlewares and push to simulationFrame.
             const evalFrame = middleware? middleware(simulationFrame): {};
             
-            // 5. Push simulation frame to store & update UI if needed.
+            // Push simulation frame to store & update UI if needed.
             const frameAction: SimulationAction = { 
                 type: SimulationActionTypes.PUSH_BAKED_FRAME,
                 payload: {
