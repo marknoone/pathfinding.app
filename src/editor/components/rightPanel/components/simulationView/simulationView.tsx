@@ -1,6 +1,5 @@
 import React, { useState }from 'react';
 import { Algorithms, Playspeeds } from './constants';
-import { getGraph } from './selectors';
 import { AppState } from '../../../../../store';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,6 +1,6 @@
 // export { default as ExampleMiddleware } from './example';
 
-import { SimulationFrame } from "../constants";
+import { SimulationFrame } from "../";
 
 export type EvaluationData = {[middlewareKey: string]: any}
 export type EvaluationFunc = (f: SimulationFrame) => any

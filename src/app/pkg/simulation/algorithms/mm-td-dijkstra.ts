@@ -1,13 +1,13 @@
 import { PathfindingAlg } from './index';
-import { Graph } from "../simulation";
+import Graph from "../graph";
 
 class MM_TD_Pathfinding implements PathfindingAlg {
-    graph: Graph
-    constructor(g: Graph){
-        this.graph = g;
+    graph: Graph | null
+    constructor(){
+        this.graph = null;
     }
 
-    Execute(s: number, d: number, depTime:number){
+    Execute(g: Graph, s: number, d: number, depTime:number){
         return [];
     }
 };

@@ -1,9 +1,5 @@
-import { 
-    Algorithms,
-    SimulationActionTypes,
-    SimulationAction,
-    SimulationOptions
-} from './constants';
+import { SimulationOptions } from '../../../../../app/pkg/simulation';
+import {  Algorithms, SimulationActionTypes, SimulationAction } from './constants';
 
 export const SimulateScenario = ():SimulationAction => ({
     type: SimulationActionTypes.SIMULATE_SCENARIO

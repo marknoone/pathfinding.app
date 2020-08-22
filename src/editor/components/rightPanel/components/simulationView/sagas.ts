@@ -1,32 +1,26 @@
 import { takeLatest, select, put, call } from 'redux-saga/effects';
-import { SimulationActionTypes, CoordEvalFunc, FullSimData } from './constants';
+import { SimulationActionTypes } from './constants';
 import { Scenario } from '../../../../constants';
 import { AppState } from '../../../../../store';
-import { getGraph, findNodeWithCoordinates } from './selectors';
 import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
-import { SimulateScenario, Graph } from './simulation';
-import withMiddleware from './middlewares';
-import ExampleMiddleware from './middlewares/example';
+import Simulator, { FullSimData } from '../../../../../app/pkg/simulation';
+import withMiddleware from '../../../../../app/pkg/simulation/middlewares';
+import ExampleMiddleware from '../../../../../app/pkg/simulation/middlewares/example';
 
 export function* SimulationSaga() {
     yield takeLatest(SimulationActionTypes.SIMULATE_SCENARIO, SimulateActiveScenario);
 }
 
 function* SimulateActiveScenario() {
-    // Update UI
     yield put({ type: SimulationActionTypes.INIT_SIMULATION });
 
-    const graph: Graph = yield select((s:AppState) => getGraph(s));
     const canvas: CanvasState = yield select((s:AppState) => s.canvas);
-    const s: Scenario = yield select((s:AppState) => s.scenario.scenarios[s.scenario.activeScenarioIdx]);
-    const getNodeAtCoord = (g: Graph, c: CanvasState):CoordEvalFunc => 
-        (coords: {x:number, y:number}):(number|null) => 
-            findNodeWithCoordinates(g, c.boxSize, c.canvasSize, coords);
+    const s: Scenario = yield select((s:AppState) => 
+        s.scenario.scenarios[s.scenario.activeScenarioIdx]);
+    const simulator = new Simulator(s, canvas.boxSize, canvas.canvasSize);
     
     const simData: (FullSimData | null) = yield call(
-        SimulateScenario, 
-        graph, s, 
-        getNodeAtCoord(graph, canvas),
+        simulator.SimulateScenario, 
         withMiddleware({ "EXAMPLE" : ExampleMiddleware})
     );
 

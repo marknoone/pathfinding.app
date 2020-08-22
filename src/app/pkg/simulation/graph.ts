@@ -1,19 +1,25 @@
-import { createSelector } from 'reselect';
-import { AppState } from '../../../../../store';
-import { Graph, Node, Edge } from './simulation';
-import { Scenario } from '../../../../constants';
-import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
-import { TransitModes } from '../../../leftPanel/components/componentView/constants';
+import { Scenario } from "../../../editor/constants";
+import { CanvasState } from '../../../editor/components/workspace/components/pathfindingCanvas/constants';
+import { Node, Edge } from ".";
+import { TransitModes } from "../../../editor/components/leftPanel/components/componentView/constants";
 
-const getCanvasState = (state: AppState) => state.canvas;
-const getScenarioState = (state: AppState) => state.scenario.scenarios[state.scenario.activeScenarioIdx];
-export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>( 
-    getScenarioState, 
-    getCanvasState, 
-    (s: Scenario, c: CanvasState) => {
-        const bSize = c.boxSize;
+class Graph {
+    boxSize: number;
+    canvasSize: number[];
+
+    nodes: { [nID: number]: Node   }
+    edges: { [nID: number]: Edge[] }
+    stationMap: { [sID:number]: number }
+
+    constructor(s: Scenario, bSize: number, dimens: number[]){
+        this.boxSize = bSize;
+        this.canvasSize = dimens;
+        this.nodes = {}
+        this.edges = {}
+        this.stationMap = {}
+
         const opts = s.simulation.options;
-        const [cWidth, cHeight] = c.canvasSize;
+        const [cWidth, cHeight] = this.canvasSize;
         const dist = (a:{x:number, y:number}, b:{x:number, y:number}) =>
             Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
         const ModeSpeedMap = {
@@ -23,18 +29,15 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
             [TransitModes.BUS]:   s.simulation.options.modeSpeeds.bus,
         }
 
-        // Add all connected walking nodes
-        let nodeID = 1;
-        const graph: Graph = { nodes:{}, stationMap: {}, edges: [] };
-
         // 1. Create all graph nodes.
-        for(let i = 0; (i+bSize) <= cWidth; i+=bSize){
-            for(let j = 0; (j+bSize) <= cHeight; j+=bSize){
-                graph.nodes[nodeID] = { 
+        let nodeID = 1;
+        for(let i = 0; (i+this.boxSize) <= cWidth; i+=this.boxSize){
+            for(let j = 0; (j+this.boxSize) <= cHeight; j+=this.boxSize){
+                this.nodes[nodeID] = { 
                     id: nodeID,
                     center: {
-                        x: i + (bSize/2), 
-                        y: j + (bSize/2)
+                        x: i + (this.boxSize/2), 
+                        y: j + (this.boxSize/2)
                     },
                 };
                 nodeID++;
@@ -44,34 +47,29 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
         // 2. Create stationNode map.
         Object.keys(s.stations.data).forEach((stnK:string) => {
             const stnID = +stnK, stn = s.stations.data[stnID];
-            const nID = findNodeWithCoordinates(
-                graph, bSize, 
-                c.canvasSize, 
-                stn.coordinates
-            );
-            
+            const nID = this.getNodeFromCoordinates(stn.coordinates);
             if(nID)
-                graph.stationMap[stnID] = nID;
+                this.stationMap[stnID] = nID;
         });
 
         // 3. Iterate through and connect nodes above, 
         //      below, and of either side if present.
-        Object.keys(graph.nodes).forEach((k:string)=>{
-            const id = +k, node = graph.nodes[id];
+        Object.keys(this.nodes).forEach((k:string)=>{
+            const id = +k, node = this.nodes[id];
             const candidates = [
-                { x: node.center.x, y: node.center.y - bSize },
-                { x: node.center.x, y: node.center.y + bSize },
-                { x: node.center.x - bSize, y: node.center.y },
-                { x: node.center.x + bSize, y: node.center.y },
+                { x: node.center.x, y: node.center.y - this.boxSize },
+                { x: node.center.x, y: node.center.y + this.boxSize },
+                { x: node.center.x - this.boxSize, y: node.center.y },
+                { x: node.center.x + this.boxSize, y: node.center.y },
             ];
 
             
             let edges: Edge[] =[]
             candidates.forEach((cand) => {
-                const n = findNodeWithCoordinates(graph, bSize, c.canvasSize, cand, [(n:Node) => n.id === id]);
+                const n = this.getNodeFromCoordinates(cand, [(n:Node) => n.id === id]);
                 if(n){
                     const weight = (
-                        dist(node.center, graph.nodes[n].center) * opts.distanceMul
+                        dist(node.center, this.nodes[n].center) * opts.distanceMul
                     ) / ModeSpeedMap[TransitModes.FOOT];
                     edges.push({
                         to: n, 
@@ -83,7 +81,7 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
                     })
                 }
             })
-            graph.edges[id] = [...edges];
+            this.edges[id] = [...edges];
         })
 
         // 4. Iterate through routes and add respective edges
@@ -101,16 +99,16 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
                     const currentStnID = route.stations[+sortedKeys[i]],
                         currStn = s.stations.data[currentStnID.id]; 
                     
-                    const prevStnNodeID = graph.stationMap[prevStnID.id]; 
-                    const currStnNodeID = graph.stationMap[currentStnID.id];
+                    const prevStnNodeID = this.stationMap[prevStnID.id]; 
+                    const currStnNodeID = this.stationMap[currentStnID.id];
 
                     if(prevStnNodeID && currStnNodeID){
                         const weight = (
                             dist(prevStn.coordinates, currStn.coordinates) * opts.distanceMul
                         ) / ModeSpeedMap[route.mode];
 
-                        graph.edges[prevStnNodeID] = [
-                            ...graph.edges[prevStnNodeID],
+                        this.edges[prevStnNodeID] = [
+                            ...this.edges[prevStnNodeID],
                             {
                                 to: currStnNodeID, 
                                 mode: route.mode, 
@@ -135,35 +133,31 @@ export const getGraph = createSelector<AppState, Scenario, CanvasState, Graph>(
                 }
             }
         });
-
-        return graph;
     }
-);
 
-export const findNodeWithCoordinates = (
-    graph: Graph,
-    boxSize: number,
-    dimensions: number[],
-    coords: {x: number, y:number}, 
-    predicates?: ((n: Node)=>boolean)[] 
-):(number|null) => {
-    const [cWidth, cHeight] = dimensions;
-    const id = Object.keys(graph.nodes).find((k: string) => {
-        const n = graph.nodes[+k], h = boxSize/2;
-        const l=n.center.x-h, r=n.center.x+h, 
-            t=n.center.y-h, b=n.center.y+h;
-        
-        if(coords.x < l || coords.x < 0) return false;
-        if(coords.y < t || coords.y < 0) return false;
-        if(coords.x > r || coords.x > cWidth) return false;
-        if(coords.y > b || coords.y > cHeight) return false;
-        if(predicates){ 
-            for(let idx = 0; idx < predicates.length; idx++)
-                if(predicates[idx](n)) { return false; }
-        }
+    getNodeFromCoordinates(  
+        coords: {x: number, y:number}, 
+        predicates?: ((n: Node)=>boolean)[] 
+    ):(number|null) {
+        const id = Object.keys(this.nodes).find((k: string) => {
+            const n = this.nodes[+k], h = this.boxSize/2;
+            const l=n.center.x-h, r=n.center.x+h, 
+                t=n.center.y-h, b=n.center.y+h;
+            
+            if(coords.x < l || coords.x < 0) return false;
+            if(coords.y < t || coords.y < 0) return false;
+            if(coords.x > r || coords.x > this.canvasSize[0]) return false;
+            if(coords.y > b || coords.y > this.canvasSize[1]) return false;
+            if(predicates){ 
+                for(let idx = 0; idx < predicates.length; idx++)
+                    if(predicates[idx](n)) { return false; }
+            }
 
-        return true
-    });
+            return true
+        });
 
-    return id?+id:null;
+        return id?+id:null;
+    }
 }
+
+export default Graph;

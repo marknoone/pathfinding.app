@@ -1,5 +1,5 @@
-import { EvaluationData } from "./middlewares";
-import { Path } from "./simulation";
+import { EvaluationData } from "../../../../../app/pkg/simulation/middlewares";
+import { FullSimData, SimulationFrame, PassengerPath, SimulationOptions } from "../../../../../app/pkg/simulation";
 
 export type SimulationAction = {
     type: string
@@ -13,20 +13,6 @@ export type SimulationAction = {
         dataFrame?: SimulationFrame
         evalFrame?: EvaluationData
         data?: FullSimData
-    }
-}
-
-export type SimulationOptions = {
-    stopTime: number,
-    distanceMul: number,
-    mmLanguage: string,
-    congestionInterval: number,
-    passengerCompliance: number,
-    modeSpeeds: {
-        foot: number,
-        bus: number,
-        train: number,
-        tram: number,
     }
 }
 
@@ -78,52 +64,3 @@ export enum Algorithms {
 
 export const Playspeeds = [-32, -16, -4, -2, 1, 2, 4, 16, 32];
 
-export type PassengerPath = {
-    [alg: string]: {
-        path:   Path,
-        isActive: boolean
-    }
-}
-
-export type FullSimData = {
-    frames: { 
-        [frame: number]:{ 
-            simulation: SimulationFrame, 
-            evaluation: EvaluationData 
-        }
-    },
-
-    passengerPaths: {
-        [pID: number]: PassengerPath
-    },
-} 
-
-export type SimulationFrame = {
-    passengers: PassengerSimData,
-    stations: StationSimData,
-    vehicles: VehicleSimData,
-}
-
-export type Coord = { x: number, y: number }
-export type CoordEvalFunc = (coords: Coord) => (number|null)
-
-export type PassengerFrame = { coordinates: Coord }
-export type PassengerSimData = {
-    [passengerID: number]: {
-        [frame: number]: PassengerFrame
-    }
-}
-
-export type StationFrame = { passengerCnt: number }
-export type StationSimData = {
-    [stationID: number]: {
-        [frameID:number]: StationFrame
-    }
-}
-
-export type VehicleFrame = { angle: number, passengerCnt: number, coordinate: Coord }
-export type VehicleSimData = {
-    [vehicleID: number]: {
-        [frameID:number]: VehicleFrame
-    }
-}

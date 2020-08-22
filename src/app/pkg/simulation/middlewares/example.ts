@@ -1,5 +1,5 @@
 import { EvaluationFunc } from ".";
-import { SimulationFrame } from "../constants";
+import { SimulationFrame } from "../";
 
 const ExampleMiddleware: EvaluationFunc = () => {
     var i = 0;

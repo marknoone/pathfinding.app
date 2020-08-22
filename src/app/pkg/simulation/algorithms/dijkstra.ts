@@ -1,29 +1,32 @@
-import { Graph, Edge } from "../simulation";
+import { Edge } from "..";
+import Graph from "../graph";
 import { PathfindingAlg } from './index';
-import { PriorityQueue } from '../../../../../../app/pkg/queues';
+import { PriorityQueue } from '../../queues';
 
 class DijkstraPathfinding implements PathfindingAlg {
-    graph: Graph
+    graph: (Graph| null)
     nodeCnt: number
     settled: Set<number>
     pq: PriorityQueue<number>
     prev: { [nID:number] :number | null }
     dist: { [nID:number] :number }
 
-    constructor(g:Graph){ 
-        this.graph = g;
+    constructor(){ 
         this.dist = {};
         this.prev = {};
+        this.nodeCnt = 0;
+        this.graph = null;
         this.settled = new Set<number>();
         this.pq = new PriorityQueue<number>(); 
-        this.nodeCnt = Object.keys(g.nodes).length;
     }
 
-    Execute(s: number, d: number, depTime:number){
+    Execute(g:Graph, s: number, d: number, depTime:number){
         // Init
         this.dist = {};
         this.pq.Clear();
         this.settled = new Set<number>();
+        this.graph = g;
+        this.nodeCnt = Object.keys(g.nodes).length;
 
         Object.keys(this.graph.nodes).forEach((k:string) => {
             const nID = +k;
@@ -41,7 +44,7 @@ class DijkstraPathfinding implements PathfindingAlg {
             if(currNode === d) return []; // TODO: Return path
 
             this.graph.edges[currNode].forEach((e: Edge) => { 
-                const n = this.graph.nodes[e.to];
+                const n = this.graph!.nodes[e.to];
                 if (!this.settled.has(n.id)){
                     const w = this.dist[currNode] + e.weight()
                     this.pq.Enqueue(n.id, w);
@@ -64,21 +67,4 @@ class DijkstraPathfinding implements PathfindingAlg {
 };
 
 export default DijkstraPathfinding;
-
-// function dijkstra(G, S)
-//     for each vertex V in G
-//         distance[V] <- infinite
-//         previous[V] <- NULL
-//         If V != S, add V to Priority Queue Q
-//     distance[S] <- 0
-	
-//     while Q IS NOT EMPTY
-//         U <- Extract MIN from Q
-//         for each unvisited neighbour V of U
-//             tempDistance <- distance[U] + edge_weight(U, V)
-//             if tempDistance < distance[V]
-//                 distance[V] <- tempDistance
-//                 previous[V] <- U
-//     return distance[], previous[]
-
 
