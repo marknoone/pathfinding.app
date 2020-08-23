@@ -1,12 +1,12 @@
 import Graph from "./graph";
+import EventManager from './events';
 import ActiveVehicle from './vehicle';
 import { put } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
-import ActiveStation from './station';
 import { Scenario } from '../../../editor/constants';
-import { SimulationFrame, StationContainer } from '.';
+import { SimulationFrame } from '.';
 import { EvaluateMiddlewareFunc } from './middlewares';
-import { getSimulationPassengers, getSimulationVehicles, getStations} 
+import { getSimulationPassengers, getSimulationVehicles } 
     from './selectors';
 import { SimulationActionTypes, Algorithms, SimulationAction } 
     from '../../../editor/components/rightPanel/components/simulationView/constants';
@@ -22,16 +22,16 @@ class Simulator {
     g: Graph
     s: Scenario
     alg: PathfindingAlg
-    simulationStations: StationContainer
+    eventManager: EventManager
     simulationVehicles: ActiveVehicle[]
     simulationPassengers: ActivePassenger[]
 
     constructor(s :Scenario, scenarioNodeSize: number, scenarioDimens: number[], ){
         this.s = s;
+        this.eventManager = new EventManager();
         this.g = new Graph(s, scenarioNodeSize, scenarioDimens);
         this.simulationVehicles = getSimulationVehicles(s, this.g);
         this.simulationPassengers = getSimulationPassengers(s, this.g);
-        this.simulationStations = getStations(s, this.g);
 
         switch(s.simulation.algorithm) {
             case Algorithms.TimeDependentDijkstra: 
@@ -52,12 +52,12 @@ class Simulator {
     
             // Evaluate active vehicles and passengers
             simulationFrame.passengers = this.simulationPassengers.reduce((accum, ap) => {
-                const f = ap.Simulate();
+                const f = ap.Simulate(second, this.eventManager);
                 return { ...accum, ...(f? { [ap.getID()] : f } :{} )}
             }, {});
 
             simulationFrame.vehicles = this.simulationVehicles.reduce((accum, av) => {
-                const f = av.Simulate(second, this.simulationStations);
+                const f = av.Simulate(second, this.eventManager);
                 return { ...accum, ...(f? { [av.getID()] : f } :{} )}
             }, {});
             

@@ -1,5 +1,6 @@
-import { Queue } from "../queues";
 import { Coord } from ".";
+import { Queue } from "../queues";
+import EventManager from "./events"
 
 class ActiveStation {
     ID: number
@@ -12,6 +13,10 @@ class ActiveStation {
         this.coord = c;
         this.routeQs = {};
         this.nodeID = node;
+    }
+
+    Simulate(simClock: number, eventManager: EventManager){
+
     }
 
     // Inline Funcs

@@ -1,9 +1,8 @@
 import Graph from "./graph";
 import ActiveVehicle from "./vehicle";
-import ActiveStation from "./station";
 import ActivePassenger from "./passenger";
 import { Scenario } from "../../../editor/constants";
-import { getModeSpeedMap, StationContainer } from ".";
+import { getModeSpeedMap } from ".";
 import { isPassenger, Passenger } 
     from "../../../editor/components/leftPanel/components/passengerView/constants";
 
@@ -34,7 +33,7 @@ export const getSimulationPassengers = (scenario: Scenario, g: Graph): ActivePas
 export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehicle[] => {
     let vID = 0;
     let simulationVehicles: ActiveVehicle[] = [];
-    const { routes, simulation }: Scenario = scenario;
+    const { stations, routes, simulation }: Scenario = scenario;
     const modeSpdMap = getModeSpeedMap(simulation.options);
     
     Object.keys(routes.data).forEach((k:string) => {
@@ -42,8 +41,10 @@ export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehic
         const deps = Object.keys(route.departures).sort();
         deps.forEach(d => {
             const departure = route.departures[+d].value;
+            const stns = Object.keys(route.stations).map(k => 
+                stations.data[route.stations[+k].id]);
             simulationVehicles[vID] = new ActiveVehicle(
-                vID, route, 
+                vID, route, stns, 
                 modeSpdMap[route.mode],
                 departure,
                 scenario.simulation.options.stopTime
@@ -53,24 +54,4 @@ export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehic
     });
 
     return simulationVehicles;
-}
-
-export const getStations = (scenario: Scenario, g: Graph): StationContainer => {
-    const { stations, routes } : Scenario = scenario;
-    const stns: StationContainer = Object.keys(stations.data).reduce((accum, stnID) => {
-        const stn = stations.data[+stnID];
-        const stnNID = g.getNodeFromCoordinates(stn.coordinates)
-        return {
-            ...accum,
-            [stn.id]: new ActiveStation(stn.id, stn.coordinates, stnNID?stnNID:-1)
-        }
-    }, {});
-
-    Object.keys(routes.data).forEach((r:string) => {
-        const route = routes.data[+r];
-        Object.keys(route.stations).forEach((s:string) =>
-            stns[route.stations[+s].id].addRoute(route.id))
-    });
-
-    return stns;
 }

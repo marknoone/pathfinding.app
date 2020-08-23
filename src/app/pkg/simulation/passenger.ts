@@ -1,6 +1,7 @@
 import { Path } from "."
 import Graph from "./graph";
 import { PassengerFrame, Coord } from "."
+import EventManager from "./events"
 import { PathfindingAlg } from "./algorithms"
 import { Algorithms } 
     from "../../../editor/components/rightPanel/components/simulationView/constants"
@@ -35,7 +36,7 @@ class ActivePassenger {
         return [];
     }
 
-    Simulate(): (PassengerFrame | null) {
+    Simulate(simClock: number, eventManager: EventManager): (PassengerFrame | null) {
         if(this.hasCompleted) return null;
 
         return null;
