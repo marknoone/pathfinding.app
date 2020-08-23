@@ -4,6 +4,7 @@ class Queue<T> {
     constructor(){ this.items = []; } 
     
     IsEmpty: () => boolean = () => this.items.length == 0;
+    Size: () => number = () => this.items.length;
 
     Enqueue(element: T): void {
         this.items.push(element); 

@@ -2,7 +2,9 @@ import Graph from "./graph";
 import ActiveVehicle from './vehicle';
 import { put } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
+import ActiveStation from './station';
 import { Scenario } from '../../../editor/constants';
+import { SimulationFrame, StationContainer } from '.';
 import { EvaluateMiddlewareFunc } from './middlewares';
 import { getSimulationPassengers, getSimulationVehicles, getStations} 
     from './selectors';
@@ -15,22 +17,21 @@ import TD_Dijkstra from './algorithms/td-dijkstra';
 import MM_TD_Dijkstra from './algorithms/mm-td-dijkstra';
 import CMT_Dijkstra from './algorithms/cmt-dijkstra';
 import { PathfindingAlg } from './algorithms';
-import { SimulationFrame, StationQueues } from '.';
 
 class Simulator {
     g: Graph
     s: Scenario
     alg: PathfindingAlg
-    stations: StationQueues
+    simulationStations: StationContainer
     simulationVehicles: ActiveVehicle[]
     simulationPassengers: ActivePassenger[]
 
     constructor(s :Scenario, scenarioNodeSize: number, scenarioDimens: number[], ){
         this.s = s;
         this.g = new Graph(s, scenarioNodeSize, scenarioDimens);
-        this.simulationVehicles = getSimulationVehicles(s);
-        this.simulationPassengers = getSimulationPassengers(s.passengers.tree, this.g);
-        this.stations = getStations(s.routes);
+        this.simulationVehicles = getSimulationVehicles(s, this.g);
+        this.simulationPassengers = getSimulationPassengers(s, this.g);
+        this.simulationStations = getStations(s, this.g);
 
         switch(s.simulation.algorithm) {
             case Algorithms.TimeDependentDijkstra: 
@@ -50,13 +51,13 @@ class Simulator {
             const simulationFrame: SimulationFrame = {passengers: {}, stations: {}, vehicles: {}};
     
             // Evaluate active vehicles and passengers
-            simulationFrame.vehicles = this.simulationVehicles.reduce((accum, av) => {
-                const f = av.Simulate(second, this.s.stations.data, this.stations);
-                return { ...accum, ...(f? { [av.getID()] : f } :{} )}
+            simulationFrame.passengers = this.simulationPassengers.reduce((accum, ap) => {
+                const f = ap.Simulate();
+                return { ...accum, ...(f? { [ap.getID()] : f } :{} )}
             }, {});
-            
-            simulationFrame.passengers = this.simulationPassengers.reduce((accum, av) => {
-                const f = av.Simulate();
+
+            simulationFrame.vehicles = this.simulationVehicles.reduce((accum, av) => {
+                const f = av.Simulate(second, this.simulationStations);
                 return { ...accum, ...(f? { [av.getID()] : f } :{} )}
             }, {});
             

@@ -1,16 +1,17 @@
 import { Route, StationDataObj } from "../../../editor/components/leftPanel/components/componentView/constants"
-import { Coord, VehicleFrame, StationQueues } from "."
+import { Coord, VehicleFrame, StationContainer } from "."
 import { isBetween } from './geometry';
+import ActiveStation from './station';
 
   class ActiveVehicle {
     // consts
     readonly ID: number
     readonly vehicleSpeed: number
-    readonly passengers: Set<number>
     readonly stopTime: number
-
+    
     // Mutable properties
     activeSince: number
+    passengerCnt: number
     hasCompleted: boolean
     status: "INACTIVE" | "STOPPED" | "INTRANSIT"
     lastStatusChg: number
@@ -35,7 +36,7 @@ import { isBetween } from './geometry';
         this.hasCompleted = false;
         this.coords = { x: 0, y: 0 }
         this.vehicleSpeed = spd;
-        this.passengers = new Set<number>();
+        this.passengerCnt = 0;
         
         // Route properties
         this.routeID = r.id;
@@ -45,35 +46,10 @@ import { isBetween } from './geometry';
         this.travellingStations = 
             Object.keys(r.stations).map(k => r.stations[+k].id); 
     }
-    
-    // Getters & Setters
-    getID = ():number => this.ID;
-    getAngle = ():number => this.angle;
-    getCoords = ():Coord => this.coords;
-    getCurrentPassengerCount = ():number => this.passengers.size;
 
-    getVehicleFrame = ():VehicleFrame => ({
-        angle: this.angle, 
-        coordinate: this.coords,
-        passengerCnt: this.passengers.size
-    })
-
-    getPrevStationID = ():(number|null) => 
-        this.currentStationIdx > 1?
-            this.travellingStations[this.currentStationIdx-1]:null;
-    
-    getNextStationID = ():(number|null) => 
-        this.currentStationIdx < this.travellingStations.length-1?
-            this.travellingStations[this.currentStationIdx+1]:null;
-
-    getCurrentStationID = ():(number|null) => 
-        this.currentStationIdx >= 0 &&
-        this.currentStationIdx < this.travellingStations.length?
-            this.travellingStations[this.currentStationIdx]: null;
-
-    // Main simulation method. 
+     // Main simulation method. 
     // Returns null if vehicle is inactive.
-    Simulate(simClock: number, s: StationDataObj, stns: StationQueues):( VehicleFrame | null ) {
+    Simulate(simClock: number, stations: StationContainer):( VehicleFrame | null ) {
         // Startup vehicle...
         if(this.hasCompleted) return null;
         else if(this.status === 'INACTIVE' && simClock === this.departing){
@@ -81,8 +57,9 @@ import { isBetween } from './geometry';
             this.lastStatusChg = simClock;
             this.activeSince = simClock;
             this.currentStationIdx = 0;
-            this.coords = 
-                s[this.travellingStations[this.currentStationIdx]].coordinates;
+
+            const currStn = this.getCurrentStationID();
+            this.coords = currStn? stations[currStn].getCoords(): {x:0, y:0};
         }
         else if(this.status === 'INACTIVE') return null;
         
@@ -92,7 +69,7 @@ import { isBetween } from './geometry';
         switch(this.status) {
             case 'STOPPED':
                 const stoppedFor = simClock - this.lastStatusChg;
-                if(stns[this.routeID][currStn].IsEmpty()){
+                if(stations[currStn].getPassengersWaitingForRoute(this.routeID) <= 0){
                     const nextStn = this.getNextStationID();
                     if(!nextStn){
                         this.hasCompleted = true; 
@@ -103,14 +80,16 @@ import { isBetween } from './geometry';
                     }
                     this.lastStatusChg = simClock;
                 } else if(stoppedFor % this.stopTime === 0){
-                    const p = stns[this.routeID][currStn].Dequeue();
-                    if(p) this.passengers.add(p); 
+                    const p = stations[currStn].getPassengerAtStop(this.routeID);
+                    if(p) {
+                        this.passengerCnt += 1; 
+                    }
                 }
                 break;
             case 'INTRANSIT':
                 const v = [
-                    s[currStn].coordinates.x - this.coords.x,
-                    s[currStn].coordinates.y - this.coords.y,
+                    stations[currStn].getCoords().x - this.coords.x,
+                    stations[currStn].getCoords().y - this.coords.y,
                 ];
                 const vLen = Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2))
                 const vNorm = [v[0]/vLen, v[1]/vLen];
@@ -125,25 +104,50 @@ import { isBetween } from './geometry';
                 if( 
                     prevStn && 
                     !isBetween(
-                        s[prevStn].coordinates, 
-                        s[currStn].coordinates, 
+                        stations[prevStn].getCoords(), 
+                        stations[currStn].getCoords(), 
                         coordinate
                     )
                 ) {
                     this.status = 'STOPPED';
                     this.lastStatusChg = simClock;
-                    this.coords = s[currStn].coordinates;
+                    this.coords = stations[currStn].getCoords();
                 }
                 this.coords = coordinate
                 this.angle = Math.atan2(
-                    (s[currStn].coordinates.y - this.coords.y),
-                    (s[currStn].coordinates.x - this.coords.x)
+                    (stations[currStn].getCoords().y - this.coords.y),
+                    (stations[currStn].getCoords().x - this.coords.x)
                 ) * (180/Math.PI);
                 break;
         }
 
         return this.getVehicleFrame();
     }
+    
+    // Getters & Setters
+    getID = ():number => this.ID;
+    getAngle = ():number => this.angle;
+    getCoords = ():Coord => this.coords;
+    getCurrentPassengerCount = ():number => this.passengerCnt;
+
+    getVehicleFrame = ():VehicleFrame => ({
+        angle: this.getAngle(), 
+        coordinate: this.getCoords(),
+        passengerCnt: this.getCurrentPassengerCount()
+    })
+
+    getPrevStationID = ():(number|null) => 
+        this.currentStationIdx > 1?
+            this.travellingStations[this.currentStationIdx-1]:null;
+    
+    getNextStationID = ():(number|null) => 
+        this.currentStationIdx < this.travellingStations.length-1?
+            this.travellingStations[this.currentStationIdx+1]:null;
+
+    getCurrentStationID = ():(number|null) => 
+        this.currentStationIdx >= 0 &&
+        this.currentStationIdx < this.travellingStations.length?
+            this.travellingStations[this.currentStationIdx]: null;
 
 } 
 

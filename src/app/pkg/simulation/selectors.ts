@@ -1,16 +1,14 @@
 import Graph from "./graph";
-import { getModeSpeedMap, StationQueues } from ".";
-import { Scenario } from "../../../editor/constants";
-import { isPassenger, Passenger, PassengerTree } 
-from "../../../editor/components/leftPanel/components/passengerView/constants";
-import { RoutesState } from "../../../editor/components/leftPanel/components/componentView/constants";
-import { Queue } from "../queues";
 import ActiveVehicle from "./vehicle";
-import ActivePassenger from "./passenger";
 import ActiveStation from "./station";
+import ActivePassenger from "./passenger";
+import { Scenario } from "../../../editor/constants";
+import { getModeSpeedMap, StationContainer } from ".";
+import { isPassenger, Passenger } 
+    from "../../../editor/components/leftPanel/components/passengerView/constants";
 
-export const getSimulationPassengers = (p: PassengerTree, g: Graph): ActivePassenger[] => {
-    let pID = 0;
+export const getSimulationPassengers = (scenario: Scenario, g: Graph): ActivePassenger[] => {
+    let pID = 0, p = scenario.passengers.tree;
     let simulationPassengers: ActivePassenger[] = [];
 
     Object.keys(p).filter((k:String) => {
@@ -33,7 +31,7 @@ export const getSimulationPassengers = (p: PassengerTree, g: Graph): ActivePasse
     return simulationPassengers;
 }
 
-export const getSimulationVehicles = (scenario: Scenario): ActiveVehicle[] => {
+export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehicle[] => {
     let vID = 0;
     let simulationVehicles: ActiveVehicle[] = [];
     const { routes, simulation }: Scenario = scenario;
@@ -57,11 +55,22 @@ export const getSimulationVehicles = (scenario: Scenario): ActiveVehicle[] => {
     return simulationVehicles;
 }
 
-export const getStations = (routes: RoutesState): StationQueues => 
-    Object.keys(routes.data).reduce((mainAccum, r) => {
-        const routeStationQueues = Object.keys(routes.data[+r].stations).reduce((accum, k) => {
-            const stn = routes.data[+r].stations[+k];
-            return { ...accum, [stn.id] : new Queue<number>() }
-        },  {});
-        return { ...mainAccum, [routes.data[+r].id]: routeStationQueues }
+export const getStations = (scenario: Scenario, g: Graph): StationContainer => {
+    const { stations, routes } : Scenario = scenario;
+    const stns: StationContainer = Object.keys(stations.data).reduce((accum, stnID) => {
+        const stn = stations.data[+stnID];
+        const stnNID = g.getNodeFromCoordinates(stn.coordinates)
+        return {
+            ...accum,
+            [stn.id]: new ActiveStation(stn.id, stn.coordinates, stnNID?stnNID:-1)
+        }
     }, {});
+
+    Object.keys(routes.data).forEach((r:string) => {
+        const route = routes.data[+r];
+        Object.keys(route.stations).forEach((s:string) =>
+            stns[route.stations[+s].id].addRoute(route.id))
+    });
+
+    return stns;
+}

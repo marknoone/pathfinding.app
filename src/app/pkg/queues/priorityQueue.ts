@@ -18,6 +18,7 @@ class PriorityQueue<T> {
     constructor(){ this.items = []; } 
     
     IsEmpty: () => boolean = () => this.items.length == 0;
+    Size: () => number = () => this.items.length;
 
     Enqueue(element: T, priority: number): void {
         let qElement = new QElement(element, priority);
