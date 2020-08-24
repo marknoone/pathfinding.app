@@ -1,62 +1,56 @@
-import { Coord } from ".";
-import { Queue } from "../queues";
-import EventManager from "./events"
+import { Coord, StationFrame } from ".";
+import EventManager, { SimulationEvent } from "./events"
+import { PassengerEventTags, isPassengerEventObj } from "./events/passenger";
 
 class ActiveStation {
     ID: number
     coord: Coord
     nodeID: number
-    routeQs: {[routeID: number]: Queue<number>}
+    routeCnt: {[rID:number]: number}
 
     constructor(id: number, c: Coord, node: number){
         this.ID = id;
         this.coord = c;
-        this.routeQs = {};
         this.nodeID = node;
+        this.routeCnt = {};
     }
-
-    Simulate(simClock: number, eventManager: EventManager){
-
-    }
-
-    // Inline Funcs
-    addRoute = (rID: number) => 
-        this.routeQs[rID] = new Queue<number>();
-
-    containsRoute = (rID: number):boolean => 
-        Object.keys(this.routeQs).includes(rID.toString())
-
-
-    // QueueMethods
-    getPassengerAtStop(rID: number):(number|null){ 
-        if(!this.containsRoute(rID))
-            return null;
-            
-        return this.routeQs[rID].Dequeue();
-    }
-
-    queueAtStation(rID:number, pID: number) {
-        if(this.containsRoute(rID))
-            this.routeQs[rID].Enqueue(pID);
-    }
-
-
     
-    // Getters/Setters....
     getID = ():number => this.ID;
     getCoords = ():Coord => this.coord;
     getNodeID = ():number => this.nodeID;
+    addRouteWatch = (rID: number) => this.routeCnt[rID] = 0; 
 
-    getPassengersWaitingForRoute(rID:number):number {
-        if(this.containsRoute(rID))
-            return this.routeQs[rID].Size();
-        else 
-            return -1
-    }
+    Simulate(_: number, eventManager: EventManager): StationFrame {
+        // Increment stop counts for stop and routes...
+        eventManager.getEventsWithTag(
+            PassengerEventTags[PassengerEventTags.ARRIVED_AT_STOP_EVENT]
+        ).forEach((e:SimulationEvent) => {
+            const pObj = e.getObj()
+            if(isPassengerEventObj(pObj) && pObj.stopID === this.ID){
+                if(Object.keys(this.routeCnt)
+                    .includes(pObj.routeID.toString()))
+                        this.routeCnt[pObj.routeID] += 1;
+            }
+        });
+            
+        // Decrement stop counts for stop and routes...
+        eventManager.getEventsWithTag(
+            PassengerEventTags[PassengerEventTags.BOARDING_EVENT]
+        ).forEach((e:SimulationEvent) => {
+            const pObj = e.getObj()
+            if(isPassengerEventObj(pObj) && pObj.stopID === this.ID){
+                if(Object.keys(this.routeCnt)
+                    .includes(pObj.routeID.toString()))
+                        this.routeCnt[pObj.routeID] -= 1;
+            }
+        });
 
-    getCurrentPassengerCnt = ():number =>
-        Object.keys(this.routeQs).reduce((accum, r) => 
-            accum + this.routeQs[+r].Size(), 0);
+        return {
+            passengerCntByRoute: this.routeCnt,
+            passengerCnt: Object.keys(this.routeCnt).reduce((accum, cnt) => 
+                accum + this.routeCnt[+cnt], 0)
+        };
+    }   
 }
 
 export default ActiveStation;

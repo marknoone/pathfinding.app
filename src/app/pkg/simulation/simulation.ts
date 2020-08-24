@@ -1,13 +1,16 @@
 import Graph from "./graph";
 import EventManager from './events';
 import ActiveVehicle from './vehicle';
+import ActiveStations from './station';
 import { put } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
 import { Scenario } from '../../../editor/constants';
 import { SimulationFrame } from '.';
 import { EvaluateMiddlewareFunc } from './middlewares';
-import { getSimulationPassengers, getSimulationVehicles } 
+import { getSimulationPassengers, getSimulationVehicles, getStations } 
     from './selectors';
+import { SetBakedFrames } 
+    from '../../../editor/components/rightPanel/components/simulationView/actions';
 import { SimulationActionTypes, Algorithms, SimulationAction } 
     from '../../../editor/components/rightPanel/components/simulationView/constants';
 
@@ -23,6 +26,7 @@ class Simulator {
     s: Scenario
     alg: PathfindingAlg
     eventManager: EventManager
+    simulationStations: ActiveStations[]
     simulationVehicles: ActiveVehicle[]
     simulationPassengers: ActivePassenger[]
 
@@ -30,6 +34,7 @@ class Simulator {
         this.s = s;
         this.eventManager = new EventManager();
         this.g = new Graph(s, scenarioNodeSize, scenarioDimens);
+        this.simulationStations = getStations(s, this.g);
         this.simulationVehicles = getSimulationVehicles(s, this.g);
         this.simulationPassengers = getSimulationPassengers(s, this.g);
 
@@ -61,6 +66,11 @@ class Simulator {
                 return { ...accum, ...(f? { [av.getID()] : f } :{} )}
             }, {});
             
+            simulationFrame.stations = this.simulationStations.reduce((accum, as) => {
+                const f = as.Simulate(second, this.eventManager);
+                return { ...accum, ...(f? { [as.getID()] : f } :{} )}
+            }, {});
+            
             // Evaluate middlewares and push to simulationFrame.
             const evalFrame = middleware? middleware(simulationFrame): {};
             
@@ -76,7 +86,7 @@ class Simulator {
     
             yield put(frameAction);
             if(second%1000 === 0)
-                yield put({ type: SimulationActionTypes.INC_BAKED_FRAMES }) // TODO: Set baked frames...
+                yield put(SetBakedFrames(second));
         }
 
         return null;

@@ -15,7 +15,7 @@ export const CancelBaking = ():SimulationAction => ({
 })
 
 export const SetBakedFrames = (bakedFrames: number):SimulationAction => ({
-    type: SimulationActionTypes.BAKE_SCENARIO,
+    type: SimulationActionTypes.SET_BAKED_FRAMES,
     payload: {simFrame: bakedFrames}
 })
 

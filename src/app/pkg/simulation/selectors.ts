@@ -1,6 +1,7 @@
 import Graph from "./graph";
 import ActiveVehicle from "./vehicle";
 import ActivePassenger from "./passenger";
+import ActiveStation from "./station";
 import { Scenario } from "../../../editor/constants";
 import { getModeSpeedMap } from ".";
 import { isPassenger, Passenger } 
@@ -54,4 +55,20 @@ export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehic
     });
 
     return simulationVehicles;
+}
+
+export const getStations = (scenario: Scenario, g: Graph): ActiveStation[] => {
+    const { stations, routes } : Scenario = scenario;
+    const stns: ActiveStation[] = Object.keys(stations.data).map((stnID:string) => {
+        const stn = stations.data[+stnID];
+        const stnNID = g.getNodeFromCoordinates(stn.coordinates)
+        return new ActiveStation(stn.id, stn.coordinates, stnNID?stnNID:-1)
+    });
+
+    Object.keys(routes.data).forEach((r:string) => 
+        Object.keys(routes.data[+r].stations).forEach((s:string) =>
+            stns[routes.data[+r].stations[+s].id].addRouteWatch(routes.data[+r].id))
+    );
+
+    return stns;
 }

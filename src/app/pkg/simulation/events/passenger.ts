@@ -18,4 +18,5 @@ export type PassengerEventObj ={
     stopID: number,
     routeID: number,
     passengerID: number,
+    vehicleID?: number,
 }

@@ -3,10 +3,10 @@ export default EventManager;
 
 
 export enum EventType {
-    PASSENGER_EVENT = "@passenger/",
     VEHICLE_EVENT = "@vehicle/",
-    EVALUATION_EVENT = "@evaluation/",
     STATION_EVENT = "@station/",
+    PASSENGER_EVENT = "@passenger/",
+    EVALUATION_EVENT = "@evaluation/",
 }
 
 
