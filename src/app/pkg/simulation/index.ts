@@ -48,9 +48,16 @@ export type ActivePassenger = {
 
 export type Path = PathSegment[]
 export type PathSegment = {
-   nodeIDs: number[],
+   nodes: PathSegmentNode[],
    mode: TransitModes,
    route: number | null,
+   isLast: boolean,
+}
+export type PathSegmentNode = {
+    id: number,
+    coord: Coord,
+    stopID?:number,
+    isLast: boolean,
 }
 
 export type ModeSpeedMap = { [mode: string]: number };

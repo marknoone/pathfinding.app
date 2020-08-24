@@ -1,6 +1,7 @@
 import EventManager from './manager';
-export default EventManager; 
 
+export default EventManager; 
+export { default as Event } from './event';
 
 export enum EventType {
     VEHICLE_EVENT = "@vehicle/",

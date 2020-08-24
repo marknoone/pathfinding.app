@@ -6,9 +6,12 @@ import { Scenario } from "../../../editor/constants";
 import { getModeSpeedMap } from ".";
 import { isPassenger, Passenger } 
     from "../../../editor/components/leftPanel/components/passengerView/constants";
+import { TransitModes } from "../../../editor/components/leftPanel/components/componentView/constants";
 
 export const getSimulationPassengers = (scenario: Scenario, g: Graph): ActivePassenger[] => {
-    let pID = 0, p = scenario.passengers.tree;
+    const { passengers, simulation }: Scenario = scenario;
+    const modeSpdMap = getModeSpeedMap(simulation.options);
+    let pID = 0, p = passengers.tree;
     let simulationPassengers: ActivePassenger[] = [];
 
     Object.keys(p).filter((k:String) => {
@@ -17,13 +20,8 @@ export const getSimulationPassengers = (scenario: Scenario, g: Graph): ActivePas
         return true; 
     }).forEach((key:string) => {
         const passenger = p[+key] as Passenger;
-        const toNode = g.getNodeFromCoordinates(passenger.start);
-        const fromNode = g.getNodeFromCoordinates(passenger.destination);
         simulationPassengers[pID] = new ActivePassenger(
-            pID, 
-            toNode? toNode: -1, 
-            fromNode? fromNode: -1,
-            passenger.tod
+            pID, passenger, modeSpdMap[TransitModes.FOOT], g
         );
         pID += 1;
     });

@@ -29,4 +29,4 @@ class Event implements SimulationEvent {
     getType = () => this.type;
 }
 
-export default PassengerEvent;
+export default Event; 

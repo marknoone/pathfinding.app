@@ -7,16 +7,28 @@ export enum PassengerEventTags {
 }
 
 export function isPassengerEventObj(obj: any): obj is PassengerEventObj {
-    return (
-        (obj as PassengerEventObj).stopID !== undefined ||
-        (obj as PassengerEventObj).routeID !== undefined ||
-        (obj as PassengerEventObj).passengerID !== undefined
-    );
+    return (obj as PassengerEventObj).__isPassengerEventObj !== undefined;
 }
 
-export type PassengerEventObj ={
+export type PassengerEventObj = {
+    __isPassengerEventObj: null,
     stopID: number,
     routeID: number,
     passengerID: number,
     vehicleID?: number,
 }
+
+
+export const passengerEventObj = (
+    stopID: number, 
+    routeID: number, 
+    passengerID: number, 
+    vehicleID?: number
+):PassengerEventObj =>
+    ({ 
+        __isPassengerEventObj: null, 
+        stopID: stopID, 
+        routeID: routeID,
+        passengerID: passengerID, 
+        vehicleID: vehicleID 
+});

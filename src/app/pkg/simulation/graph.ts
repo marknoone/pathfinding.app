@@ -1,11 +1,21 @@
+import { Node, Edge, Path, Coord } from ".";
+import { PathfindingAlg } from "./algorithms";
 import { Scenario } from "../../../editor/constants";
-import { CanvasState } from '../../../editor/components/workspace/components/pathfindingCanvas/constants';
-import { Node, Edge } from ".";
-import { TransitModes } from "../../../editor/components/leftPanel/components/componentView/constants";
+import { TransitModes } 
+    from "../../../editor/components/leftPanel/components/componentView/constants";
+import { Algorithms } 
+    from "../../../editor/components/rightPanel/components/simulationView/constants";
+
+// Algorithms
+import Dijkstra from './algorithms/dijkstra';
+import TD_Dijkstra from './algorithms/td-dijkstra';
+import MM_TD_Dijkstra from './algorithms/mm-td-dijkstra';
+import CMT_Dijkstra from './algorithms/cmt-dijkstra';
 
 class Graph {
     boxSize: number;
     canvasSize: number[];
+    alg: PathfindingAlg
 
     nodes: { [nID: number]: Node   }
     edges: { [nID: number]: Edge[] }
@@ -17,6 +27,17 @@ class Graph {
         this.nodes = {}
         this.edges = {}
         this.stationMap = {}
+
+        switch(s.simulation.algorithm) {
+            case Algorithms.TimeDependentDijkstra: 
+                this.alg = new TD_Dijkstra();
+            case Algorithms.MultiModalTimeDependentDijkstra: 
+                this.alg = new MM_TD_Dijkstra();
+            case Algorithms.CMTDijkstra: 
+                this.alg = new CMT_Dijkstra();
+            default: 
+                this.alg = new Dijkstra();
+        }
 
         const opts = s.simulation.options;
         const [cWidth, cHeight] = this.canvasSize;
@@ -157,6 +178,14 @@ class Graph {
         });
 
         return id?+id:null;
+    }
+
+    computePath(start: Coord, destination: Coord, depTime: number):(Path|null) {
+        const startNode = this.getNodeFromCoordinates(start);
+        const destinationNode = this.getNodeFromCoordinates(destination);
+        if(startNode && destinationNode)
+            return this.alg.Execute(this, startNode, destinationNode, depTime);
+        return null
     }
 }
 

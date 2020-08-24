@@ -104,7 +104,7 @@ import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./ev
                 // speed * time = distance, but time is 1 second in this case.
                 let coordinate: Coord = {
                     x: this.coords.x +  this.vehicleSpeed * vNorm[0], 
-                    y: this.coords.y +  this.vehicleSpeed * vNorm[0]
+                    y: this.coords.y +  this.vehicleSpeed * vNorm[1]
                 }
 
                 const prevStn = this.getPrevStation();
