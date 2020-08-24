@@ -24,7 +24,7 @@ export const initialState: SimulationState = {
 
     data: {
         frames:{
-            1:{ 
+            0:{ 
                 simulation: {
                     passengers: { 1: { coordinates: { x: 356, y:220 } }}, 
                     vehicles:   { 1: { coordinate:  { x: 657, y:109 }, angle: 20, passengerCnt: 3 }}, 

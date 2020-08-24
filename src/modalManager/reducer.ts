@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import { ModalActionTypes, ModalAction, ModalState } from './constants';
 
 export const initialState = {
-    isModalOpen: true,
+    isModalOpen: false,
     modalType: 12,
     modalProps: {}
 }

@@ -9,7 +9,7 @@ type KPDProps = {
     color: string,
     svgData: string,
     boxSize: number,
-    coords: number[], 
+    coords: number[],
     isHighlighted: boolean,
     iconCoord: {x: number, y:number},
     iconScale: {x: number, y:number},

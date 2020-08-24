@@ -15,29 +15,21 @@ type KVMProps = {
     }
 }
 
-const KonvaVehicleManager: React.FunctionComponent<KVMProps> = (props) => {
-    const [rAF, setrAF] = useState<number>(0);
-    useEffect(() => {
-        // setrAF(requestAnimationFrame(updateVehicles))
-        return () => {
-            cancelAnimationFrame(rAF);
-        }
-    }, [])
-
-    const updateVehicles = () => {
-        console.log("Works!");
-        setrAF(requestAnimationFrame(updateVehicles));
-    }
-
-    return <Layer x={props.coords[0]} y={props.coords[1]} 
+const KonvaVehicleManager: React.FunctionComponent<KVMProps> = (props) => 
+    <Layer x={props.coords[0]} y={props.coords[1]} 
         scale={{
             x: props.scale.x, 
             y: props.scale.y
     }}>
         {
-
+            Object.keys(props.simVehicles).map((k:string) =>{
+                const v = props.simVehicles[+k];
+                return <KonvaVehicle angle={v.angle} key={+k}
+                    coords={[v.coordinate.x, v.coordinate.y]} 
+                    capacity={[v.passengerCnt,
+                        props.vehicles.data[+k].capacity]} />
+            })
         }
     </Layer>;
-};
 
 export default KonvaVehicleManager;

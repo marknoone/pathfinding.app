@@ -34,8 +34,9 @@ const dummyRouterDataObj: RouteDataObj = {
         color: Colours.AMOUR, stations: {}, departures: {} 
     },
     3:{ 
-        id: 3, name: "Route-3", vehicleID: 1, isLocked: false, mode: TransitModes.BUS, 
-        color: Colours.AMOUR, stations: {}, departures: {} 
+        id: 3, name: "Route-3", vehicleID: 1, isLocked: false, mode: TransitModes.BUS, color: Colours.AMOUR, 
+        stations: { 1: {id: 1, name: 'Station-1'}, 2: {id: 2, name: 'Station-2'}, 3: {id: 3, name: 'Station-3'}}, 
+        departures: {} 
     }
 }
 
@@ -68,7 +69,7 @@ export const initialState = {
         vehicles:   { nextId: 2, data: dummyVehicleDataObj},
 
         passengers: { nextId: 2, tree: {
-            0 : {id: 0, name: "All Passengers", children: []},
+            0 : {id: 0, name: "All Passengers", children:  [1]},
             1 : dummyPassenger,
         } as PassengerTree },
 

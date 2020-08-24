@@ -33,12 +33,12 @@ type KCMProps = {
 
 const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
     var stationRouteMap: {[key: number]: {start: string[], end:string[]}} = [];
+    const dragFunc = CreateBoundingFunc(props.coords, props.dimensions);
     Object.keys(props.stations).forEach((k:string) => {
         const idx = parseInt(k, 10)
         if(isNaN(idx)) return null;
         stationRouteMap[idx] = {start: [], end:[]}
     });
-    const dragFunc = CreateBoundingFunc(props.coords, props.dimensions);
 
     return <Layer x={props.coords[0]} y={props.coords[1]} 
         scale={props.scale}
@@ -98,6 +98,7 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                 const idx = parseInt(k, 10)
                 if(isNaN(idx)) return null;
                 const stn = props.stations[idx];
+                const pCnt = props.simStations[+stn.id]?props.simStations[+stn.id].passengerCnt:0; 
                 return <KonvaStation key={stn.id} colour="#464646" 
                     dragBoundFunc={dragFunc} disabled={stn.isLocked || props.disabled}
                     startLineIDs={stationRouteMap[stn.id].start} 
@@ -107,7 +108,7 @@ const KonvaComponentManager: React.FunctionComponent<KCMProps> = (props) => {
                         if(props.onStationClick)
                             props.onStationClick(stn.id);
                     }}
-                    boxSize={props.gridBlockSize}
+                    boxSize={props.gridBlockSize} passengerCount={pCnt}
                     onChange={c => props.onStationCoordChange(stn.id, c)}
                     isHighlighted={
                         props.inspecting.componentType === ComponentTypes.STATION 

@@ -1,8 +1,7 @@
 import React from 'react';
 import Konva from 'konva';
-import { Circle, Path, Group } from "react-konva";
+import { Circle, Text, Group } from "react-konva";
 import { KonvaEventObject } from 'konva/types/Node';
-import { svgPathData } from '@fortawesome/free-solid-svg-icons/faMapPin';
 import { Vector2d } from 'konva/types/types';
 import { Layer } from 'konva/types/Layer';
 
@@ -10,8 +9,9 @@ type KSProps = {
     colour: string, 
     boxSize: number,
     coords: number[],
-    isHighlighted: boolean,
     disabled?: boolean,
+    isHighlighted: boolean,
+    passengerCount: number,
 
     startLineIDs: string[],
     endLineIDs: string[],
@@ -132,9 +132,14 @@ const KonvaStation: React.FunctionComponent<KSProps> = (props) => {
         }
         <Circle fill={props.colour} radius={15} />
         <Circle radius={11} fill="#ffffff" />
-        <Path x={-4} y={-8} fill="#ddd"
-            scale={{x: 0.03, y: 0.03}}
-            data={svgPathData} 
+        <Text x={-7.5} y={-6} fill="#666"
+            fontStyle={'normal'}
+            fontSize={12}
+            fontFamily={'Montserrat'}
+            align={'center'}
+            width={15} height={15}
+            verticalAlign={'middle'}
+            text={props.passengerCount.toString()}
         />
     </Group>
 }

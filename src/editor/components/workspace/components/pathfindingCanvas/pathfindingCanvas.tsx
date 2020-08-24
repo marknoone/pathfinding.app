@@ -51,9 +51,7 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
         ));
     }, [props.dimensions, canvasOpts.canvasSize]);
 
-    return <Stage 
-    width={props.dimensions[0]} 
-    height={props.dimensions[1]}>
+    return <Stage width={props.dimensions[0]}  height={props.dimensions[1]}>
         <KonvaBG dimensions={props.dimensions} fill="#f1f3f4"/>
         <KonvaGrid coords={canvasOpts.coords} dimensions={canvasOpts.canvasSize} 
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}}

@@ -106,9 +106,11 @@ export type PassengerSimData = {
     [passengerID: number]: PassengerFrame
 }
 
-export type VehicleFrame = { angle: number, passengerCnt: number, coordinate: Coord }
-export type VehicleSimData = {
-    [vehicleID: number]:  VehicleFrame
+export type VehicleSimData = {[vehicleID: number]:  VehicleFrame}
+export type VehicleFrame = { 
+    angle: number, 
+    coordinate: Coord,
+    passengerCnt: number, 
 }
 
 export type StationSimData = {

@@ -1,4 +1,4 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect }from 'react';
 import { Algorithms, Playspeeds } from './constants';
 import { AppState } from '../../../../../store';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
@@ -33,7 +33,19 @@ const SimulationView: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
     const [isDropdownShowing, setIsDropdownShowing] = useState(false);
     const config = useSelector((s:AppState) => 
-        s.scenario.scenarios[s.scenario.activeScenarioIdx].simulation, shallowEqual)
+        s.scenario.scenarios[s.scenario.activeScenarioIdx].simulation, shallowEqual);
+    const [rAF, setrAF] = useState<number>(0);
+    useEffect(() => {
+        // setrAF(requestAnimationFrame(updateVehicles))
+        return () => {
+            cancelAnimationFrame(rAF);
+        }
+    }, [])
+
+    const updateVehicles = () => {
+        console.log("Works!");
+        setrAF(requestAnimationFrame(updateVehicles));
+    }
  
     const setAlg = (a: Algorithms) => { dispatch(SetSimulationAlgorithm(a)); setIsDropdownShowing(false); } 
     return <div style={BaseStyle}>
