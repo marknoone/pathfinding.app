@@ -3,8 +3,8 @@ import { Algorithms } from './components/rightPanel/components/simulationView/co
 import PassengerReducer from './components/leftPanel/components/passengerView/reducer';
 import SimulationReducer from './components/rightPanel/components/simulationView/reducer';
 import { ScenarioState, ScenarioAction, ScenarioActionTypes } from './constants' 
-import { PassengerTree } from './components/leftPanel/components/passengerView/constants';
-import { TransitModes, ColourSet, Colours } from './components/leftPanel/components/componentView/constants';
+import { PassengerTree, Passenger } from './components/leftPanel/components/passengerView/constants';
+import { TransitModes, ColourSet, Colours, StationDataObj, RouteDataObj, VehicleDataObj } from './components/leftPanel/components/componentView/constants';
 import { initialState as SimulationInitialState} from './components/rightPanel/components/simulationView/reducer';
 import { RouteReducer, StationReducer,  VehicleReducer} 
     from './components/leftPanel/components/componentView/reducer';
@@ -18,17 +18,58 @@ const scenarioReducer = combineReducers({
     simulation: SimulationReducer,
 });
 
+const dummyStnDataObj: StationDataObj = {
+    1:{ id: 1, name: "Station-1", isLocked: false, coordinates: {x: 400, y: 400}},
+    2:{ id: 2, name: "Station-2", isLocked: false, coordinates: {x: 500, y: 500}},
+    3:{ id: 3, name: "Station-3", isLocked: false, coordinates: {x: 600, y: 600}}
+}
+
+const dummyRouterDataObj: RouteDataObj = {
+    1:{ 
+        id: 1, name: "Route-1", vehicleID: 1, isLocked: false, mode: TransitModes.BUS, 
+        color: Colours.AMOUR, stations: {}, departures: {} 
+    },
+    2:{ 
+        id: 2, name: "Route-2", vehicleID: 1, isLocked: false, mode: TransitModes.BUS, 
+        color: Colours.AMOUR, stations: {}, departures: {} 
+    },
+    3:{ 
+        id: 3, name: "Route-3", vehicleID: 1, isLocked: false, mode: TransitModes.BUS, 
+        color: Colours.AMOUR, stations: {}, departures: {} 
+    }
+}
+
+const dummyVehicleDataObj: VehicleDataObj = {
+    1:{ 
+        id: 1, name: "Vehicle-1", isLocked: false, capacity: 6, glyph: faArchive, 
+        LOS: { A: 0, B: 1, C:2, D:3, E:4, F:5 }
+    },
+    2:{ 
+        id: 2, name: "Vehicle-2", isLocked: false, capacity: 6, glyph: faArchive, 
+        LOS: { A: 0, B: 1, C:2, D:3, E:4, F:5 }
+    },
+}
+
+const dummyPassenger: Passenger = {
+    id: 1, 
+    name: "Passenger", 
+    tod: 400, 
+    start: {x: 380, y: 380}, 
+    destination: {x: 580, y: 580},
+    isLocked: false
+}
+
 export const initialState = {
     activeScenarioIdx: 0,
     scenarios: [{
         name: "Scenario-1",
-        stations:   { nextId: 1, data: {}},
-        routes:     { nextId: 1, data: {}},
+        stations:   { nextId: 2, data: dummyStnDataObj },
+        routes:     { nextId: 2, data: dummyRouterDataObj},
+        vehicles:   { nextId: 2, data: dummyVehicleDataObj},
 
-        vehicles:   { nextId: 1, data: {}},
-
-        passengers: { nextId: 1, tree: {
+        passengers: { nextId: 2, tree: {
             0 : {id: 0, name: "All Passengers", children: []},
+            1 : dummyPassenger,
         } as PassengerTree },
 
         simulation: SimulationInitialState
