@@ -3,7 +3,7 @@ import { SimulationActionTypes } from './constants';
 import { Scenario } from '../../../../constants';
 import { AppState } from '../../../../../store';
 import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
-import Simulator, { FullSimData } from '../../../../../app/pkg/simulation';
+import Simulator, { FullSimData, FrameContainer } from '../../../../../app/pkg/simulation';
 import withMiddleware from '../../../../../app/pkg/simulation/middlewares';
 import ExampleMiddleware from '../../../../../app/pkg/simulation/middlewares/example';
 
@@ -19,19 +19,15 @@ function* SimulateActiveScenario() {
         s.scenario.scenarios[s.scenario.activeScenarioIdx]);
     const simulator = new Simulator(s, canvas.boxSize, canvas.canvasSize);
     
-    const simData: (FullSimData | null) = yield call(
+    const frames: FrameContainer = yield call(
         simulator.SimulateScenario, 
         withMiddleware({ "EXAMPLE" : ExampleMiddleware})
     );
 
-    if(simData) {
-        yield put({
-            type: SimulationActionTypes.COMPLETE_BAKE,
-            payload: {
-                data: simData
-            }
-        });
-    }
+    yield put({
+        type: SimulationActionTypes.COMPLETE_BAKE,
+        payload: { frames: frames }
+    });
 } 
 
 

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { update } from 'lodash';
 import { Layer } from 'react-konva';
 import { KonvaVehicle } from './components/konvaVehicle';
-import { update } from 'lodash';
+import { VehiclesState } from '../../../../../leftPanel/components/componentView/constants';
+import { VehicleSimData } from '../../../../../../../app/pkg/simulation';
 
 type KVMProps = {
     coords: number[],
+    vehicles: VehiclesState,
+    simVehicles: VehicleSimData,
     scale: { 
         x: number, 
         y:number 

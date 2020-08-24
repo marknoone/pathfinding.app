@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Layer, Circle } from "react-konva";
 import { ComponentTypes } from '../../../../../../constants';
+import { CreateBoundingFunc } from '../../pathfindingCanvas';  
 import { KonvaPassengerPath } from './components/konvaPassengerPath';
 import { KonvaPassengerPoint } from './components/konvaPassengerPoint';
-import { InspectorState } from '../../../../../rightPanel/components/inspectorView/constants';
+import { PassengerPath, PassengerSimData } from '../../../../../../../app/pkg/simulation';
 import { svgPathData as flagSVG } from '@fortawesome/free-solid-svg-icons/faFlag';
+import { InspectorState } from '../../../../../rightPanel/components/inspectorView/constants';
 import { svgPathData as crosshairSVG } from '@fortawesome/free-solid-svg-icons/faCrosshairs';
-import { CreateBoundingFunc } from '../../pathfindingCanvas';  
 import { PassengerTree, isPassengerDirectory, Passenger } 
     from '../../../../../leftPanel/components/passengerView/constants';
 
 type KPMProps = { 
     coords: number[],
     gridBlockSize: number,
+    simPassengers: PassengerSimData,
     scale: {
         x: number, 
         y: number
@@ -21,6 +23,7 @@ type KPMProps = {
 
     passengers: PassengerTree, 
     inspecting: InspectorState,
+    passengerPaths: { [pID: number]: PassengerPath }
 
     onPassengerClick?: (id: number) => void
     onPassengerChange: (p: Passenger) => void

@@ -6,6 +6,8 @@ import {
     SimulationActionTypes,
     Playspeeds
 } from './constants';
+import { TransitModes } 
+    from '../../../leftPanel/components/componentView/constants';
 
 export const initialState: SimulationState = {
     simClock: 0,
@@ -20,7 +22,38 @@ export const initialState: SimulationState = {
         current: 1
     },
 
-    data: null,
+    data: {
+        frames:{
+            1:{ 
+                simulation: {
+                    passengers: { 1: { coordinates: { x: 356, y:220 } }}, 
+                    vehicles:   { 1: { coordinate:  { x: 657, y:109 }, angle: 20, passengerCnt: 3 }}, 
+                    stations:   { 1: { passengerCnt: 4, passengerCntByRoute: { 1: 2, 2:2 } }},
+                }, 
+                evaluation: {} 
+            }
+        },
+
+        passengerPaths: {
+            0: {
+                [Algorithms.Dijkstra]: { 
+                    isActive: true, 
+                    path: [
+                        {
+                            isLast: true, route: 1, mode: TransitModes.FOOT, 
+                            nodes:[
+                                { coord: {x:50,  y:50},  isLast: false },
+                                { coord: {x:150, y:150}, isLast: false },
+                                { coord: {x:250, y:250}, isLast: false },
+                                { coord: {x:350, y:350}, isLast: true  },
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+
     options:{
         stopTime: 2,
         distanceMul: 10.0,
@@ -177,7 +210,12 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                 ...state,
                 isBaking: false,
                 isSimulating: true,
-                data: action.payload.data? action.payload.data: null,
+                data: {
+                    frames: action.payload.frames? action.payload.frames: {},
+                    passengerPaths: state.data?.passengerPaths? 
+                        { passengerPaths: state.data.passengerPaths }:
+                        {}
+                }
             };
         case SimulationActionTypes.INIT_SIMULATION:
             console.log("Init Sim")

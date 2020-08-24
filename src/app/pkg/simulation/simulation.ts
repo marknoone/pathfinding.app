@@ -5,7 +5,7 @@ import ActiveStations from './station';
 import { put } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
 import { Scenario } from '../../../editor/constants';
-import { SimulationFrame } from '.';
+import { SimulationFrame, FrameContainer } from '.';
 import { EvaluateMiddlewareFunc } from './middlewares';
 import { getSimulationPassengers, getSimulationVehicles, getStations } 
     from './selectors';
@@ -31,8 +31,9 @@ class Simulator {
         this.simulationPassengers = getSimulationPassengers(s, this.g);
     }
 
-    *SimulateScenario(middleware?: EvaluateMiddlewareFunc){
+    *SimulateScenario(middleware?: EvaluateMiddlewareFunc) {
         const DAY = 24 * 60 * 60;
+        const frameContianer: FrameContainer = {}; 
         for(let second = 0; second < DAY; second++){
             const simulationFrame: SimulationFrame = {passengers: {}, stations: {}, vehicles: {}};
     
@@ -55,22 +56,16 @@ class Simulator {
             // Evaluate middlewares and push to simulationFrame.
             const evalFrame = middleware? middleware(simulationFrame): {};
             
-            // Push simulation frame to store & update UI if needed.
-            const frameAction: SimulationAction = { 
-                type: SimulationActionTypes.PUSH_BAKED_FRAME,
-                payload: {
-                    simFrame: second, 
-                    dataFrame: simulationFrame, 
-                    evalFrame: {} //evalFrame
-                }
+            frameContianer[second] = {
+                simulation: simulationFrame,
+                evaluation: {}
             };
-    
-            yield put(frameAction);
+
             if(second%1000 === 0)
                 yield put(SetBakedFrames(second));
         }
 
-        return null;
+        return frameContianer;
     }
 }
 

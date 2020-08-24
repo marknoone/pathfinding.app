@@ -16,6 +16,7 @@ class Graph {
     boxSize: number;
     canvasSize: number[];
     alg: PathfindingAlg
+    simAlg: Algorithms
 
     nodes: { [nID: number]: Node   }
     edges: { [nID: number]: Edge[] }
@@ -27,6 +28,7 @@ class Graph {
         this.nodes = {}
         this.edges = {}
         this.stationMap = {}
+        this.simAlg = s.simulation.algorithm;
 
         switch(s.simulation.algorithm) {
             case Algorithms.TimeDependentDijkstra: 
@@ -179,6 +181,8 @@ class Graph {
 
         return id?+id:null;
     }
+
+    getAlg = ():Algorithms => this.simAlg; 
 
     computePath(start: Coord, destination: Coord, depTime: number):(Path|null) {
         const startNode = this.getNodeFromCoordinates(start);

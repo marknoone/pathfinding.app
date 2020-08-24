@@ -16,6 +16,7 @@ import { ComponentTypes } from '../../../../constants';
 import { KonvaPassengerManager } from './components/konvaPassengerManager';
 import { UpdatePassengerWithID } from '../../../leftPanel/components/passengerView/actions';
 import { Vector2d } from 'konva/types/types';
+import { FullSimFrame, SimulationFrame } from '../../../../../app/pkg/simulation';
 
 type PCProps = { dimensions: number[] }
 type PCState = {coords: number[], scale: {x: number, y: number}}
@@ -29,10 +30,19 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
         [ state.scenario.activeScenarioIdx ].stations, shallowEqual);
     const routes = useSelector((state: AppState) => state.scenario.scenarios
         [ state.scenario.activeScenarioIdx ].routes, shallowEqual);
+    const isSimulating = useSelector((state: AppState) =>  
+        state.scenario.scenarios[state.scenario.activeScenarioIdx].simulation.isSimulating);
     const vehicles = useSelector((state: AppState) => state.scenario.scenarios
         [ state.scenario.activeScenarioIdx ].vehicles, shallowEqual);
-    const isSimulating = useSelector((state: AppState) =>  
-        state.scenario.scenarios[state.scenario.activeScenarioIdx].simulation.isSimulating)
+    const simClock = useSelector((state: AppState) => state.scenario.scenarios
+        [ state.scenario.activeScenarioIdx ].simulation.simClock, shallowEqual)
+    const simData = useSelector((state: AppState) => 
+        state.scenario.scenarios[ state.scenario.activeScenarioIdx ].simulation.data, shallowEqual);
+    const { frames, passengerPaths } = simData?simData:{frames: {}, passengerPaths:{}}
+    const { passengers: simPassengers, stations: simStations, vehicles: simVehicles }: SimulationFrame 
+        =   frames[simClock]?
+            frames[simClock].simulation:
+            { passengers:{}, stations: {}, vehicles:{} };
 
     useLayoutEffect(() => {
         dispatch(SetCanvasCoordinates(
@@ -52,7 +62,7 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
                 s.newCoords[0], s.newCoords[1], 
                 s.newScale.x, s.newScale.y
             ))}/>
-        <KonvaComponentManager gridBlockSize={canvasOpts.boxSize} inspecting={inspecting}
+        <KonvaComponentManager gridBlockSize={canvasOpts.boxSize} inspecting={inspecting} simStations={simStations}
             coords={canvasOpts.coords} stations={stations.data} routes={routes.data} disabled={isSimulating}
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} dimensions={canvasOpts.canvasSize} 
             onRouteClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.ROUTE, id))}
@@ -60,11 +70,12 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
             onStationCoordChange={(id, chg) => { 
                 dispatch(UpdateStationByID({ ...stations.data[id], coordinates:{ x: chg.x, y: chg.y }}))
             }}/>
-        <KonvaPassengerManager passengers={passengers} inspecting={inspecting} coords={canvasOpts.coords}
+        <KonvaPassengerManager passengers={passengers} simPassengers={simPassengers}
+            inspecting={inspecting} coords={canvasOpts.coords}  passengerPaths={passengerPaths}
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}} gridBlockSize={canvasOpts.boxSize}
             onPassengerClick={(id: number) => dispatch(SetInspectingObject(ComponentTypes.PASSENGER, id))}
             onPassengerChange={(p) => { dispatch(UpdatePassengerWithID({...p}))}} dimensions={canvasOpts.canvasSize} />
-        <KonvaVehicleManager coords={canvasOpts.coords}  
+        <KonvaVehicleManager coords={canvasOpts.coords} vehicles={vehicles} simVehicles={simVehicles}
             scale={{x: canvasOpts.scale[0], y: canvasOpts.scale[1]}}/>
     </Stage>;
 }

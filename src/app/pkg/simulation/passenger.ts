@@ -1,6 +1,7 @@
 import Graph from "./graph";
 import { isBetween } from './geometry';
-import { PassengerFrame, Coord } from "."
+import { put } from 'redux-saga/effects';
+import { PassengerFrame, Coord } from ".";
 import { Path, PathSegment, PathSegmentNode } from "."
 import EventManager, { Event, SimulationEvent } from "./events"
 import { passengerEventObj, PassengerEventTags } from "./events/passenger";
@@ -63,6 +64,15 @@ class ActivePassenger {
                 console.error(`Error getting path for passenger ${this.ID}`)
                 return null;
             } 
+
+            eventManager.emitEvent(new Event(
+                PassengerEventTags[PassengerEventTags.PATH_CALCULATED],
+                simClock, passengerEventObj({
+                    passengerID: this.getID(), 
+                    alg: this.graph.getAlg(),
+                    eventPath: { path: this.path, isActive: true}
+                })
+            ));
             
             const segment = this.mustGetCurrentSegment();
             this.coords = segment.nodes[this.pathSegmentNodeIdx].coord;
@@ -87,12 +97,12 @@ class ActivePassenger {
                     eventManager.emitEvent(new Event(
                         PassengerEventTags[PassengerEventTags.BOARDING_EVENT],
                         simClock,
-                        passengerEventObj(
-                            segmentNode.stopID!, 
-                            segment.route!, 
-                            this.ID, 
-                            (<VehicleEventObj>arrivalEvent.getObj()).vehicleID
-                        )
+                        passengerEventObj({
+                            stopID: segmentNode.stopID!, 
+                            routeID: segment.route!, 
+                            passengerID: this.ID, 
+                            vehicleID: (<VehicleEventObj>arrivalEvent.getObj()).vehicleID
+                        })
                     ))
                 }
             case 'TRAVELLING':
@@ -125,11 +135,11 @@ class ActivePassenger {
                                 eventManager.emitEvent(new Event(
                                     PassengerEventTags[PassengerEventTags.ARRIVED_AT_STOP_EVENT],
                                     simClock,
-                                    passengerEventObj(
-                                        this.getCurrentSegmentNode()!.stopID!, 
-                                        this.getCurrentSegment()!.route!, 
-                                        this.ID
-                                    )
+                                    passengerEventObj({
+                                        stopID: this.getCurrentSegmentNode()!.stopID!, 
+                                        routeID: this.getCurrentSegment()!.route!, 
+                                        passengerID: this.ID
+                                    })
                                 ));
                         }
                     } else if(!isCoordBetween) {

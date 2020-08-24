@@ -28,8 +28,8 @@ class ActiveStation {
             const pObj = e.getObj()
             if(isPassengerEventObj(pObj) && pObj.stopID === this.ID){
                 if(Object.keys(this.routeCnt)
-                    .includes(pObj.routeID.toString()))
-                        this.routeCnt[pObj.routeID] += 1;
+                    .includes(pObj.routeID!.toString()))
+                        this.routeCnt[pObj.routeID!] += 1;
             }
         });
             
@@ -40,8 +40,8 @@ class ActiveStation {
             const pObj = e.getObj()
             if(isPassengerEventObj(pObj) && pObj.stopID === this.ID){
                 if(Object.keys(this.routeCnt)
-                    .includes(pObj.routeID.toString()))
-                        this.routeCnt[pObj.routeID] -= 1;
+                    .includes(pObj.routeID!.toString()))
+                        this.routeCnt[pObj.routeID!] -= 1;
             }
         });
 

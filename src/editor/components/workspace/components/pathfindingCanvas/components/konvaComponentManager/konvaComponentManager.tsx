@@ -8,11 +8,13 @@ import { InspectorState } from '../../../../../rightPanel/components/inspectorVi
 import { ComponentTypes } from '../../../../../../constants';
 import { KonvaEventObject } from 'konva/types/Node';
 import { CreateBoundingFunc } from '../../pathfindingCanvas';
+import { StationSimData } from '../../../../../../../app/pkg/simulation';
 
 type KCMProps = { 
     coords: number[], 
     gridBlockSize: number, 
     dimensions: number[],
+    simStations: StationSimData
     scale: { 
         x: number, 
         y:number 

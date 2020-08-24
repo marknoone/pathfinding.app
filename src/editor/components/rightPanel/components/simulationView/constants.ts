@@ -1,5 +1,5 @@
 import { EvaluationData } from "../../../../../app/pkg/simulation/middlewares";
-import { FullSimData, SimulationFrame, PassengerPath, SimulationOptions } from "../../../../../app/pkg/simulation";
+import { FullSimData, SimulationFrame, PassengerPath, SimulationOptions, FrameContainer } from "../../../../../app/pkg/simulation";
 
 export type SimulationAction = {
     type: string
@@ -12,7 +12,7 @@ export type SimulationAction = {
         pPath?: {path: PassengerPath, pID: number}
         dataFrame?: SimulationFrame
         evalFrame?: EvaluationData
-        data?: FullSimData
+        frames?: FrameContainer
     }
 }
 

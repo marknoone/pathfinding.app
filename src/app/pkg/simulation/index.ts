@@ -54,7 +54,6 @@ export type PathSegment = {
    isLast: boolean,
 }
 export type PathSegmentNode = {
-    id: number,
     coord: Coord,
     stopID?:number,
     isLast: boolean,
@@ -75,14 +74,14 @@ export type PassengerPath = {
     }
 }
 
-export type FullSimData = {
-    frames: { 
-        [frame: number]:{ 
-            simulation: SimulationFrame, 
-            evaluation: EvaluationData 
-        }
-    },
+export type FullSimFrame = { 
+    simulation: SimulationFrame, 
+    evaluation: EvaluationData 
+}
 
+export type FrameContainer = { [frame: number]: FullSimFrame }
+export type FullSimData = {
+    frames: FrameContainer,
     passengerPaths: {
         [pID: number]: PassengerPath
     },
