@@ -237,7 +237,7 @@ const SimulationView: React.FunctionComponent = (props) => {
                             cursor: config.isSimulating?'#pointer':'not-allowed',
                             backgroundColor: config.isSimulating?'#2e86de':'#666'
                         }} disabled={!config.isSimulating} 
-                        onClick={() => window.open(`/results?proj=${projID}&scenario=${scenarioIdx}`, "_blank")}
+                        onClick={() => window.open(`/report?proj=${projID}&scenario=${scenarioIdx}`, "_blank")}
                     >Get Simulation Report</button>
                 </li>
             </ul>

@@ -1,22 +1,33 @@
 import React from 'react';
 import { TopBar } from '../topbar';
 import { HotKeys } from "react-hotkeys";
-import { EditorComponent } from '../editor';
-import { ModalManager } from '../modalManager';
-import { ToastPortal } from '../toastManager';
-import { SimulationBakingScreen } from '../simulationBakingScreen';
-import { shortcutMap, handlerMap } from './pkg/keyboardShortcuts';
 import { useDispatch } from 'react-redux';
+import { EditorComponent } from '../editor';
+import { ToastPortal } from '../toastManager';
+import { ModalManager } from '../modalManager';
+import { SimulationReport } from '../simulationReport'
+import { shortcutMap, handlerMap } from './pkg/keyboardShortcuts';
+import { SimulationBakingScreen } from '../simulationBakingScreen';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App: React.FunctionComponent = (props) => {
   const dispatch = useDispatch();
-  return <HotKeys keyMap={shortcutMap} handlers={handlerMap(dispatch)}>
-    <TopBar />
-    <EditorComponent />
-    <ModalManager />
-    <ToastPortal /> 
-    <SimulationBakingScreen />
-  </HotKeys>;
+  return <Router>
+      <Switch>
+        <Route exact path="/">
+          <HotKeys keyMap={shortcutMap} handlers={handlerMap(dispatch)}>
+            <TopBar />
+            <EditorComponent />
+            <ModalManager />
+            <ToastPortal /> 
+            <SimulationBakingScreen />
+          </HotKeys>
+        </Route>
+        <Route path="/report">
+          <SimulationReport />
+        </Route>
+      </Switch>
+    </Router>;
 }
 
 export default App;
