@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop, faBug } from '@fortawesome/free-solid-svg-icons';
 import { GetSimulationResults } from '../app/pkg/simulation';
+import { AreaChart } from './components/areaChart';
 import { 
     ReportBaseStyle, ReportErrContainer, BugIcon,
     DesktopIcon, ErrTitle, ErrDesc
@@ -28,11 +29,17 @@ const SimulationReport: React.FunctionComponent = (props) => {
     const projectID = query.get("proj"), scenarioID = query.get("scenario");
     if(!projectID || !scenarioID) return <NoReportSelected />;
     const results = GetSimulationResults(projectID, scenarioID);
-    if(!results) return <NoReportSelected />;
+    // if(!results) return <NoReportSelected />;
 
     return (
         <div style={{}}>
-            projID
+            <AreaChart data={[
+                { xAxis: 1, yAxis: 4 },
+                { xAxis: 2, yAxis: 3 },
+                { xAxis: 3, yAxis: 7 },
+                { xAxis: 4, yAxis: 10 },
+                { xAxis: 5, yAxis: 3 },
+            ]}/>
         </div>
     );
 };
