@@ -11,7 +11,11 @@ export type Node = {
 }
 
 export type SimulationResults = {
+    journeyTimes: { [pID: number]: number }
+    vehicleOperationTimes: { [vID: number]: number }
 
+    passengerTransfers: number
+    missedPassengers: number
 }
 
 export type SimulationOptions = {

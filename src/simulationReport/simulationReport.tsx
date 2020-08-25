@@ -17,7 +17,7 @@ const NoReportSelected = React.memo((props) =>
             <p style={ErrTitle}>No Report Found!</p>
             <p style={ErrDesc}>
                 Either the specified project ID is incorrect or it's simulation results cannot be found. 
-                Please re-run your 
+                Please re-run your simulation.
             </p>
         </div>
     </div>
