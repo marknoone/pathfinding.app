@@ -19,7 +19,7 @@ import {
     SimBtn,
     SimPlaybackCtrl,
     SimPlaybackCtrlList,
-    SimPlaybackCtrlElem
+    SimPlaybackCtrlElem,
 } from './simulationView.css';
 
 const AlgorithmNames = {
@@ -32,20 +32,22 @@ const AlgorithmNames = {
 const SimulationView: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
     const [isDropdownShowing, setIsDropdownShowing] = useState(false);
+    const projID = useSelector((s:AppState) => s.project.id);
+    const scenarioIdx = useSelector((s:AppState) => s.scenario.activeScenarioIdx);
     const config = useSelector((s:AppState) => 
         s.scenario.scenarios[s.scenario.activeScenarioIdx].simulation, shallowEqual);
-    const [rAF, setrAF] = useState<number>(0);
-    useEffect(() => {
-        // setrAF(requestAnimationFrame(updateVehicles))
-        return () => {
-            cancelAnimationFrame(rAF);
-        }
-    }, [])
+    // const [rAF, setrAF] = useState<number>(0);
+    // useEffect(() => {
+    //     // setrAF(requestAnimationFrame(updateVehicles))
+    //     return () => {
+    //         cancelAnimationFrame(rAF);
+    //     }
+    // }, [])
 
-    const updateVehicles = () => {
-        console.log("Works!");
-        setrAF(requestAnimationFrame(updateVehicles));
-    }
+    // const updateVehicles = () => {
+    //     console.log("Works!");
+    //     setrAF(requestAnimationFrame(updateVehicles));
+    // }
  
     const setAlg = (a: Algorithms) => { dispatch(SetSimulationAlgorithm(a)); setIsDropdownShowing(false); } 
     return <div style={BaseStyle}>
@@ -226,6 +228,17 @@ const SimulationView: React.FunctionComponent = (props) => {
                                 passengerCompliance: num,
                             }))
                     }}/>
+                </li>
+                <li style={SimOption}>
+                    <p style={SimHeader}>Results Report:</p>
+                    <button style={{
+                            ...SimBtn,
+                            width: 'calc(100% - 8px)',
+                            cursor: config.isSimulating?'#pointer':'not-allowed',
+                            backgroundColor: config.isSimulating?'#2e86de':'#666'
+                        }} disabled={!config.isSimulating} 
+                        onClick={() => window.open(`/results?proj=${projID}&scenario=${scenarioIdx}`, "_blank")}
+                    >Get Simulation Report</button>
                 </li>
             </ul>
         </div>

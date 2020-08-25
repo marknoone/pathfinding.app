@@ -31,11 +31,19 @@ export const initialState: SimulationState = {
                     stations:   { 1: { passengerCnt: 4, passengerCntByRoute: { 1: 2, 2:2 } }},
                 }, 
                 evaluation: {} 
+            },
+            1:{ 
+                simulation: {
+                    passengers: { 1: { coordinates: { x: 456, y:320 } }}, 
+                    vehicles:   { 1: { coordinate:  { x: 757, y:209 }, angle: 30, passengerCnt: 5 }}, 
+                    stations:   { 1: { passengerCnt: 2, passengerCntByRoute: { 1: 1, 2:1 } }},
+                }, 
+                evaluation: {} 
             }
         },
 
         passengerPaths: {
-            0: {
+            1: {
                 [Algorithms.Dijkstra]: { 
                     isActive: true, 
                     path: [
@@ -102,17 +110,17 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
             if(!action.payload) return state;
             return action.payload.simFrame?{
                 ...state,
-                simFrame: action.payload.simFrame
+                simClock: action.payload.simFrame
             } : state;
         case SimulationActionTypes.INC_SIMULATION_FRAME:
             return !state.isPlaying? {
                 ...state,
-                simFrame: state.simClock + 1
+                simClock: state.simClock + 1
             } : state;
         case SimulationActionTypes.DEC_SIMULATION_FRAME:
             return !state.isPlaying? {
                 ...state,
-                simFrame: state.simClock - 1
+                simClock: state.simClock - 1
             } : state;
         case SimulationActionTypes.SET_SIMULATION_OPTS:
             console.log(action);

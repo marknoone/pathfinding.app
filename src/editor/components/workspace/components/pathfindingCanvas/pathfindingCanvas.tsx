@@ -1,25 +1,25 @@
-import React, { useLayoutEffect } from 'react';
 import { Stage } from "react-konva";
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { Vector2d } from 'konva/types/types';
+import React, { useLayoutEffect } from 'react';
 import { KonvaBG } from './components/konvaBG';
-import { KonvaGrid } from './components/konvaGrid';
-import { KonvaComponentManager } from './components/konvaComponentManager';
-import { KonvaVehicleManager } from './components/konvaVehicleManager';
-import { UpdateStationByID } from '../../../leftPanel/components/componentView/actions';
 import { AppState } from '../../../../../store';
+import { KonvaGrid } from './components/konvaGrid';
+import { ComponentTypes } from '../../../../constants';
+import { SimulationFrame } from '../../../../../app/pkg/simulation';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { KonvaVehicleManager } from './components/konvaVehicleManager';
+import { KonvaComponentManager } from './components/konvaComponentManager';
+import { KonvaPassengerManager } from './components/konvaPassengerManager';
+import { UpdateStationByID } from '../../../leftPanel/components/componentView/actions';
+import { SetInspectingObject } from '../../../rightPanel/components/inspectorView/actions';
+import { UpdatePassengerWithID } from '../../../leftPanel/components/passengerView/actions';
 import { 
     SetCanvasCoordinates,
     SetScaleAndCanvasScale
 } from './actions';
-import { SetInspectingObject } from '../../../rightPanel/components/inspectorView/actions';
-import { ComponentTypes } from '../../../../constants';
-import { KonvaPassengerManager } from './components/konvaPassengerManager';
-import { UpdatePassengerWithID } from '../../../leftPanel/components/passengerView/actions';
-import { Vector2d } from 'konva/types/types';
-import { FullSimFrame, SimulationFrame } from '../../../../../app/pkg/simulation';
 
 type PCProps = { dimensions: number[] }
-type PCState = {coords: number[], scale: {x: number, y: number}}
+type PCState = { coords: number[], scale: {x: number, y: number} }
 const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
     const dispatch = useDispatch();
     const canvasOpts = useSelector((state: AppState) => state.canvas, shallowEqual);

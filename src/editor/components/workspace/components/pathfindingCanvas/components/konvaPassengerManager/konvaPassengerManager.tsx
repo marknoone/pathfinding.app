@@ -36,20 +36,10 @@ const KonvaPassengerManager: React.FunctionComponent<KPMProps> = (props) => {
     if(isPassengerDirectory(passengerObj)) return null;
     const dragFunc = CreateBoundingFunc(props.coords, props.dimensions);
 
-    return <Layer x={props.coords[0]} y={props.coords[1]} 
-        scale={props.scale}
-    >
-        <Circle
-            id="grid-shadow-circ" 
-            x={15} y={15}
-            visible={false}
-            radius={props.gridBlockSize/2}
-            fill={'#FF7B17'}
-            opacity={0.6}
-            stroke={'#CF6412'}
-            strokeWidth={2}
-            dash={[20, 2]}
-        />
+    return <Layer x={props.coords[0]} y={props.coords[1]} scale={props.scale}>
+        <Circle  id="grid-shadow-circ" x={15} y={15} visible={false}
+            radius={props.gridBlockSize/2} fill={'#FF7B17'} opacity={0.6}
+            stroke={'#CF6412'} strokeWidth={2} dash={[20, 2]} />
         <KonvaPassengerPoint isHighlighted={activeSubComponent === 1} svgData= {flagSVG} 
             iconCoord={{x: -7, y: -8}} iconScale={{x: 0.03, y:0.03}} color={"#0abde3"}
             coords={[passengerObj.start.x, passengerObj.start.y]} boxSize={props.gridBlockSize}
@@ -62,12 +52,23 @@ const KonvaPassengerManager: React.FunctionComponent<KPMProps> = (props) => {
             onClick={() => activeSubComponent === 2? setActiveSubComponent(0):setActiveSubComponent(2)} 
             onChange={(e: {x:number, y:number}) => props.onPassengerChange({...passengerObj, destination: e})}
             dragBoundFunc={dragFunc} disabled={passengerObj.isLocked} />
-        <KonvaPassengerPoint isHighlighted={activeSubComponent === 3} svgData= {walkingSVG} 
-            iconCoord={{x: -5.5, y: -9.5}} iconScale={{x: 0.035, y:0.035}} color={"#464646"}
-            coords={[props.simPassengers[passengerObj.id].coordinates.x, props.simPassengers[passengerObj.id].coordinates.y]} 
-            onClick={() => activeSubComponent === 3? setActiveSubComponent(0):setActiveSubComponent(3)} boxSize={props.gridBlockSize}
-            onChange={(e: {x:number, y:number}) => {}} dragBoundFunc={dragFunc} disabled={true} />
-        <KonvaPassengerPath />
+        {
+            props.simPassengers[passengerObj.id]?
+            <KonvaPassengerPoint isHighlighted={activeSubComponent === 3} svgData= {walkingSVG} 
+                iconCoord={{x: -5.5, y: -9.5}} iconScale={{x: 0.035, y:0.035}} color={"#464646"}
+                coords={[props.simPassengers[passengerObj.id].coordinates.x, props.simPassengers[passengerObj.id].coordinates.y]} 
+                onClick={() => activeSubComponent === 3? setActiveSubComponent(0):setActiveSubComponent(3)} boxSize={props.gridBlockSize}
+                onChange={(e: {x:number, y:number}) => {}} dragBoundFunc={dragFunc} disabled={true} />
+            :null
+        }
+        {
+            props.passengerPaths[passengerObj.id]?
+            <KonvaPassengerPath isHighlighted={activeSubComponent === 4}
+                boxSize={props.gridBlockSize} path={props.passengerPaths[passengerObj.id]}
+                onClick={() => activeSubComponent === 4? setActiveSubComponent(0):setActiveSubComponent(4)}
+            />
+            :null
+        }
     </Layer>
 };
 

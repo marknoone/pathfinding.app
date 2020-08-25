@@ -55,16 +55,16 @@ export type PathSegment = {
 }
 export type PathSegmentNode = {
     coord: Coord,
-    stopID?:number,
     isLast: boolean,
+    stopID?: number,
 }
 
 export type ModeSpeedMap = { [mode: string]: number };
 export const getModeSpeedMap = (s: SimulationOptions):ModeSpeedMap => ({
-    [TransitModes.FOOT]: s.modeSpeeds.foot,
-    [TransitModes.BUS]: s.modeSpeeds.bus,
     [TransitModes.TRAIN]: s.modeSpeeds.train,
     [TransitModes.TRAM]: s.modeSpeeds.tram,
+    [TransitModes.FOOT]: s.modeSpeeds.foot,
+    [TransitModes.BUS]: s.modeSpeeds.bus,
 })
 
 export type PassengerPath = {
