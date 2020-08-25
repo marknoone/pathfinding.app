@@ -1,12 +1,17 @@
 import { TransitModes } from "../../../editor/components/leftPanel/components/componentView/constants";
 import { EvaluationData } from './middlewares';
-
 import Simulator from './simulation';
+
+export { SaveSimulationResults, GetSimulationResults } from './storage';
 export default Simulator;
 
 export type Node = {
     id: number,
     center: {x: number, y: number},
+}
+
+export type SimulationResults = {
+
 }
 
 export type SimulationOptions = {

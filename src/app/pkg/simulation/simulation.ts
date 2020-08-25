@@ -11,9 +11,7 @@ import { getSimulationPassengers, getSimulationVehicles, getStations }
     from './selectors';
 import { SetBakedFrames } 
     from '../../../editor/components/rightPanel/components/simulationView/actions';
-import { SimulationActionTypes, SimulationAction } 
-    from '../../../editor/components/rightPanel/components/simulationView/constants';
-
+    
 class Simulator {
     g: Graph
     s: Scenario
