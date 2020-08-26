@@ -36,7 +36,7 @@ export type SimulationState = {
 
 export enum SimulationActionTypes {
     SET_SIMULATION_ALGORITHM = "@@simulation/SET_SIMULATION_ALGORITHM",
-    SET_SIMULATION_FRAME = "@@simulation/SET_SIMULATION_ALGORITHM",
+    SET_SIMULATION_FRAME = "@@simulation/SET_SIMULATION_FRAME",
     SET_SIMULATION_OPTS = "@@simulation/SET_SIMULATION_OPTS",
     INC_SIMULATION_FRAME = "@@simulation/INC_SIMULATION_FRAME",
     DEC_SIMULATION_FRAME = "@@simulation/DEC_SIMULATION_FRAME",

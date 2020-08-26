@@ -4,10 +4,11 @@ import { AppState } from '../../../../../store';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DropdownMenu } from '../../../../../app/components/dropdownMenu';
+import { SimClockSlider } from './components/simClockSlider';
 import { faPlay, faForward, faStepForward, faBackward, 
     faStepBackward, faCaretDown, faStop} from '@fortawesome/free-solid-svg-icons';
 import { SetSimulationAlgorithm, IncPlaySpeed, DecPlaySpeed, IncSimulationFrame, 
-    DecSimulationFrame, SetIsPlaying, SetSimOptions, SimulateScenario } from './actions';
+    DecSimulationFrame, SetIsPlaying, SetSimOptions, SimulateScenario, SetSimulationFrame } from './actions';
 import {
     BaseStyle,
     InputText,
@@ -28,6 +29,9 @@ const AlgorithmNames = {
     3: "MM-TD-Dijkstra",
     4: "CMT-Dijkstra"
 }
+
+const getTimeFromSeconds = (s:number):string =>
+    `${Math.floor(s/60/60)}:${Math.floor((s/60)%60)}:${s % 60} (${s})`;
 
 const SimulationView: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();
@@ -70,7 +74,7 @@ const SimulationView: React.FunctionComponent = (props) => {
                 ]}/>
         </div>
         <div style={{...SimSection}}>
-            <p style={SimHeader}>Controls (Speed: {Playspeeds[config.playSpeedIdx]}x, Time: {config.simClock})</p>
+            <p style={SimHeader}>Controls (Speed: {Playspeeds[config.playSpeedIdx]}x, Time: {getTimeFromSeconds(config.simClock)})</p>
             <button disabled={config.algorithm !== Algorithms.CMTDijkstra} 
             style={{
                 ...SimBtn, 
@@ -87,6 +91,10 @@ const SimulationView: React.FunctionComponent = (props) => {
                     <li style={SimPlaybackCtrlElem} onClick={() => dispatch(IncPlaySpeed())}> <FontAwesomeIcon icon={faForward}/> </li>
                     <li style={SimPlaybackCtrlElem} onClick={() => dispatch(IncSimulationFrame())}> <FontAwesomeIcon icon={faStepForward}/> </li>
                 </ul>
+            </div>
+            <div>
+                <SimClockSlider value={config.simClock} range={[0, (24*60*60)]} 
+                    onChange={(e: number) => dispatch(SetSimulationFrame(e))} />
             </div>
         </div>
         <div style={{marginTop: '36px'}}>
