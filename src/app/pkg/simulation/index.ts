@@ -11,11 +11,33 @@ export type Node = {
 }
 
 export type SimulationResults = {
-    journeyTimes: { [pID: number]: number }
-    vehicleOperationTimes: { [vID: number]: number }
+    passenger: {
+        [pID: number]: {
+            timeWaiting: { predicted: number, actual: number, tod: number }, 
+            journeyTimes: { predicted: number, actual: number, tod: number },
+        }
+    }
+    
+    vehicles: {
+        [vID: number] : { timeAtStop:  number[][] } // [sID, timeWaiting]
+    }
 
-    passengerTransfers: number
-    missedPassengers: number
+    frame: {
+        [frame: number]: {
+            stationCongestion: { [sID:number]: number }
+            vehicleCongestion: { [vID:number]: number }
+            passengerCongestion: { [pID:number]: number }
+        }
+    }
+
+    metrics:{
+        vehicleTotal: number
+        passengerTotal: number
+        stationTotal: number
+        passengerTransfers: number
+        missedPassengers: number
+    }
+
 }
 
 export type SimulationOptions = {

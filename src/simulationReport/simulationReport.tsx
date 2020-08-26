@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDesktop, faBug } from '@fortawesome/free-solid-svg-icons';
+import { faDesktop, faBug, faBus, faFlag, faUserFriends, faExchangeAlt, faRunning } from '@fortawesome/free-solid-svg-icons';
 import { GetSimulationResults } from '../app/pkg/simulation';
 import { DivergentBarPlot } from './components/divergentBarPlot';
 import { MetricView } from './components/metricView';
@@ -55,36 +55,36 @@ const SimulationReport: React.FunctionComponent = (props) => {
             }}>Simulation Results: <span style={{textDecoration: 'italic'}}>{"Untitled Project"}</span>, Scenario: <span>{1}</span></p>
             <div style={DataContainer}> 
                 <div style={MetricContainer}><MetricView metrics={[
-                    {title: "Example 1", color: '#e17055', value: 200, icon: faDesktop},
-                    {title: "Example 2", color: '#6c5ce7', value: 200, icon: faDesktop},
-                    {title: "Example 3", color: '#fdcb6e', value: 200, icon: faDesktop},
-                    {title: "Example 4", color: '#00cec9', value: 200, icon: faDesktop},
-                    {title: "Example 5", color: '#00b894', value: 200, icon: faDesktop},
+                    {title: "# of Vehicles", color: '#6c5ce7', value: 200, icon: faBus},
+                    {title: "# of Stations", color: '#fdcb6e', value: 200, icon: faFlag},
+                    {title: "# of Passengers/Trips", color: '#e17055', value: 200, icon: faUserFriends},
+                    {title: "# of Passengers Missed", color: '#00cec9', value: 200, icon: faRunning},
+                    {title: "# of Passenger Transfers", color: '#00b894', value: 200, icon: faExchangeAlt},
                 ]}/></div>
                 <ul style={{margin: '25px 0px', padding: 0, listStyle: 'none', width: '100%'}}>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Example"/></div>
+                        <div style={GraphContainer}><DivergentBarPlot title="Journey Times Predicted (over Day)"/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Example"/></div>
+                        <div style={GraphContainer}><AreaChart title="Passenger Congestion (over Lifetime)"/></div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><DivergentBarPlot title="Example"/></div>
+                        <div style={GraphContainer}><DivergentBarPlot title="Journey Times Experienced (over Day)"/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><DivergentBarPlot title="Example"/></div>
+                        <div style={GraphContainer}><AreaChart title="Vehicle Congestion (over Lifetime)"/></div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Example"/></div>
+                        <div style={GraphContainer}><AreaChart title="Station Congestion (over Day)"/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Example"/></div>
+                        <div style={GraphContainer}><AreaChart title="Vehicle Congestion (over Day)"/></div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><DivergentBarPlot title="Example"/></div>
+                        <div style={GraphContainer}><AreaChart title="Time At Stop (Passenger/Day)"/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Example"/></div>
+                        <div style={GraphContainer}><AreaChart title="Time At Stop (Vehicle/Day)"/></div>
                     </li>
                 </ul>
                 <div style={{width: '100%', marginBottom: '64px'}}>
