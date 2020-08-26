@@ -9,8 +9,7 @@ import { AreaChart } from './components/areaChart';
 import { TableView } from './components/tableView';
 import { 
     // Normal styles...
-    BaseStyle, DataContainer, MetricContainer, GraphContainer,
-    TableContainer, LIElem,
+    BaseStyle, DataContainer, MetricContainer, GraphContainer, LIElem,
 
     // Err Styles..
     ReportErrBaseStyle, ReportErrContainer, BugIcon,
@@ -31,6 +30,14 @@ const NoReportSelected = React.memo((props) =>
         </div>
     </div>
 );
+
+type TableRow = {
+    Name: string,     
+    Calories: number, 
+    Protein: number,
+    Carbs: number, 
+    Fat: number,  
+};
 
 const SimulationReport: React.FunctionComponent = (props) => {
     const query = useQuery();
@@ -80,7 +87,25 @@ const SimulationReport: React.FunctionComponent = (props) => {
                         <div style={GraphContainer}><AreaChart title="Example"/></div>
                     </li>
                 </ul>
-                <div style={TableContainer}><TableView /></div>
+                <div style={{width: '100%', marginBottom: '64px'}}>
+                    <TableView<TableRow> rows={[
+                        { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
+                        { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
+                        { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
+                        { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
+                        { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
+                        { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
+                        { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
+                        { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
+                        { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
+                        { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
+                        { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
+                        { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
+                        { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
+                        { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
+                        { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
+                    ]}/>
+                </div>
             </div>
         </div>
     );

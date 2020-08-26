@@ -38,17 +38,6 @@ export const GraphContainer: CSS.Properties = {
     backgroundColor: 'white'
 }
 
-export const TableContainer: CSS.Properties = {
-    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
-    position: 'relative',
-    width: '100%',
-    padding: '10px 15px',
-    height: '360px',
-    backgroundColor: 'white',
-    marginBottom: '64px'
-}
-
-
 // Report Err styles.....
 export const ReportErrBaseStyle: CSS.Properties = {
     width: '100vw',
