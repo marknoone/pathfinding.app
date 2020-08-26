@@ -16,7 +16,9 @@ export const DataContainer: CSS.Properties = {
 }
 
 export const MetricContainer: CSS.Properties = {
-    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
+    boxShadow: `0px 2px 1px -1px rgba(0,0,0,0.2),
+    0px 1px 1px 0px rgba(0,0,0,0.14),
+    0px 1px 3px 0px rgba(0,0,0,0.12)`,
     position: 'relative',
     width: '100%',
     padding: '20px 0px',
@@ -31,7 +33,9 @@ export const LIElem: CSS.Properties = {
     padding: '10px 0px'
 }
 export const GraphContainer: CSS.Properties = {
-    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
+    boxShadow: `0px 2px 1px -1px rgba(0,0,0,0.2),
+    0px 1px 1px 0px rgba(0,0,0,0.14),
+    0px 1px 3px 0px rgba(0,0,0,0.12)`,
     position: 'relative',
     width: '100%',
     height: '440px',
