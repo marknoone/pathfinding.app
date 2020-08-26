@@ -1,0 +1,26 @@
+.bar.positive {
+    fill: darkred;
+}
+
+.bar.negative {
+    fill: steelblue;
+}
+
+g.infowin {
+    fill: grey;
+}
+
+g.infowin text, .axis text {
+    font: 11px sans-serif;
+    fill:grey;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+path.domain {
+    stroke:none;
+}

@@ -1,6 +1,56 @@
 import CSS from 'csstype';
 
-export const ReportBaseStyle: CSS.Properties = {
+// Normal Report Styles
+export const BaseStyle: CSS.Properties = {
+    backgroundColor: '#f3f3f3',
+    width: '100vw',
+    height: '100vh',
+    padding: '64px 0px',
+    overflowY: 'auto'
+}
+
+export const DataContainer: CSS.Properties = {
+    width: '60vw',
+    minWidth: '640px',
+    margin: "auto"
+}
+
+export const MetricContainer: CSS.Properties = {
+    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
+    position: 'relative',
+    width: '100%',
+    padding: '20px 0px',
+    height: '25vh',
+    minHeight: '280px',
+    backgroundColor: 'white'
+}
+
+export const LIElem: CSS.Properties = {
+    display: 'inline-block',
+    width: '50%',
+    padding: '10px 0px'
+}
+export const GraphContainer: CSS.Properties = {
+    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
+    position: 'relative',
+    width: '100%',
+    height: '440px',
+    backgroundColor: 'white'
+}
+
+export const TableContainer: CSS.Properties = {
+    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.4)',
+    position: 'relative',
+    width: '100%',
+    padding: '10px 15px',
+    height: '360px',
+    backgroundColor: 'white',
+    marginBottom: '64px'
+}
+
+
+// Report Err styles.....
+export const ReportErrBaseStyle: CSS.Properties = {
     width: '100vw',
     height: '100vh',
     textAlign: 'center',

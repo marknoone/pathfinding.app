@@ -10,7 +10,6 @@ import {
     OptionListElem 
 }   from './selectionInput.css';
 import './hover.anim.css';
-import { ProjectActionTypes } from '../../store/project/constants';
 
 type SelectionValue = string | number;
 type SelectionProps<T> = { 
