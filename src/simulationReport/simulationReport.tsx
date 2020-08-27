@@ -1,34 +1,17 @@
 import React from 'react';
+import NoReportSelected from './noReport';
 import { useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDesktop, faBug, faBus, faFlag, faUserFriends, faExchangeAlt, faRunning } from '@fortawesome/free-solid-svg-icons';
-import D3Chart, { drawAreaChart, drawDivergentBarPlot, drawBarPlot } from './components/d3Chart';
 import { GetSimulationResults } from '../app/pkg/simulation';
 import { MetricView } from './components/metricView';
 import { TableView } from './components/tableView';
-import { 
-    // Normal styles...
-    BaseStyle, DataContainer, MetricContainer, GraphContainer, LIElem,
-
-    // Err Styles..
-    ReportErrBaseStyle, ReportErrContainer, BugIcon,
-    DesktopIcon, ErrTitle, ErrDesc
-} from './simulationReport.css';
+import D3Chart, { drawAreaChart, drawDivergentBarPlot, drawBarPlot } 
+    from './components/d3Chart';
+import { faBus, faFlag, faUserFriends, faRunning, faExchangeAlt } 
+    from '@fortawesome/free-solid-svg-icons';
+import { BaseStyle, DataContainer, MetricContainer, GraphContainer, LIElem } 
+    from './simulationReport.css';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
-const NoReportSelected = React.memo((props) => 
-    <div style={ReportErrBaseStyle}>
-        <div style={ReportErrContainer}>
-            <div style={BugIcon}><FontAwesomeIcon icon={faBug} /></div>
-            <div style={DesktopIcon}><FontAwesomeIcon icon={faDesktop} /></div>
-            <p style={ErrTitle}>No Report Found!</p>
-            <p style={ErrDesc}>
-                Either the specified project ID is incorrect or it's simulation results cannot be found. 
-                Please re-run your simulation.
-            </p>
-        </div>
-    </div>
-);
 
 const dummyAreaChart = {
     0: {
