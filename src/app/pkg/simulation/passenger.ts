@@ -125,7 +125,16 @@ class ActivePassenger {
     
                     const isCoordBetween = isBetween(segmentNode.coord, nextNode.coord, coordinate)
                     if( !isCoordBetween && nextNode.isLast) {
-                        if(segment.isLast) this.hasCompleted = true;
+                        if(segment.isLast) {
+                            this.hasCompleted = true;
+                            eventManager.emitEvent(new Event(
+                                PassengerEventTags[PassengerEventTags.COMPLETED_JOURNEY],
+                                simClock,
+                                passengerEventObj({
+                                    passengerID: this.ID
+                                })
+                            ))
+                        }
                         else {
                             this.pathSegmentIdx += 1;
                             this.pathSegmentNodeIdx = 0;

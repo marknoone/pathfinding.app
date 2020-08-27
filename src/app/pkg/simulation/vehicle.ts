@@ -1,8 +1,10 @@
 import { Route, Station } from "../../../editor/components/leftPanel/components/componentView/constants"
 import { Coord, VehicleFrame } from "."
 import { isBetween } from './geometry';
-import EventManager, { SimulationEvent } from "./events"
+import { vehicleEventObj } from "./events/vehicle";
+import EventManager, { SimulationEvent, Event  } from "./events"
 import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./events/passenger"
+import { VehicleEventTags } from "./events/vehicle";
 
   class ActiveVehicle {
     // consts
@@ -22,12 +24,12 @@ import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./ev
     // Route based properties...
     routeID: number
     departing: number
-    vehicleType: number
+    vehicleCapacity: number
     currentStationIdx: number
     travellingStations: Station[]
     
 
-    constructor(id: number, r: Route, stns: Station[], spd: number, depTime: number, stopTime: number){
+    constructor(id: number, r: Route, stns: Station[], capacity: number, spd: number, depTime: number, stopTime: number){
         this.ID = id;
         this.angle = 0;
         this.activeSince = 0;
@@ -43,7 +45,7 @@ import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./ev
         this.routeID = r.id;
         this.departing = depTime;
         this.currentStationIdx = 0;
-        this.vehicleType = r.vehicleID;
+        this.vehicleCapacity = capacity;
         this.travellingStations = stns;
     }
 
@@ -76,10 +78,20 @@ import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./ev
                         if(!isPassengerEventObj(pObj)) return false;
                         return pObj.routeID === this.routeID && 
                             pObj.stopID === currStn.id;
-                    });
-                if(arrivalEvents.length <= 0){
+                    }); 
+                if(arrivalEvents.length <= 0 || this.passengers.size >= this.vehicleCapacity){
+                    if(this.passengers.size >= this.vehicleCapacity)
+                        eventManager.emitEvent(new Event(
+                            VehicleEventTags[VehicleEventTags.MISSED_PASSENGERS],
+                            simClock, vehicleEventObj({
+                                stopID: currStn.id, 
+                                routeID: this.routeID, 
+                                vehicleID: this.ID,
+                                missedPassengers: arrivalEvents.length
+                            })
+                        ));
                     const nextStn = this.getNextStation();
-                    if(!nextStn){
+                    if(!nextStn){ 
                         this.hasCompleted = true; 
                         this.status = 'INACTIVE';
                     } else {
@@ -87,6 +99,14 @@ import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./ev
                         this.status = 'INTRANSIT';
                     }
                     this.lastStatusChg = simClock;
+                    eventManager.emitEvent(new Event(
+                        VehicleEventTags[VehicleEventTags.DEPARTING_STOP],
+                        simClock, vehicleEventObj({
+                            stopID: currStn.id, 
+                            routeID: this.routeID, 
+                            vehicleID: this.ID,
+                        })
+                    ));
                 } else if(stoppedFor % this.stopTime === 0){
                     const eObj = arrivalEvents[0].getObj() as PassengerEventObj
                     this.passengers.add(eObj.passengerID);
@@ -119,6 +139,14 @@ import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./ev
                     this.status = 'STOPPED';
                     this.lastStatusChg = simClock;
                     this.coords = currStn.coordinates;
+                    eventManager.emitEvent(new Event(
+                        VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT],
+                        simClock, vehicleEventObj({
+                            stopID: currStn.id, 
+                            routeID: this.routeID, 
+                            vehicleID: this.ID,
+                        })
+                    ));
                 }
                 this.coords = coordinate
                 this.angle = Math.atan2(

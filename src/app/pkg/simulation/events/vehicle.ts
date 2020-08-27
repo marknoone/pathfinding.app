@@ -4,6 +4,7 @@ import EventManager from "./manager";
 
 export enum VehicleEventTags {
     SERVICE_START = EventType.VEHICLE_EVENT + "SERVICE_START",
+    MISSED_PASSENGERS = EventType.VEHICLE_EVENT + "MISSED_PASSENGERS",
     SERVICE_END = EventType.VEHICLE_EVENT + "SERVICE_END",
     NEW_POSITION = EventType.VEHICLE_EVENT + "NEW_POSITION",
     DEPARTING_STOP = EventType.VEHICLE_EVENT + "DEPARTING_STOP",
@@ -20,20 +21,23 @@ export type VehicleEventObj = {
     routeID: number, 
     vehicleID: number,
     coordinates?: Coord
+    missedPassengers?: number,
 }
 
-export const vehicleEventObj = (
+export const vehicleEventObj = (p: {
     stopID: number, 
     routeID: number, 
     vehicleID: number, 
-    coordinates?: Coord
-): VehicleEventObj =>
+    coordinates?: Coord,
+    missedPassengers?: number
+}): VehicleEventObj =>
     ({ 
         __isVehicleObj: null, 
-        stopID: stopID, 
-        routeID: routeID, 
-        vehicleID: vehicleID, 
-        coordinates: coordinates 
+        stopID: p.stopID, 
+        routeID: p.routeID, 
+        vehicleID: p.vehicleID, 
+        coordinates: p.coordinates,
+        missedPassengers: p.missedPassengers
 });
 
 export const getVehicleCoordChange = (vID: number, eventManager:EventManager):(Coord | null) => {

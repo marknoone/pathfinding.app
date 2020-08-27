@@ -44,6 +44,7 @@ export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehic
                 stations.data[route.stations[+k].id]);
             simulationVehicles[vID] = new ActiveVehicle(
                 vID, route, stns, 
+                scenario.vehicles.data[route.vehicleID].capacity,
                 modeSpdMap[route.mode],
                 departure,
                 scenario.simulation.options.stopTime
