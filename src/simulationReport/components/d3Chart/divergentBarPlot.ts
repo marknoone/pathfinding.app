@@ -1,82 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { BaseStyle, HeaderBar, HeaderTitle, GraphContainer, 
-    MetricsContainer, Metric, MetricValue, MetricTitle 
-} from './divergentBarPlot.css';
-import { SelectionInput } 
-    from '../../../app/components/selectionInput';
+import React from 'react';
+import { D3DrawFunc, D3CObj } from ".";
 import * as d3 from 'd3';
-import './chart.css';
 
-type DBPObj = { xAxis: number, yAxis: number }
-type DivergentBarPlotProps = { 
-    title: string
-    metrics?: {title: string, value:string}[]
-    graphs?: { [id: number]: { name: string, graph: DBPObj[] }}
-};
-const dummyData = [
-    { xAxis: 0, yAxis: -6 },
-    { xAxis: 1, yAxis: 4 },
-    { xAxis: 2, yAxis: 3 },
-    { xAxis: 3, yAxis: 7 },
-    { xAxis: 4, yAxis: -10 },
-    { xAxis: 5, yAxis: 3 },
-];
-
-const dummyMetrics = [
-    { title: "AVERAGE", value: "12 Mins" },
-    { title: "MEDIAN",  value: "9 Mins" },
-    { title: "EXAMPLE", value: "$12.00" }
-];
-
-const DivergentBarPlot: React.FunctionComponent<DivergentBarPlotProps> = (props) => {
-    const [selectedGraph, setSelectedGraph] = useState<number>(0);
-    const metrics = props.metrics? props.metrics: dummyMetrics;
-    const chartRef = useRef<HTMLDivElement>(null);
-    const options = props.graphs?Object.keys(props.graphs).map(k => ({
-        s: props.graphs![+k].name, value: +k 
-    })): [{s: "Test", value: 0}]
-
-    useEffect(() =>  drawBarChart(props.graphs?props.graphs[selectedGraph].graph:dummyData, chartRef));
-    return <div style={BaseStyle}>
-        <div style={HeaderBar}>
-            <p style={HeaderTitle}>{props.title}</p>
-            <div style={{position: 'absolute', right: '16px', top: '8px'}}>
-                <SelectionInput<number> value={selectedGraph}  options={options}
-                    onChange={(e: number) => setSelectedGraph(e)}/>
-            </div>
-        </div>
-        <div style={GraphContainer}>
-            <div ref={chartRef}></div>
-        </div>
-        <div style={MetricsContainer}>
-            <ul style={{
-                margin: 0, 
-                padding: 0, 
-                listStyle: 'none', 
-                width: '100%',
-                height: '100%',
-                borderTop: '1px solid #ccc'
-            }}>
-            {
-                metrics.map((m, i) =>(
-                    <li style={{
-                        ...Metric, 
-                        width: `${100/metrics.length}%`,
-                        ...( i !== metrics.length-1 && { borderRight: '1px solid #ddd'})
-                    }}>
-                        <p style={MetricTitle}>{m.title}</p>
-                        <p style={MetricValue}>{m.value}</p>
-                    </li>
-                ))
-            }
-            </ul>
-        </div>
-    </div>;
-}
-
-export default DivergentBarPlot;
-
-const drawBarChart = (data: DBPObj[], ref: React.RefObject<HTMLDivElement>) => {
+const drawDivergentBarChart: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<HTMLDivElement>) => {
     let margin = {top: 10, right: 30, bottom: 30, left: 50},
     width = 760 - margin.left - margin.right,
     height = 310 - margin.top - margin.bottom;
@@ -166,3 +92,5 @@ const drawBarChart = (data: DBPObj[], ref: React.RefObject<HTMLDivElement>) => {
             .attr("id","degrree");
 
 }
+
+export default drawDivergentBarChart;

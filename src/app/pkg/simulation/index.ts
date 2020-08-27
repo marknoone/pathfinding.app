@@ -11,6 +11,15 @@ export type Node = {
 }
 
 export type SimulationResults = {
+    totalFrames: number
+    metrics:{
+        vehicleTotal: number
+        passengerTotal: number
+        stationTotal: number
+        passengerTransfers: number
+        missedPassengers: number
+    }
+
     passenger: {
         [pID: number]: {
             timeWaiting: { predicted: number, actual: number, tod: number }, 
@@ -29,15 +38,6 @@ export type SimulationResults = {
             passengerCongestion: { [pID:number]: number }
         }
     }
-
-    metrics:{
-        vehicleTotal: number
-        passengerTotal: number
-        stationTotal: number
-        passengerTransfers: number
-        missedPassengers: number
-    }
-
 }
 
 export type SimulationOptions = {

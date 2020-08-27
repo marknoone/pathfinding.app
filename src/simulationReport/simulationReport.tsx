@@ -2,10 +2,9 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop, faBug, faBus, faFlag, faUserFriends, faExchangeAlt, faRunning } from '@fortawesome/free-solid-svg-icons';
+import D3Chart, { drawAreaChart, drawDivergentBarPlot, drawBarPlot } from './components/d3Chart';
 import { GetSimulationResults } from '../app/pkg/simulation';
-import { DivergentBarPlot } from './components/divergentBarPlot';
 import { MetricView } from './components/metricView';
-import { AreaChart } from './components/areaChart';
 import { TableView } from './components/tableView';
 import { 
     // Normal styles...
@@ -30,6 +29,56 @@ const NoReportSelected = React.memo((props) =>
         </div>
     </div>
 );
+
+const dummyAreaChart = {
+    0: {
+        name: "Test",
+        draw: (ref: React.RefObject<HTMLDivElement>) =>
+            drawAreaChart(dummyData, ref)
+    }
+}
+const dummyDivergentBarChart = {
+    0: {
+        name: "Test",
+        draw: (ref: React.RefObject<HTMLDivElement>) =>
+            drawDivergentBarPlot(dummyDivergentData, ref)
+    }
+}
+
+const dummyBarChart = {
+    0: {
+        name: "Test",
+        draw: (ref: React.RefObject<HTMLDivElement>) =>
+            drawBarPlot(dummyData, ref)
+    }
+}
+
+const dummyData = [
+    { xAxis: 0, yAxis: 6 },
+    { xAxis: 1, yAxis: 4 },
+    { xAxis: 2, yAxis: 3 },
+    { xAxis: 3, yAxis: 7 },
+    { xAxis: 4, yAxis: 10 },
+    { xAxis: 5, yAxis: 3 },
+];
+
+const dummyDivergentData = [
+    { xAxis: 0, yAxis: 6 },
+    { xAxis: 1, yAxis: 4 },
+    { xAxis: 2, yAxis: 3 },
+    { xAxis: 3, yAxis: 7 },
+    { xAxis: 4, yAxis: -10 },
+    { xAxis: 5, yAxis: 18 },
+    { xAxis: 6, yAxis: 1 },
+    { xAxis: 7, yAxis: 7 },
+    { xAxis: 8, yAxis: 22 },
+];
+
+const dummyMetrics = [
+    { title: "AVERAGE", value: "12 Mins" },
+    { title: "MEDIAN",  value: "9 Mins" },
+    { title: "EXAMPLE", value: "$12.00" }
+];
 
 type TableRow = {
     Name: string,     
@@ -63,28 +112,28 @@ const SimulationReport: React.FunctionComponent = (props) => {
                 ]}/></div>
                 <ul style={{margin: '25px 0px', padding: 0, listStyle: 'none', width: '100%'}}>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><DivergentBarPlot title="Journey Times Predicted (over Day)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Journey Times Predicted (over Day)" metrics={dummyMetrics} graphs={dummyBarChart}/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Passenger Congestion (over Lifetime)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Passenger Congestion (over Lifetime)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><DivergentBarPlot title="Journey Times Experienced (over Day)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Journey Times Experienced (over Day)" metrics={dummyMetrics} graphs={dummyDivergentBarChart}/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Vehicle Congestion (over Lifetime)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Vehicle Congestion (over Lifetime)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Station Congestion (over Day)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Station Congestion (over Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Vehicle Congestion (over Day)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Vehicle Congestion (over Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Time At Stop (Passenger/Day)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Time At Stop (Passenger/Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
                     </li>
                     <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><AreaChart title="Time At Stop (Vehicle/Day)"/></div>
+                        <div style={GraphContainer}><D3Chart title="Time At Stop (Vehicle/Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
                     </li>
                 </ul>
                 <div style={{width: '100%', marginBottom: '64px'}}>
