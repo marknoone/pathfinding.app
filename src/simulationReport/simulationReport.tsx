@@ -1,82 +1,24 @@
 import React from 'react';
 import NoReportSelected from './noReport';
+import D3Chart from './components/d3Chart';
+import { getCalculatedResults } from './data';
 import { useLocation } from 'react-router-dom';
-import { GetSimulationResults } from '../app/pkg/simulation';
-import { MetricView } from './components/metricView';
 import { TableView } from './components/tableView';
-import D3Chart, { drawAreaChart, drawDivergentBarPlot, drawBarPlot } 
-    from './components/d3Chart';
-import { faBus, faFlag, faUserFriends, faRunning, faExchangeAlt } 
-    from '@fortawesome/free-solid-svg-icons';
+import { MetricView } from './components/metricView';
+import { GetSimulationResults } from '../app/pkg/simulation';
 import { BaseStyle, DataContainer, MetricContainer, GraphContainer, LIElem } 
     from './simulationReport.css';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
-
-const dummyAreaChart = {
-    0: {
-        name: "Test",
-        draw: (ref: React.RefObject<HTMLDivElement>) =>
-            drawAreaChart(dummyData, ref)
-    }
-}
-const dummyDivergentBarChart = {
-    0: {
-        name: "Test",
-        draw: (ref: React.RefObject<HTMLDivElement>) =>
-            drawDivergentBarPlot(dummyDivergentData, ref)
-    }
-}
-
-const dummyBarChart = {
-    0: {
-        name: "Test",
-        draw: (ref: React.RefObject<HTMLDivElement>) =>
-            drawBarPlot(dummyData, ref)
-    }
-}
-
-const dummyData = [
-    { xAxis: 0, yAxis: 6 },
-    { xAxis: 1, yAxis: 4 },
-    { xAxis: 2, yAxis: 3 },
-    { xAxis: 3, yAxis: 7 },
-    { xAxis: 4, yAxis: 10 },
-    { xAxis: 5, yAxis: 3 },
-];
-
-const dummyDivergentData = [
-    { xAxis: 0, yAxis: 6 },
-    { xAxis: 1, yAxis: 4 },
-    { xAxis: 2, yAxis: 3 },
-    { xAxis: 3, yAxis: 7 },
-    { xAxis: 4, yAxis: -10 },
-    { xAxis: 5, yAxis: 18 },
-    { xAxis: 6, yAxis: 1 },
-    { xAxis: 7, yAxis: 7 },
-    { xAxis: 8, yAxis: 22 },
-];
-
-const dummyMetrics = [
-    { title: "AVERAGE", value: "12 Mins" },
-    { title: "MEDIAN",  value: "9 Mins" },
-    { title: "EXAMPLE", value: "$12.00" }
-];
-
-type TableRow = {
-    Name: string,     
-    Calories: number, 
-    Protein: number,
-    Carbs: number, 
-    Fat: number,  
-};
 
 const SimulationReport: React.FunctionComponent = (props) => {
     const query = useQuery();
     const projectID = query.get("proj"), scenarioID = query.get("scenario");
     if(!projectID || !scenarioID) return <NoReportSelected />;
     const results = GetSimulationResults(projectID, scenarioID);
-    // if(!results) return <NoReportSelected />;
+    if(!results) return <NoReportSelected />;
+
+    const calculatedResults = getCalculatedResults(results);
 
     return (
         <div style={BaseStyle}>
@@ -86,40 +28,74 @@ const SimulationReport: React.FunctionComponent = (props) => {
                 color: '#464646', margin: 0
             }}>Simulation Results: <span style={{textDecoration: 'italic'}}>{"Untitled Project"}</span>, Scenario: <span>{1}</span></p>
             <div style={DataContainer}> 
-                <div style={MetricContainer}><MetricView metrics={[
-                    {title: "# of Vehicles", color: '#6c5ce7', value: 200, icon: faBus},
-                    {title: "# of Stations", color: '#fdcb6e', value: 200, icon: faFlag},
-                    {title: "# of Passengers/Trips", color: '#e17055', value: 200, icon: faUserFriends},
-                    {title: "# of Passengers Missed", color: '#00cec9', value: 200, icon: faRunning},
-                    {title: "# of Passenger Transfers", color: '#00b894', value: 200, icon: faExchangeAlt},
-                ]}/></div>
+                <div style={MetricContainer}><MetricView metrics={calculatedResults.baseMetrics}/></div>
                 <ul style={{margin: '25px 0px', padding: 0, listStyle: 'none', width: '100%'}}>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Journey Times Predicted (over Day)" metrics={dummyMetrics} graphs={dummyBarChart}/></div>
-                    </li>
-                    <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Passenger Congestion (over Lifetime)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
-                    </li>
-                    <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Journey Times Experienced (over Day)" metrics={dummyMetrics} graphs={dummyDivergentBarChart}/></div>
-                    </li>
-                    <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Vehicle Congestion (over Lifetime)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Journey Times Predicted (over Day)"
+                                graphs={calculatedResults.journeyTimesPredicted}
+                            />
+                        </div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Station Congestion (over Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
-                    </li>
-                    <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Vehicle Congestion (over Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Passenger Congestion (over Lifetime)"
+                                graphs={calculatedResults.congestionPassengerLifetime}
+                            />
+                        </div>
                     </li>
                     <li style={{...LIElem, paddingRight: '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Time At Stop (Passenger/Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Journey Times Experienced (over Day)"
+                                graphs={calculatedResults.journeyTimesExperienced}
+                            />
+                        </div>
                     </li>
-                    <li style={{...LIElem, paddingLeft:  '10px'}}>
-                        <div style={GraphContainer}><D3Chart title="Time At Stop (Vehicle/Day)" metrics={dummyMetrics} graphs={dummyAreaChart}/></div>
+                    <li style={{...LIElem, paddingRight: '10px'}}>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Vehicle Congestion (over Lifetime)"
+                                graphs={calculatedResults.congestionVehicleLifetime}
+                            />
+                        </div>
+                    </li>
+                    <li style={{...LIElem, paddingRight: '10px'}}>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Station Congestion (over Day)"
+                                graphs={calculatedResults.congestionStationDay}
+                            />
+                        </div>
+                    </li>
+                    <li style={{...LIElem, paddingRight: '10px'}}>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Vehicle Congestion (over Day)"
+                                graphs={calculatedResults.congestionVehicleDay}
+                            />
+                        </div>
+                    </li>
+                    <li style={{...LIElem, paddingRight: '10px'}}>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Experienced Time At Stop (Passenger/Day)"
+                                graphs={calculatedResults.timeAtStopPassenger}
+                            />
+                        </div>
+                    </li>
+                    <li style={{...LIElem, paddingRight: '10px'}}>
+                        <div style={GraphContainer}>
+                            <D3Chart 
+                                title="Time At Stop (Vehicle/Day)"
+                                graphs={calculatedResults.timeAtStopVehicle}
+                            />
+                        </div>
                     </li>
                 </ul>
-                <div style={{width: '100%', marginBottom: '64px'}}>
+                <div style={{width: '100%', marginBottom: '64px', marginTop: '24px', float: 'left'}}>
                     <TableView title="Simulation Breakdown" tables={{
                         0:{
                             name: "test",

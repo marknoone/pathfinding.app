@@ -22,6 +22,9 @@ const useStyles = makeStyles({
         fontSize: 14,
         fontWeight: 600,
         fontFamily:"'Montserrat', sans-serif",
+    },
+    leftAlign: {
+        textAlign: 'left'
     }
 });
 
@@ -30,7 +33,7 @@ const HeaderTableRow = withStyles((theme) => ({
         backgroundColor: '#fff',
         boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.2)'
     },
-    body: {
+    root: {
         fontSize: 14,
     },
 }))(TableRow);
@@ -73,8 +76,8 @@ const TableView: React.FunctionComponent<TableProps> = ({ title, tables }) => {
                             {
                                 tableHeaders.map((k:string, i:number) => 
                                     i===0?
-                                    <TableCell className={classes.headerCell}>{k}</TableCell>:
-                                    <TableCell className={classes.headerCell} align="right">{k}</TableCell>
+                                    <TableCell key={i} className={classes.headerCell}>{k}</TableCell>:
+                                    <TableCell key={i} className={classes.headerCell} align="right">{k}</TableCell>
                                 )
                             }
                         </HeaderTableRow>
@@ -85,10 +88,10 @@ const TableView: React.FunctionComponent<TableProps> = ({ title, tables }) => {
                             (
                                 <TableRow key={i}>
                                 {
-                                    tableHeaders.map((k:string, i:number) => (
-                                        i===0?
-                                        <TableCell component="th" scope="row">{k}</TableCell>:
-                                        <TableCell align="right">{row[k]}</TableCell>    
+                                    tableHeaders.map((k:string, j:number) => (
+                                        j===0?
+                                        <TableCell key={i+","+j} component="th" scope="row">{row[k]}</TableCell>:
+                                        <TableCell key={i+","+j} align="right">{row[k]}</TableCell>    
                                     ))
                                 }
                                 </TableRow>

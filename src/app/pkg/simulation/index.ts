@@ -22,13 +22,13 @@ export type SimulationResults = {
 
     passenger: {
         [pID: number]: {
-            timeWaiting: { predicted: number, actual: number, tod: number }, 
             journeyTimes: { predicted: number, actual: number, tod: number },
+            timeWaiting: { predicted: number[][], actual: number[][], tod: number }, 
         }
     }
     
     vehicles: {
-        [vID: number] : { timeAtStop:  number[][] } // [sID, timeWaiting]
+        [vID: number]: number[][] // [sID, timeWaiting]
     }
 
     frame: {

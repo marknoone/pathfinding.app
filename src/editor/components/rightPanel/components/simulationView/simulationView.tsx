@@ -31,7 +31,13 @@ const AlgorithmNames = {
 }
 
 const getTimeFromSeconds = (s:number):string =>
-    `${Math.floor(s/60/60)}:${Math.floor((s/60)%60)}:${s % 60} (${s})`;
+    `${
+        Math.floor(s/60/60)<10?"0"+Math.floor(s/60/60):Math.floor(s/60/60)
+    }:${
+        Math.floor((s/60)%60)<10?"0"+Math.floor((s/60)%60):Math.floor((s/60)%60)
+    }:${
+        Math.floor(s % 60)<10?"0"+Math.floor(s%60):Math.floor(s%60)
+    } (${s})`;
 
 const SimulationView: React.FunctionComponent = (props) => {
     const dispatch = useDispatch();

@@ -30,7 +30,8 @@ export const MetricContainer: CSS.Properties = {
 export const LIElem: CSS.Properties = {
     display: 'inline-block',
     width: '50%',
-    padding: '10px 0px'
+    padding: '10px 0px',
+    float: 'left'
 }
 export const GraphContainer: CSS.Properties = {
     boxShadow: `0px 2px 1px -1px rgba(0,0,0,0.2),

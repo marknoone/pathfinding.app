@@ -49,13 +49,7 @@ const drawDivergentBarChart: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<
         .attr("y", (d) => d.yAxis > 0? y(d.yAxis):y(0))
         .attr("x", (d) => x(d.xAxis.toString())! )
         .attr("width", x.bandwidth())
-        .attr("height", (d) => Math.abs(y(d.yAxis) - y(0)))
-        .on("mouseover", (d) => {
-                d3.select("#_yr")
-                    .text("Passenger: " + d.xAxis);
-                d3.select("#degrree")
-                    .text(d.yAxis + "°C");
-        });
+        .attr("height", (d) => Math.abs(y(d.yAxis) - y(0)));
     
         svg.append("g")
             .attr("class", "y axis")
@@ -64,8 +58,8 @@ const drawDivergentBarChart: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<
         svg.append("g")
             .attr("class", "y axis")
             .append("text")
-            .text("°Celsius")
-            .attr("transform", "translate(15, 40), rotate(-90)")
+            .text("Difference")
+            .attr("transform", "translate(15, 50), rotate(-90)")
     
         svg.append("g")
             .attr("class", "X axis")

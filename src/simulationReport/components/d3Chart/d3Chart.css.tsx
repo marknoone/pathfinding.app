@@ -2,7 +2,8 @@ import CSS from 'csstype';
 
 export const BaseStyle: CSS.Properties = {
     position: 'relative',
-    height: '100%'
+    height: '100%',
+    width: '100%'
 }
 
 export const HeaderBar: CSS.Properties = {

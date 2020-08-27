@@ -1,13 +1,6 @@
 import React from 'react';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { Metric } from '.';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-export type Metric = {
-    title: string
-    value: number
-    color: string
-    icon: IconDefinition
-}
 
 type MVProps = { metrics: Metric[] }
 const MetricView: React.FunctionComponent<MVProps> = (props) => {
@@ -21,7 +14,7 @@ const MetricView: React.FunctionComponent<MVProps> = (props) => {
         }}>
             {
                 props.metrics.map((m: Metric, idx:number) => (
-                    <li style={{
+                    <li key={idx}  style={{
                         position: 'relative',
                         display: 'inline-block',
                         height: '100%',

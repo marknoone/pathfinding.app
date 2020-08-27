@@ -2,7 +2,7 @@ import React from 'react';
 import { D3DrawFunc, D3CObj } from ".";
 import * as d3 from 'd3';
 
-const drawBarPlot: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<HTMLDivElement>) => {
+const drawBarPlotHorizontal: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<HTMLDivElement>) => {
     if(!ref.current) return;
     ref.current.innerHTML = ''; 
 
@@ -16,16 +16,14 @@ const drawBarPlot: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<HTMLDivEle
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    const max = d3.max(data, function(d) { return d.yAxis; })
-    const extent = d3.extent(data, (d) => d.xAxis)
-    if( !max || extent[0] === undefined || 
-        extent[1] === undefined ) 
+    const maxY = d3.max(data, (d) => d.yAxis )
+    const maxX = d3.max(data, (d) => d.xAxis)
+    if( !maxY || !maxX ) 
             return;
 
-
     var x = d3.scaleLinear()
-        .domain(extent)
-        .range([ 0, width]);
+        .domain([0, maxX ])
+        .range([ 3, width]);
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x))
@@ -35,9 +33,9 @@ const drawBarPlot: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<HTMLDivEle
 
     // Y axis
     var y = d3.scaleBand()
-        .range([ 0, height ])
         .domain(data.map((d) => d.yAxis.toString() ))
-        .padding(.1);
+        .range([ 0, height ])
+        .padding(.05);
     svg.append("g")
         .call(d3.axisLeft(y))
 
@@ -53,4 +51,4 @@ const drawBarPlot: D3DrawFunc = (data: D3CObj[], ref: React.RefObject<HTMLDivEle
         .attr("fill", "#69b3a2")
 }
 
-export default drawBarPlot;
+export default drawBarPlotHorizontal;
