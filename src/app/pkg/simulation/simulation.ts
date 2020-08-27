@@ -5,12 +5,13 @@ import ActiveStations from './station';
 import { put } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
 import { Scenario } from '../../../editor/constants';
-import { SimulationFrame, FrameContainer } from '.';
-import { EvaluateMiddlewareFunc } from './middlewares';
+import { SimulationFrame, FrameContainer, SimulationResults } from '.';
 import { getSimulationPassengers, getSimulationVehicles, getStations } 
     from './selectors';
 import { SetBakedFrames } 
     from '../../../editor/components/rightPanel/components/simulationView/actions';
+import { EvaluateMiddlewareFunc, PassengerTransferMiddleware, MissedPassengerMiddleware } 
+    from './middlewares';
     
 class Simulator {
     g: Graph
@@ -31,7 +32,12 @@ class Simulator {
 
     *SimulateScenario(middleware?: EvaluateMiddlewareFunc) {
         const DAY = 24 * 60 * 60;
-        const frameContianer: FrameContainer = {}; 
+        const frameContainer: FrameContainer = {}; 
+
+        // Middlewares
+        const [transferMiddleware, getPassengerTransfers] =  PassengerTransferMiddleware();
+        const [missedPassengerMiddleware, getMissedPassengers] =  MissedPassengerMiddleware();
+
         for(let second = 0; second < DAY; second++){
             const simulationFrame: SimulationFrame = {passengers: {}, stations: {}, vehicles: {}};
     
@@ -52,9 +58,9 @@ class Simulator {
             }, {});
             
             // Evaluate middlewares and push to simulationFrame.
-            const evalFrame = middleware? middleware(simulationFrame): {};
+            const evalFrame = middleware? middleware(simulationFrame, this.eventManager): {};
             
-            frameContianer[second] = {
+            frameContainer[second] = {
                 simulation: simulationFrame,
                 evaluation: {}
             };
@@ -63,7 +69,25 @@ class Simulator {
                 yield put(SetBakedFrames(second));
         }
 
-        return frameContianer;
+        const results: SimulationResults = {
+            totalFrames: DAY,
+            metrics: {
+                vehicleTotal: this.simulationVehicles.length,
+                passengerTotal: this.simulationPassengers.length,
+                stationTotal: this.simulationStations.length,
+                passengerTransfers: getPassengerTransfers(),
+                missedPassengers: getMissedPassengers()
+            },
+
+            passenger: {},
+            vehicles: {},
+            frame: {}
+        }; 
+
+        return {
+            frames: frameContainer,
+            results: results
+        }
     }
 }
 
