@@ -38,7 +38,7 @@ const D3Chart: React.FunctionComponent<D3ChartProps> = ({title, graphs, metrics}
         <div style={HeaderBar}>
             <p style={HeaderTitle}>{title}</p>
             {
-                options.length <= 0? null:
+                options.length <= 1? null:
                 <div style={{position: 'absolute', right: '16px', top: '8px'}}>
                     <SelectionInput<number> value={selectedGraph}  options={options}
                         onChange={(e: number) => {

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+import { SelectionInput } from '../../../app/components/selectionInput';
+import { BaseStyle, HeaderBar, HeaderTitle } from './tableView.css'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -33,43 +35,70 @@ const HeaderTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-type TableProps<T> = { rows: T[]; }
-function TableView<T>( { rows }: React.PropsWithChildren<TableProps<T>> ): JSX.Element {
-    const classes = useStyles();
-    if(rows.length <= 0) return <></>;
+type TableProps = { 
+    title: string, 
+    tables: { 
+        [id: number]: { 
+            name: string, 
+            rows: any[]
+        }
+    }
+};
 
-    const tableHeaders = Object.keys(rows[0]).map((k:string) => k);
-    return <TableContainer component={Paper} className={classes.container}>
-        <Table className={classes.table} stickyHeader aria-label="simple table">
-            <TableHead>
-                <HeaderTableRow>
-                    {
-                        tableHeaders.map((k:string, i:number) => 
-                            i===0?
-                            <TableCell className={classes.headerCell}>{k}</TableCell>:
-                            <TableCell className={classes.headerCell} align="right">{k}</TableCell>
-                        )
-                    }
-                </HeaderTableRow>
-            </TableHead>
-            <TableBody>
-                {
-                    rows.map((row: any, i) => 
-                    (
-                        <TableRow key={i}>
+const TableView: React.FunctionComponent<TableProps> = ({ title, tables }) => {
+    const classes = useStyles();
+    const [selectedTable, setSelectedTable] = useState<number>(0);
+    const options = useMemo( () => Object.keys(tables).map(k => ({
+        s: tables[+k].name, value: +k 
+    })), []);
+    if(tables[selectedTable].rows.length <= 0) return <></>;
+
+    const tableHeaders = Object.keys(tables[selectedTable].rows[0]).map((k:string) => k);
+    return <div style={{width: '100%'}}>
+        <div style={HeaderBar}>
+            <p style={HeaderTitle}>{title}</p>
+            {
+                options.length <= 1? null:
+                <div style={{position: 'absolute', right: '16px', top: '8px'}}>
+                    <SelectionInput<number> value={selectedTable}  options={options}
+                        onChange={(e: number) => setSelectedTable(e) }/>
+                </div>
+            }
+        </div>
+        <div style={{width: '100%'}}>
+            <TableContainer component={Paper} className={classes.container}>
+                <Table className={classes.table} stickyHeader aria-label="simple table">
+                    <TableHead>
+                        <HeaderTableRow>
+                            {
+                                tableHeaders.map((k:string, i:number) => 
+                                    i===0?
+                                    <TableCell className={classes.headerCell}>{k}</TableCell>:
+                                    <TableCell className={classes.headerCell} align="right">{k}</TableCell>
+                                )
+                            }
+                        </HeaderTableRow>
+                    </TableHead>
+                    <TableBody>
                         {
-                            tableHeaders.map((k:string, i:number) => (
-                                i===0?
-                                <TableCell component="th" scope="row">{k}</TableCell>:
-                                <TableCell align="right">{row[k]}</TableCell>    
+                            tables[selectedTable].rows.map((row: any, i: number) => 
+                            (
+                                <TableRow key={i}>
+                                {
+                                    tableHeaders.map((k:string, i:number) => (
+                                        i===0?
+                                        <TableCell component="th" scope="row">{k}</TableCell>:
+                                        <TableCell align="right">{row[k]}</TableCell>    
+                                    ))
+                                }
+                                </TableRow>
                             ))
                         }
-                        </TableRow>
-                    ))
-                }
-            </TableBody>
-        </Table>
-    </TableContainer>;
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
+    </div>;
 }
 
 

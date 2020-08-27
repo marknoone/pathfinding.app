@@ -137,23 +137,28 @@ const SimulationReport: React.FunctionComponent = (props) => {
                     </li>
                 </ul>
                 <div style={{width: '100%', marginBottom: '64px'}}>
-                    <TableView<TableRow> rows={[
-                        { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
-                        { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
-                        { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
-                        { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
-                        { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
-                        { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
-                        { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
-                        { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
-                        { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
-                        { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
-                        { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
-                        { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
-                        { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
-                        { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
-                        { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
-                    ]}/>
+                    <TableView title="Simulation Breakdown" tables={{
+                        0:{
+                            name: "test",
+                            rows: [
+                                { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
+                                { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
+                                { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
+                                { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
+                                { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
+                                { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
+                                { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
+                                { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
+                                { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
+                                { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
+                                { Name: 'Frozen yoghurt',     Calories: 159, Fat: 6.0,  Carbs: 24, Protein: 4.0 },
+                                { Name: 'Ice cream sandwich', Calories: 237, Fat: 9.0,  Carbs: 37, Protein: 4.3 },
+                                { Name: 'Eclair',             Calories: 262, Fat: 16.0, Carbs: 24, Protein: 6.0 },
+                                { Name: 'Cupcake',            Calories: 305, Fat: 3.7,  Carbs: 67, Protein: 4.3 },
+                                { Name: 'Gingerbread',        Calories: 356, Fat: 16.0, Carbs: 49, Protein: 3.9 },
+                            ]
+                        },
+                    }}/>
                 </div>
             </div>
         </div>
