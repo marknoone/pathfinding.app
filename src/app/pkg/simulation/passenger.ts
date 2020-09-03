@@ -1,6 +1,5 @@
 import Graph from "./graph";
-import { isBetween } from './geometry';
-import { put } from 'redux-saga/effects';
+import { distance } from './geometry';
 import { PassengerFrame, Coord } from ".";
 import { Path, PathSegment, PathSegmentNode } from "."
 import EventManager, { Event, SimulationEvent } from "./events"
@@ -59,6 +58,7 @@ class ActivePassenger {
             this.activeSince = simClock;
             this.pathSegmentIdx = 0;
             this.path = this.graph.computePath(this.start, this.dest, this.departing);
+            console.log(this.path);
             if(!this.path || this.path.length <= 0){
                 this.hasCompleted = true;
                 console.error(`Error getting path for passenger ${this.ID}`)
@@ -73,7 +73,7 @@ class ActivePassenger {
                     eventPath: { path: this.path, isActive: true}
                 })
             ));
-            
+
             const segment = this.mustGetCurrentSegment();
             this.coords = segment.nodes[this.pathSegmentNodeIdx].coord;
         }
@@ -93,7 +93,7 @@ class ActivePassenger {
                             vObj.stopID === segmentNode.stopID!;
                     });
                 if(arrivalEvent){
-                    this.currentVehicle = (<VehicleEventObj>arrivalEvent.getObj()).vehicleID;
+                    this.currentVehicle = (arrivalEvent.getObj() as VehicleEventObj).vehicleID;
                     eventManager.emitEvent(new Event(
                         PassengerEventTags[PassengerEventTags.BOARDING_EVENT],
                         simClock,
@@ -101,14 +101,17 @@ class ActivePassenger {
                             stopID: segmentNode.stopID!, 
                             routeID: segment.route!, 
                             passengerID: this.ID, 
-                            vehicleID: (<VehicleEventObj>arrivalEvent.getObj()).vehicleID
+                            vehicleID: (arrivalEvent.getObj() as VehicleEventObj).vehicleID
                         })
                     ))
                 }
             case 'TRAVELLING':
                 if(segment.mode === TransitModes.FOOT){
                     const nextNode = this.getNextSegmentNode();
-                    if(!nextNode) return this.getPassengerFrame();
+                    if(!nextNode) {
+                        console.error("Passenger State Corruption: No next node...")
+                        return this.getPassengerFrame();
+                    }
 
                     const v = [
                         nextNode.coord.x - this.coords.x,
@@ -119,12 +122,12 @@ class ActivePassenger {
     
                     // speed * time = distance, but time is 1 second in this case.
                     let coordinate: Coord = {
-                        x: this.coords.x +  this.walkingSpeed * vNorm[0], 
-                        y: this.coords.y +  this.walkingSpeed * vNorm[1]
+                        x: this.coords.x +  (this.walkingSpeed * vNorm[0]), 
+                        y: this.coords.y +  (this.walkingSpeed * vNorm[1])
                     }
     
-                    const isCoordBetween = isBetween(segmentNode.coord, nextNode.coord, coordinate)
-                    if( !isCoordBetween && nextNode.isLast) {
+                    const hasArrived = distance(coordinate, nextNode.coord) < this.walkingSpeed;
+                    if( hasArrived && nextNode.isLast) {
                         if(segment.isLast) {
                             this.hasCompleted = true;
                             eventManager.emitEvent(new Event(
@@ -134,6 +137,7 @@ class ActivePassenger {
                                     passengerID: this.ID
                                 })
                             ))
+                            return this.getPassengerFrame();
                         }
                         else {
                             this.pathSegmentIdx += 1;
@@ -151,9 +155,9 @@ class ActivePassenger {
                                     })
                                 ));
                         }
-                    } else if(!isCoordBetween) {
+                    } else if(hasArrived) {
                         this.lastStatusChg = simClock;
-                        this.coords = segmentNode.coord;
+                        this.coords = nextNode.coord;
                         this.pathSegmentNodeIdx += 1;
                     } else 
                         this.coords = coordinate;
@@ -181,14 +185,14 @@ class ActivePassenger {
         this.path[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx]
         : null;
 
-    getNextSegmentNode = () => 
+    getPrevSegmentNode = () => 
         this.path && this.pathSegmentNodeIdx > 0?
             this.path[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx - 1]
             : null;
     
-    getPrevSegmentNode = () => 
+    getNextSegmentNode = () => 
         this.path && this.pathSegmentNodeIdx < this.path[this.pathSegmentIdx].nodes.length-1?
-            this.path[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx - 1]
+            this.path[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx + 1]
             : null;
         
 

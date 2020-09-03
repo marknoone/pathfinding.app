@@ -31,8 +31,7 @@ const KonvaVehicle: React.FunctionComponent<KVProps> = (props) => {
         align={'center'}
         width={50} height={25}
         verticalAlign={'middle'}
-        text={`${props.coords}`}
-        // text={`${props.capacity[0]} / ${props.capacity[1]}`}
+        text={`${props.capacity[0]} / ${props.capacity[1]}`}
         />
     </Group>
 }
