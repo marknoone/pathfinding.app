@@ -41,6 +41,7 @@ export type SimulationResults = {
 }
 
 export type SimulationOptions = {
+    simTimes: { start: number, end:number }
     stopTime: number,
     distanceMul: number,
     mmLanguage: string,
@@ -124,9 +125,9 @@ export type SimulationCycle = {
 }
 
 export type SimulationFrame = {
-    passengers: PassengerSimData,
-    stations: StationSimData,
-    vehicles: VehicleSimData,
+    passengers?: PassengerSimData,
+    stations?: StationSimData,
+    vehicles?: VehicleSimData,
 }
 
 export type Coord = { x: number, y: number }

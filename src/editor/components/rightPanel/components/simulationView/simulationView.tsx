@@ -118,6 +118,41 @@ const SimulationView: React.FunctionComponent = (props) => {
                     }}/>
                 </li>  
                 <li style={SimOption}>
+                    <p style={SimHeader}>Simulation Times:</p>
+                    <div style={{position: 'relative', margin: '8px 0px'}}>
+                        <p style={{...SimText, fontSize: '12px'}}>Start:</p>
+                        <input type="text" value={config.options.simTimes.start}
+                            style={SimOptionInput} 
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                const num: number = ev.target.value === ""? 0: parseInt(ev.target.value, 10); 
+                                if (!isNaN(num))
+                                    dispatch(SetSimOptions({
+                                        ...config.options, 
+                                        simTimes: {
+                                            ...config.options.simTimes,
+                                            start: num
+                                        },
+                                    }))
+                            }}/>
+                    </div>
+                    <div style={{position: 'relative', margin: '8px 0px'}}>
+                        <p style={{...SimText, fontSize: '12px'}}>End:</p>
+                        <input type="text" value={config.options.simTimes.end}
+                            style={SimOptionInput}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                const num: number = ev.target.value === ""? 0: parseInt(ev.target.value, 10);
+                                if (!isNaN(num))
+                                    dispatch(SetSimOptions({
+                                        ...config.options, 
+                                        simTimes: {
+                                            ...config.options.simTimes,
+                                            end: num
+                                        },
+                                    }))
+                            }}/>
+                    </div>
+                </li>             
+                <li style={SimOption}>
                     <p style={SimHeader}>Distance Multiplyer:</p>
                     <input type="text" style={InputText} value={config.options.distanceMul.toFixed(2)}
                      onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {

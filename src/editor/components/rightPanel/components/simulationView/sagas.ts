@@ -33,16 +33,16 @@ function* SimulateActiveScenario() {
     const s: Scenario = yield select((s:AppState) => 
         s.scenario.scenarios[s.scenario.activeScenarioIdx]);
     const simulator = new Simulator(s, canvas.boxSize, canvas.canvasSize);
-    
+    const { start, end } = s.simulation.options.simTimes;
     const {frames, results}: {frames: FrameContainer, results: SimulationResults} = yield call(
-        [simulator, simulator.SimulateScenario]
+        [simulator, simulator.SimulateScenario], start, end
     );
 
     SaveSimulationResults(results, proj.id.toString(), sIdx.toString());
-
+    
     yield put({
         type: SimulationActionTypes.COMPLETE_BAKE,
-        payload: { frames: {} }
+        payload: { frames: frames }
     });
 } 
 

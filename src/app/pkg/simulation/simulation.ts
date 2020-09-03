@@ -5,7 +5,7 @@ import ActiveStations from './station';
 import { put, delay } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
 import { Scenario } from '../../../editor/constants';
-import { SimulationFrame, FrameContainer, SimulationResults } from '.';
+import { SimulationFrame, FrameContainer, SimulationResults, FullSimData } from '.';
 import { getSimulationPassengers, getSimulationVehicles, getStations } 
     from './selectors';
 import { SetBakedFrames, PushPassengerPath } 
@@ -31,7 +31,7 @@ class Simulator {
         this.simulationPassengers = getSimulationPassengers(s, this.g);
     }
 
-    *SimulateScenario(middleware?: EvaluateMiddlewareFunc) {
+    *SimulateScenario(start: number, end: number, middleware?: EvaluateMiddlewareFunc) {
         const DAY = 24 * 60 * 60;
         const frameContainer: FrameContainer = {}; 
 
@@ -39,39 +39,38 @@ class Simulator {
         const [transferMiddleware, getPassengerTransfers] =  PassengerTransferMiddleware();
         const [missedPassengerMiddleware, getMissedPassengers] =  MissedPassengerMiddleware();
 
-        console.log(this.simulationStations);
-        console.log(this.simulationVehicles);
-        console.log(this.simulationPassengers);
-
-        for(let second = 0; second < DAY; second++){
-            const simulationFrame: SimulationFrame = {passengers: {}, stations: {}, vehicles: {}};
+        for(let second = start; second < DAY && second < end; second++){
+            const simulationFrame: SimulationFrame = {};
     
             // Evaluate active vehicles and passengers
-            simulationFrame.vehicles = Object.keys(this.simulationVehicles).reduce((accum, avID) => {
+            const vehicles = Object.keys(this.simulationVehicles).reduce((accum, avID) => {
                 const av = this.simulationVehicles[+avID];
                 const f = av.Simulate(second, this.eventManager);
                 return { ...accum, ...(f? { [av.getID()] : f } :{} )}
             }, {});
+            if(vehicles && vehicles !== {}){ simulationFrame.vehicles = vehicles; }
 
-            simulationFrame.passengers = Object.keys(this.simulationPassengers).reduce((accum, apID) => {
+            const passengers = Object.keys(this.simulationPassengers).reduce((accum, apID) => {
                 const ap = this.simulationPassengers[+apID];
                 const f = ap.Simulate(second, this.eventManager);
                 return { ...accum, ...(f? { [ap.getID()] : f } :{} )}
             }, {});
+            if(passengers && passengers !== {}){ simulationFrame.passengers = passengers; }
             
-            simulationFrame.stations = Object.keys(this.simulationStations).reduce((accum, asID) => {
+            const stations = Object.keys(this.simulationStations).reduce((accum, asID) => {
                 const as = this.simulationStations[+asID];
                 const f = as.Simulate(second, this.eventManager);
                 return { ...accum, ...(f? { [as.getID()] : f } :{} )}
             }, {});
+            if(stations && stations !== {}){ simulationFrame.stations = stations; }
             
             // Evaluate middlewares and push to simulationFrame.
             const evalFrame = middleware? middleware(simulationFrame, this.eventManager): {};
             
-            // frameContainer[second] = {
-            //     simulation: simulationFrame,
-            //     evaluation: {}
-            // };
+            frameContainer[second] = {
+                simulation: simulationFrame,
+                evaluation: evalFrame
+            };
 
             let events = this.eventManager.getEventsWithTag(PassengerEventTags[PassengerEventTags.PATH_CALCULATED]);
             for(let i = 0; i < events.length; i++){
@@ -79,7 +78,6 @@ class Simulator {
                 this.eventManager.deleteEvent(events[i].getID());
                 if(isPassengerEventObj(obj)){
                     if(obj.path && obj.alg) {
-                        console.log(obj.path)
                         yield put(PushPassengerPath(obj.passengerID, { 
                             [obj.alg as number]: {
                                 path: obj.path.path, 

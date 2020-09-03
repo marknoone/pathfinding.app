@@ -59,7 +59,6 @@ class ActivePassenger {
             this.activeSince = simClock;
             this.pathSegmentIdx = 0;
             this.path = this.graph.computePath(this.start, this.dest, this.departing);
-            console.log(this.path);
             if(!this.path || this.path.length <= 0){
                 this.hasCompleted = true;
                 console.error(`Error getting path for passenger ${this.ID}`)

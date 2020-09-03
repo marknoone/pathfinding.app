@@ -22,6 +22,7 @@ export const initialState: SimulationState = {
 
     data: null,
     options:{
+        simTimes: {start: 0, end: 0},
         stopTime: 2,
         distanceMul: 10.0,
         mmLanguage: "",
@@ -191,7 +192,7 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                 isBaking: true,
                 bakedFrames: {
                     current: 0,
-                    total: (24*60*60)
+                    total: state.options.simTimes.start - state.options.simTimes.end
                 }
             };
         default:

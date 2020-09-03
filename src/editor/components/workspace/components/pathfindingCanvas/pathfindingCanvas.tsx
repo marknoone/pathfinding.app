@@ -39,10 +39,10 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
     const simData = useSelector((state: AppState) => 
         state.scenario.scenarios[ state.scenario.activeScenarioIdx ].simulation.data, shallowEqual);
     const { frames, passengerPaths } = simData?simData:{frames: {}, passengerPaths:{}}
-    const { passengers: simPassengers, stations: simStations, vehicles: simVehicles }: SimulationFrame 
-        =   frames[simClock]?
-            frames[simClock].simulation:
-            { passengers:{}, stations: {}, vehicles:{} };
+    const frame: SimulationFrame = frames[simClock]?frames[simClock].simulation:{};
+    const simStations = frame.stations?frame.stations:{};
+    const simPassengers = frame.passengers?frame.passengers:{};
+    const simVehicles = frame.vehicles?frame.vehicles:{};
 
     useLayoutEffect(() => {
         dispatch(SetCanvasCoordinates(
