@@ -142,6 +142,7 @@ export type VehicleSimData = {[vehicleID: number]:  VehicleFrame}
 export type VehicleFrame = { 
     angle: number, 
     coordinate: Coord,
+    originalVID: number,
     passengerCnt: number, 
 }
 

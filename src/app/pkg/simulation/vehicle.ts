@@ -9,6 +9,7 @@ import { VehicleEventTags } from "./events/vehicle";
   class ActiveVehicle {
     // consts
     readonly ID: number
+    readonly vehicleID: number
     readonly vehicleSpeed: number
     readonly stopTime: number
     readonly passengers: Set<number>
@@ -39,6 +40,7 @@ import { VehicleEventTags } from "./events/vehicle";
         this.hasCompleted = false;
         this.coords = { x: 0, y: 0 }
         this.vehicleSpeed = spd;
+        this.vehicleID = r.vehicleID;
         this.passengers = new Set<number>();
         
         // Route properties
@@ -168,6 +170,7 @@ import { VehicleEventTags } from "./events/vehicle";
     getVehicleFrame = ():VehicleFrame => ({
         angle: this.getAngle(), 
         coordinate: this.getCoords(),
+        originalVID: this.vehicleID,
         passengerCnt: this.getCurrentPassengerCount()
     })
 

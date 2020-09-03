@@ -7,7 +7,7 @@ export const DummySimData: FullSimData = {
         0:{ 
             simulation: {
                 passengers: { 1: { coordinates: { x: 356, y:220 } }}, 
-                vehicles:   { 1: { coordinate:  { x: 657, y:109 }, angle: 20, passengerCnt: 3 }}, 
+                vehicles:   { 1: { coordinate:  { x: 657, y:109 }, originalVID: 1, angle: 20, passengerCnt: 3 }}, 
                 stations:   { 1: { passengerCnt: 4, passengerCntByRoute: { 1: 2, 2:2 } }},
             }, 
             evaluation: {} 
@@ -15,7 +15,7 @@ export const DummySimData: FullSimData = {
         1:{ 
             simulation: {
                 passengers: { 1: { coordinates: { x: 456, y:320 } }}, 
-                vehicles:   { 1: { coordinate:  { x: 757, y:209 }, angle: 30, passengerCnt: 5 }}, 
+                vehicles:   { 1: { coordinate:  { x: 757, y:209 }, originalVID: 1, angle: 30, passengerCnt: 5 }}, 
                 stations:   { 1: { passengerCnt: 2, passengerCntByRoute: { 1: 1, 2:1 } }},
             }, 
             evaluation: {} 

@@ -89,8 +89,8 @@ class Simulator {
             }
 
             this.eventManager.cleanup(second);
-            if(second%1000 === 0){
-                yield put(SetBakedFrames(second));
+            if(second%100 === 0){
+                yield put(SetBakedFrames(second - start));
                 yield delay(50);
             }
         }

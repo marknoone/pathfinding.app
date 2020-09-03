@@ -99,7 +99,9 @@ const SimulationView: React.FunctionComponent = (props) => {
                 </ul>
             </div>
             <div>
-                <SimClockSlider value={config.simClock} range={[0, (24*60*60)]} 
+                <SimClockSlider value={config.simClock} range={[
+                    config.options.simTimes.start, config.options.simTimes.end
+                ]} 
                     onChange={(e: number) => dispatch(SetSimulationFrame(e))} />
             </div>
         </div>

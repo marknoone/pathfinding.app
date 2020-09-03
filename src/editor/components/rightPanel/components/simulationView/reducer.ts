@@ -83,7 +83,6 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                 simClock: state.simClock - 1
             } : state;
         case SimulationActionTypes.SET_SIMULATION_OPTS:
-            console.log(action);
             if(!action.payload) return state;
             return action.payload.opts? {
                 ...state,
@@ -192,7 +191,7 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                 isBaking: true,
                 bakedFrames: {
                     current: 0,
-                    total: state.options.simTimes.start - state.options.simTimes.end
+                    total: state.options.simTimes.end - state.options.simTimes.start
                 }
             };
         default:

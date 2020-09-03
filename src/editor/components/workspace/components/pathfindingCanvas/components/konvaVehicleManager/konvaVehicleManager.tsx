@@ -27,7 +27,7 @@ const KonvaVehicleManager: React.FunctionComponent<KVMProps> = (props) =>
                 return <KonvaVehicle angle={v.angle} key={+k}
                     coords={[v.coordinate.x, v.coordinate.y]} 
                     capacity={[v.passengerCnt,
-                        props.vehicles.data[+k].capacity]} />
+                        props.vehicles.data[v.originalVID].capacity]} />
             })
         }
     </Layer>;
