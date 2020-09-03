@@ -87,6 +87,7 @@ export type PathSegment = {
 }
 export type PathSegmentNode = {
     coord: Coord,
+    nID: number,
     isLast: boolean,
     stopID?: number,
 }

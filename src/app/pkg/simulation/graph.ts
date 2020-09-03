@@ -1,4 +1,5 @@
 import { Node, Edge, Path, Coord } from ".";
+import { distance as dist } from "./geometry";
 import { PathfindingAlg } from "./algorithms";
 import { Scenario } from "../../../editor/constants";
 import { TransitModes } 
@@ -43,8 +44,7 @@ class Graph {
 
         const opts = s.simulation.options;
         const [cWidth, cHeight] = this.canvasSize;
-        const dist = (a:{x:number, y:number}, b:{x:number, y:number}) =>
-            Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+        
         const ModeSpeedMap = {
             [TransitModes.FOOT]:  s.simulation.options.modeSpeeds.foot,
             [TransitModes.TRAIN]: s.simulation.options.modeSpeeds.train,

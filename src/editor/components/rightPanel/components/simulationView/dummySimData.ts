@@ -21,7 +21,6 @@ export const DummySimData: FullSimData = {
             evaluation: {} 
         }
     },
-
     passengerPaths: {
         1: {
             [Algorithms.Dijkstra]: { 
@@ -30,10 +29,10 @@ export const DummySimData: FullSimData = {
                     {
                         isLast: true, route: 1, mode: TransitModes.FOOT, 
                         nodes:[
-                            { coord: {x:50,  y:50},  isLast: false },
-                            { coord: {x:150, y:150}, isLast: false },
-                            { coord: {x:250, y:250}, isLast: false },
-                            { coord: {x:350, y:350}, isLast: true  },
+                            { coord: {x:50,  y:50},  nID: 0, isLast: false },
+                            { coord: {x:150, y:150}, nID: 1, isLast: false },
+                            { coord: {x:250, y:250}, nID: 2, isLast: false },
+                            { coord: {x:350, y:350}, nID: 3, isLast: true  },
                         ]
                     }
                 ]
