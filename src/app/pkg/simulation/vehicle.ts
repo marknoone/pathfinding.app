@@ -1,6 +1,6 @@
 import { Route, Station } from "../../../editor/components/leftPanel/components/componentView/constants"
 import { Coord, VehicleFrame } from "."
-import { isBetween } from './geometry';
+import { distance } from './geometry';
 import { vehicleEventObj } from "./events/vehicle";
 import EventManager, { SimulationEvent, Event  } from "./events"
 import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./events/passenger"
@@ -61,9 +61,6 @@ import { VehicleEventTags } from "./events/vehicle";
             this.lastStatusChg = simClock;
             this.activeSince = simClock;
             this.currentStationIdx = 0;
-
-            const currStn = this.getCurrentStation();
-            this.coords = currStn? currStn.coordinates: {x:0, y:0};
         }
         else if(this.status === 'INACTIVE') return null;
         
@@ -96,11 +93,18 @@ import { VehicleEventTags } from "./events/vehicle";
                     if(!nextStn){ 
                         this.hasCompleted = true; 
                         this.status = 'INACTIVE';
-                    } else {
-                        this.currentStationIdx += 1;
-                        this.status = 'INTRANSIT';
-                    }
+                        return this.getVehicleFrame();
+                    } 
+
+                    this.currentStationIdx += 1;
+                    this.status = 'INTRANSIT';
                     this.lastStatusChg = simClock;
+                    this.coords = currStn.coordinates;
+                    this.angle = Math.atan2(
+                        (nextStn.coordinates.y - this.coords.y),
+                        (nextStn.coordinates.x - this.coords.x)
+                    ) * (180/Math.PI);
+
                     eventManager.emitEvent(new Event(
                         VehicleEventTags[VehicleEventTags.DEPARTING_STOP],
                         simClock, vehicleEventObj({
@@ -123,21 +127,12 @@ import { VehicleEventTags } from "./events/vehicle";
                 const vLen = Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2))
                 const vNorm = [v[0]/vLen, v[1]/vLen];
 
-                // speed * time = distance, but time is 1 second in this case.
                 let coordinate: Coord = {
                     x: this.coords.x +  this.vehicleSpeed * vNorm[0], 
                     y: this.coords.y +  this.vehicleSpeed * vNorm[1]
                 }
 
-                const prevStn = this.getPrevStation();
-                if( 
-                    prevStn && 
-                    !isBetween(
-                        prevStn.coordinates, 
-                        currStn.coordinates, 
-                        coordinate
-                    )
-                ) {
+                if(distance(coordinate, currStn.coordinates) < this.vehicleSpeed) {
                     this.status = 'STOPPED';
                     this.lastStatusChg = simClock;
                     this.coords = currStn.coordinates;

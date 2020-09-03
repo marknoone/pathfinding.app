@@ -8,16 +8,16 @@ export const collinear = (a: Coord, b: Coord, c: Coord): number =>
 
 export const isBetween = (a: Coord, b: Coord, candidate: Coord): boolean => {
     const epsilon = .0000001
-    const isBetween = (a: number, b:number, cand:number):boolean =>
-        a <= candidate.y && cand <= b ||
-        b <= candidate.y && cand <= a
+    const isBetweenCheck = (a: number, b:number, cand:number):boolean =>
+        a <= cand && cand <= b ||
+        b <= cand && cand <= a
 
     if (Math.abs(collinear(a, b, candidate)) > epsilon)
         return false;
 
     if(a.x === b.x)
-        return isBetween(a.y, b.y, candidate.y);
+        return isBetweenCheck(a.y, b.y, candidate.y);
 
 
-    return isBetween(a.x, b.x, candidate.x);
+    return isBetweenCheck(a.x, b.x, candidate.x);
 }
