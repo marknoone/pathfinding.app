@@ -55,7 +55,7 @@ type CCProps = {
     onItemLock?: (id: number) => void
 }
 const ComponentCategoryView: React.FunctionComponent<CCProps> = (props) => {
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
     return <><div style={CategoryEntry}>
             <div style={CollapseIcon} onClick={() => {setIsCollapsed(!isCollapsed)}}>
                 <FontAwesomeIcon icon={isCollapsed? faCaretRight:faCaretDown}/></div>

@@ -2,12 +2,7 @@ import { Reducer } from 'redux';
 import { ToastState, ToastActionTypes, ToastAction, ToastType } from './constants';
 
 export const initialState: ToastState = {
-    sortedQueue: [{
-        type: ToastType.TOAST_WARN,
-        msg: "This is a test notification",
-    
-        createdAt: Date.now()
-    }]
+    sortedQueue: []
 }
 
 const ToastReducer: Reducer<ToastState, ToastAction> = (state = initialState, action) => {

@@ -23,7 +23,7 @@ type PDProps = { dir: PassengerDirectory }
 const PassengerDirectoryElement: React.FunctionComponent<PDProps> = (props) => {
     const dispatch = useDispatch();
     const [isHovering, setIsHovering] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const getChildElemsByID = useMemo(makeGetChildElemsByIDSelector, [])
     const children = useSelector((state: AppState) => getChildElemsByID(state, props.dir.id), shallowEqual)
 
@@ -60,14 +60,15 @@ const PassengerDirectoryElement: React.FunctionComponent<PDProps> = (props) => {
         {
             !isCollapsed?
             <div style={ChildrenList}>
-                {
+                {   children && children.length > 0?
                     children.map( (child) => {
                         if(isPassengerDirectory(child)){
                             return <PassengerDirectoryElement key={child.id} dir={child} />
                         } else {
                             return <PassengerElement key={child.id} passenger={child} />
                         }
-                    })
+                    }):
+                    null
                 }
             </div>:
             null

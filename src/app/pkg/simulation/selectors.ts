@@ -8,11 +8,11 @@ import { isPassenger, Passenger }
     from "../../../editor/components/leftPanel/components/passengerView/constants";
 import { TransitModes } from "../../../editor/components/leftPanel/components/componentView/constants";
 
-export const getSimulationPassengers = (scenario: Scenario, g: Graph): ActivePassenger[] => {
+export const getSimulationPassengers = (scenario: Scenario, g: Graph): { [pID: number]: ActivePassenger } => {
     const { passengers, simulation }: Scenario = scenario;
     const modeSpdMap = getModeSpeedMap(simulation.options);
-    let pID = 0, p = passengers.tree;
-    let simulationPassengers: ActivePassenger[] = [];
+    let p = passengers.tree;
+    let simulationPassengers:  { [pID: number]: ActivePassenger } = {};
 
     Object.keys(p).filter((k:String) => {
         const id = +k, passenger = p[id];
@@ -20,18 +20,17 @@ export const getSimulationPassengers = (scenario: Scenario, g: Graph): ActivePas
         return true; 
     }).forEach((key:string) => {
         const passenger = p[+key] as Passenger;
-        simulationPassengers[pID] = new ActivePassenger(
-            pID, passenger, modeSpdMap[TransitModes.FOOT], g
+        simulationPassengers[+key] = new ActivePassenger(
+            +key, passenger, modeSpdMap[TransitModes.FOOT], g
         );
-        pID += 1;
     });
 
     return simulationPassengers;
 }
 
-export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehicle[] => {
+export const getSimulationVehicles = (scenario: Scenario, g: Graph):{ [vID: number]: ActiveVehicle } => {
     let vID = 0;
-    let simulationVehicles: ActiveVehicle[] = [];
+    let simulationVehicles: { [vID: number]: ActiveVehicle } = {};
     const { stations, routes, simulation }: Scenario = scenario;
     const modeSpdMap = getModeSpeedMap(simulation.options);
     
@@ -56,18 +55,19 @@ export const getSimulationVehicles = (scenario: Scenario, g: Graph): ActiveVehic
     return simulationVehicles;
 }
 
-export const getStations = (scenario: Scenario, g: Graph): ActiveStation[] => {
+export const getStations = (scenario: Scenario, g: Graph): { [sID: number]: ActiveStation } => {
     const { stations, routes } : Scenario = scenario;
-    const stns: ActiveStation[] = Object.keys(stations.data).map((stnID:string) => {
+    const stns: { [sID: number]: ActiveStation } = {};
+    Object.keys(stations.data).forEach((stnID:string) => {
         const stn = stations.data[+stnID];
         const stnNID = g.getNodeFromCoordinates(stn.coordinates)
-        return new ActiveStation(stn.id, stn.coordinates, stnNID?stnNID:-1)
+        stns[stn.id] = new ActiveStation(stn.id, stn.coordinates, stnNID?stnNID:-1)
     });
 
     Object.keys(routes.data).forEach((r:string) => 
-        Object.keys(routes.data[+r].stations).forEach((s:string) =>
-            stns[routes.data[+r].stations[+s].id].addRouteWatch(routes.data[+r].id))
-    );
+        Object.keys(routes.data[+r].stations).forEach((s:string) => 
+            stns[routes.data[+r].stations[+s].id].addRouteWatch(routes.data[+r].id)
+    ));
 
     return stns;
 }

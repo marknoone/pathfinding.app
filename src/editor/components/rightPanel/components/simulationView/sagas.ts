@@ -2,7 +2,7 @@ import { AppState } from '../../../../../store';
 import { Scenario } from '../../../../constants';
 import { SimulationActionTypes } from './constants';
 import { DummySimulationResults } from './dummySimData';
-import { takeLatest, select, put, call } from 'redux-saga/effects';
+import { takeLatest, select, put, call, take, delay, fork, actionChannel, all  } from 'redux-saga/effects';
 import withMiddleware from '../../../../../app/pkg/simulation/middlewares';
 import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
 import Simulator, { FullSimData, FrameContainer, SaveSimulationResults, SimulationResults } 
@@ -10,13 +10,22 @@ import Simulator, { FullSimData, FrameContainer, SaveSimulationResults, Simulati
 import { ProjectState } from '../../../../../app/store/project/constants';
 
 export function* SimulationSaga() {
-    yield takeLatest(SimulationActionTypes.SIMULATE_SCENARIO, SimulateActiveScenario);
+    yield takeLatest(SimulationActionTypes.SIMULATE_SCENARIO, function*(){
+        yield all([
+            call(InitialiseSimulation),
+            call(SimulateActiveScenario)
+        ]);
+    });
 }
 
-
+function* InitialiseSimulation(){
+    yield put({ type: SimulationActionTypes.INIT_SIMULATION });
+    return;
+}
 
 function* SimulateActiveScenario() {
-    yield put({ type: SimulationActionTypes.INIT_SIMULATION });
+    yield take(SimulationActionTypes.INIT_SIMULATION);
+    yield delay(500); // Allow for state update
 
     const canvas: CanvasState = yield select((s:AppState) => s.canvas);
     const proj: ProjectState = yield select((s:AppState) => s.project);
@@ -26,14 +35,14 @@ function* SimulateActiveScenario() {
     const simulator = new Simulator(s, canvas.boxSize, canvas.canvasSize);
     
     const {frames, results}: {frames: FrameContainer, results: SimulationResults} = yield call(
-        simulator.SimulateScenario
+        [simulator, simulator.SimulateScenario]
     );
 
     SaveSimulationResults(results, proj.id.toString(), sIdx.toString());
 
     yield put({
         type: SimulationActionTypes.COMPLETE_BAKE,
-        payload: { frames: frames }
+        payload: { frames: {} }
     });
 } 
 

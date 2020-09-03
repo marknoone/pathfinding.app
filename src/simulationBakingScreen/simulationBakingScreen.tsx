@@ -36,7 +36,7 @@ const SimulationBakingScreen: React.FunctionComponent = (props) => {
                         {
                             !isNaN(bakedFrames.current / bakedFrames.total)?
                             (<span style={{fontWeight: 400, paddingLeft: '8px'}}>
-                                ({(bakedFrames.current / bakedFrames.total).toFixed(2)} %)
+                                ({((bakedFrames.current / bakedFrames.total)*100).toFixed(2)} %)
                             </span>)
                             :null
                         }

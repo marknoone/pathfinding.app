@@ -1,4 +1,4 @@
-import { Path } from "..";
+import { Path, Edge } from "..";
 import Graph from "../graph";
 
 export interface PathfindingAlg {
@@ -9,3 +9,5 @@ export interface PathfindingAlg {
         depTime: number
     ): Path;
 } 
+
+export type Previous = { prevNode: number, traversingEdge: Edge}

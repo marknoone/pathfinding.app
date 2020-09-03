@@ -18,7 +18,9 @@ export const makeGetChildElemsByIDSelector = () => createSelector(
         (s: PassengerState, id) => {
             const item = s.tree[id]
             if(isPassengerDirectory(item)) {
-                return item.children.map((idx: number) => s.tree[idx])
+                return item.children?
+                item.children.map((idx: number) => s.tree[idx]):
+                [];
             } else {
                 return []
             }

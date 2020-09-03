@@ -1,4 +1,48 @@
-import { SimulationResults } from '../../../../../app/pkg/simulation';
+import { Algorithms } from './constants';
+import { SimulationResults, FullSimData } from '../../../../../app/pkg/simulation';
+import { TransitModes } from '../../../leftPanel/components/componentView/constants'; 
+
+export const DummySimData: FullSimData = {
+    frames:{
+        0:{ 
+            simulation: {
+                passengers: { 1: { coordinates: { x: 356, y:220 } }}, 
+                vehicles:   { 1: { coordinate:  { x: 657, y:109 }, angle: 20, passengerCnt: 3 }}, 
+                stations:   { 1: { passengerCnt: 4, passengerCntByRoute: { 1: 2, 2:2 } }},
+            }, 
+            evaluation: {} 
+        },
+        1:{ 
+            simulation: {
+                passengers: { 1: { coordinates: { x: 456, y:320 } }}, 
+                vehicles:   { 1: { coordinate:  { x: 757, y:209 }, angle: 30, passengerCnt: 5 }}, 
+                stations:   { 1: { passengerCnt: 2, passengerCntByRoute: { 1: 1, 2:1 } }},
+            }, 
+            evaluation: {} 
+        }
+    },
+
+    passengerPaths: {
+        1: {
+            [Algorithms.Dijkstra]: { 
+                isActive: true, 
+                path: [
+                    {
+                        isLast: true, route: 1, mode: TransitModes.FOOT, 
+                        nodes:[
+                            { coord: {x:50,  y:50},  isLast: false },
+                            { coord: {x:150, y:150}, isLast: false },
+                            { coord: {x:250, y:250}, isLast: false },
+                            { coord: {x:350, y:350}, isLast: true  },
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
+
+
 
 export const DummySimulationResults: SimulationResults = {
     totalFrames: 6,
