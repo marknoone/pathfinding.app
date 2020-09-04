@@ -23,7 +23,8 @@ export type PassengerEventObj = {
     routeID?: number,
     vehicleID?: number,
     alg?: Algorithms,
-    path?: EventPath
+    path?: EventPath,
+    tod?: number
 }
 
 type EventPath = { path: Path, isActive: boolean }
@@ -33,6 +34,7 @@ type NamedParams = {
     routeID?: number, 
     vehicleID?: number,
     alg?: Algorithms,
+    tod?: number,
     eventPath?: EventPath
 }
 
@@ -42,6 +44,7 @@ export const passengerEventObj = ({
     routeID, 
     vehicleID,
     alg,
+    tod,
     eventPath
 }: NamedParams):PassengerEventObj =>
     ({ 
@@ -51,5 +54,6 @@ export const passengerEventObj = ({
         passengerID: passengerID, 
         vehicleID: vehicleID,
         alg: alg,
+        tod: tod,
         path: eventPath
 });

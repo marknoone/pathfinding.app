@@ -16,8 +16,9 @@ import CMT_Dijkstra from './algorithms/cmt-dijkstra';
 class Graph {
     boxSize: number;
     canvasSize: number[];
-    alg: PathfindingAlg
-    simAlg: Algorithms
+    algorithm: Algorithms;
+    alg: PathfindingAlg;
+    simAlg: Algorithms;
 
     nodes: { [nID: number]: Node   }
     edges: { [nID: number]: Edge[] }
@@ -26,6 +27,7 @@ class Graph {
     constructor(s: Scenario, bSize: number, dimens: number[]){
         this.boxSize = bSize;
         this.canvasSize = dimens;
+        this.algorithm = s.simulation.algorithm;
         this.nodes = {}
         this.edges = {}
         this.stationMap = {}

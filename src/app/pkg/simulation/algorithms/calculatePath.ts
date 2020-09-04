@@ -1,21 +1,25 @@
 import Graph from "../graph";
 import { Previous } from ".";
-import { Path, PathSegment } from "..";
+import { Path, PathSegment, EmptyPath } from "..";
 import { TransitModes } from "../../../../editor/components/leftPanel/components/componentView/constants";
+import { Algorithms } from "../../../../editor/components/rightPanel/components/simulationView/constants";
+
 
 export const CalculatePath = (
     g: Graph,  
     prev: { [nID:number] :Previous | null },
-    source: number, destination:number
+    source: number, destination:number, departure: number
 ):Path => {
-    const path: Path = [];
+    const path: Path = EmptyPath;
     let isLastSeg = true, foundSrc = false;
     let currNode: number = destination;
+    let totalTravelTime = 0;
+    let timeWaiting: number[][] = []
     
     do {
         if(currNode !== source && !prev[currNode]) {
             console.error("Incomplete Path Error: Dijkstra...");
-            return [];
+            return EmptyPath;
         }
         
         let currSegment:PathSegment = { 
@@ -48,10 +52,12 @@ export const CalculatePath = (
                 nID: prevEdge.prevNode,
                 coord: g.nodes[prevEdge.prevNode].center,
                 stopID: currSegment.mode === TransitModes.FOOT? undefined:
-                    g.getStationAtNode(prevEdge.prevNode),
+                g.getStationAtNode(prevEdge.prevNode),
             });
-
+            
             currNode = prevEdge.prevNode;
+            totalTravelTime += g.algorithm === Algorithms.Dijkstra? prevEdge.traversingEdge.weight(): 
+                prevEdge.traversingEdge.tdWeight(departure+totalTravelTime);
         }
 
         if(prev[currNode] && prev[currNode]!.prevNode === source){
@@ -66,9 +72,11 @@ export const CalculatePath = (
         }
 
         isLastSeg = false;
-        path.unshift(currSegment);
+        path.data.unshift(currSegment);
 
     } while(!foundSrc);
 
+    path.totalTime = totalTravelTime;
+    path.timeWaiting = timeWaiting;
     return path;
 }

@@ -32,9 +32,9 @@ const KonvaPassengerPath: React.FunctionComponent<KPPProps> = (props) => <Group
                 let pathPoints: number[] = [];
                 const color = ColourMap[alg], path = props.path[alg];
 
-                path.path.forEach((seg: PathSegment, i:number) => {
+                path.path.data.forEach((seg: PathSegment, i:number) => {
                     seg.nodes.forEach((n: PathSegmentNode) => {
-                        if(n.isLast && i !== path.path.length-1) return;
+                        if(n.isLast && i !== path.path.data.length-1) return;
                         pathPoints.push(n.coord.x, n.coord.y); 
                     });
                 });

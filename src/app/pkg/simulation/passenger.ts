@@ -58,7 +58,7 @@ class ActivePassenger {
             this.activeSince = simClock;
             this.pathSegmentIdx = 0;
             this.path = this.graph.computePath(this.start, this.dest, this.departing);
-            if(!this.path || this.path.length <= 0){
+            if(!this.path || this.path.data.length <= 0){
                 this.hasCompleted = true;
                 console.error(`Error getting path for passenger ${this.ID}`)
                 return null;
@@ -70,7 +70,8 @@ class ActivePassenger {
                 simClock, passengerEventObj({
                     passengerID: this.getID(), 
                     alg: this.graph.getAlg(),
-                    eventPath: { path: this.path, isActive: true}
+                    eventPath: { path: this.path, isActive: true },
+                    tod: this.departing
                 })
             ));
 
@@ -205,27 +206,34 @@ class ActivePassenger {
 
     // Getters / setters
     getID = ():number => this.ID;
+    
+    getDeparture = () =>  this.departing;
 
-    getPassengerFrame = ():PassengerFrame =>
-        ({ coordinates: this.coords })
+    getCurrentVehicle = () =>  this.currentVehicle;
+
+    getPassengerFrame = ():PassengerFrame => 
+    ({ coordinates: this.coords })
 
     getCurrentSegment = () => 
-        this.path?this.path[this.pathSegmentIdx]: null;
+        this.path?this.path.data[this.pathSegmentIdx]: null;
         
     getCurrentSegmentNode = () => 
         this.path?
-        this.path[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx]
+        this.path.data[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx]
         : null;
 
     getPrevSegmentNode = () => 
         this.path && this.pathSegmentNodeIdx > 0?
-            this.path[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx - 1]
+            this.path.data[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx - 1]
             : null;
     
     getNextSegmentNode = () => 
-        this.path && this.pathSegmentNodeIdx < this.path[this.pathSegmentIdx].nodes.length-1?
-            this.path[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx + 1]
+        this.path && this.pathSegmentNodeIdx < this.path.data[this.pathSegmentIdx].nodes.length-1?
+            this.path.data[this.pathSegmentIdx].nodes[this.pathSegmentNodeIdx + 1]
             : null;
+
+    isOnboardVehicle = (): boolean =>
+        this.currentVehicle !== -1;
         
 
     // Must getters...

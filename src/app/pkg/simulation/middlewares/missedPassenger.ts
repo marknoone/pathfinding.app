@@ -1,7 +1,6 @@
 import { EvaluationFunc } from ".";
 import { SimulationFrame } from "..";
 import EventManager from "../events/manager";
-import { isPassengerEventObj } from "../events/passenger";
 import { SimulationEvent } from "../events";
 import { VehicleEventTags, isVehicleEventObj } from "../events/vehicle";
 
@@ -10,8 +9,7 @@ const PassengerTransfersMiddleware = (): [EvaluationFunc, () => number] => {
 
     return [
         (f: SimulationFrame, e: EventManager) => {
-            let events = 
-                e.getEventsWithTag(VehicleEventTags[VehicleEventTags.MISSED_PASSENGERS]);
+            let events = e.getEventsWithTag(VehicleEventTags[VehicleEventTags.MISSED_PASSENGERS]);
             events.forEach((e:SimulationEvent) => {
                 let obj = e.getObj();
                 if(isVehicleEventObj(obj))

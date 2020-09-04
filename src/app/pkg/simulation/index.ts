@@ -81,7 +81,13 @@ export type ActivePassenger = {
     coords: {x: number, y: number}
 }
 
-export type Path = PathSegment[]
+export const EmptyPath: Path = { totalTime: 0, timeWaiting: [],  data: [] }
+export type Path = {
+    totalTime: number,
+    timeWaiting: number[][],
+    data: PathSegment[]
+}
+
 export type PathSegment = {
    nodes: PathSegmentNode[],
    mode: TransitModes,

@@ -1,5 +1,5 @@
 import { Algorithms } from './constants';
-import { SimulationResults, FullSimData } from '../../../../../app/pkg/simulation';
+import { SimulationResults, FullSimData, EmptyPath } from '../../../../../app/pkg/simulation';
 import { TransitModes } from '../../../leftPanel/components/componentView/constants'; 
 
 
@@ -20,17 +20,20 @@ export const DummySimData: FullSimData = {
         1: {
             [Algorithms.Dijkstra]: { 
                 isActive: true, 
-                path: [
-                    {
-                        isLast: true, route: 1, mode: TransitModes.FOOT, 
-                        nodes:[
-                            { coord: {x:50,  y:50},  nID: 0, isLast: false },
-                            { coord: {x:150, y:150}, nID: 1, isLast: false },
-                            { coord: {x:250, y:250}, nID: 2, isLast: false },
-                            { coord: {x:350, y:350}, nID: 3, isLast: true  },
-                        ]
-                    }
-                ]
+                path: {
+                    ...EmptyPath,
+                    data: [
+                        {
+                            isLast: true, route: 1, mode: TransitModes.FOOT, 
+                            nodes:[
+                                { coord: {x:50,  y:50},  nID: 0, isLast: false },
+                                { coord: {x:150, y:150}, nID: 1, isLast: false },
+                                { coord: {x:250, y:250}, nID: 2, isLast: false },
+                                { coord: {x:350, y:350}, nID: 3, isLast: true  },
+                            ]
+                        }
+                    ]
+                }
             }
         }
     }

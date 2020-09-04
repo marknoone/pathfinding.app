@@ -1,5 +1,6 @@
 import { PathfindingAlg } from './index';
 import Graph from "../graph";
+import { EmptyPath } from '..';
 
 class MM_TD_Pathfinding implements PathfindingAlg {
     graph: Graph | null
@@ -8,7 +9,7 @@ class MM_TD_Pathfinding implements PathfindingAlg {
     }
 
     Execute(g: Graph, s: number, d: number, depTime:number){
-        return [];
+        return EmptyPath;
     }
 };
 

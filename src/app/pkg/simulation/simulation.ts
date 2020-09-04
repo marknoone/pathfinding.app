@@ -2,16 +2,18 @@ import Graph from "./graph";
 import EventManager from './events';
 import ActiveVehicle from './vehicle';
 import ActiveStations from './station';
-import { put, delay } from 'redux-saga/effects';
+import { put, delay, call } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
 import { Scenario } from '../../../editor/constants';
-import { SimulationFrame, FrameContainer, SimulationResults, FullSimData } from '.';
-import { EvaluationFunc, PassengerTransferMiddleware, MissedPassengerMiddleware } from './middlewares';
+import { SimulationFrame, FrameContainer, SimulationResults } from '.';
 import { getSimulationPassengers, getSimulationVehicles, getStations } 
-    from './selectors';
+from './selectors';
 import { SetBakedFrames, PushPassengerPath } 
-    from '../../../editor/components/rightPanel/components/simulationView/actions';
+from '../../../editor/components/rightPanel/components/simulationView/actions';
 import { PassengerEventTags, isPassengerEventObj } from "./events/passenger";
+import { EvaluationFunc, PassengerTransferMiddleware, MissedPassengerMiddleware,
+    PassengerJourneyTimeCounterMiddleware, VehicleWaitingTimeCounterMiddleware,
+    PassengerWaitingTimeCounterMiddleware } from './middlewares';
 
 class Simulator {
     g: Graph
@@ -35,21 +37,39 @@ class Simulator {
     {
         const DAY = 24 * 60 * 60;
         const frameContainer: FrameContainer = {}; 
+        const results: SimulationResults = {
+            frames: { start: start, end: end },
+            metrics:{
+                vehicleTotal: Object.keys(this.simulationVehicles).length,
+                passengerTotal: Object.keys(this.simulationPassengers).length,
+                stationTotal: Object.keys(this.simulationStations).length,
+                passengerTransfers: 0,
+                missedPassengers: 0,
+            },
+            passenger: {},
+            vehicles: {},
+            frame: {}
+        };
 
         // Middlewares
         const [transferMiddleware, getPassengerTransfers] =  PassengerTransferMiddleware();
         const [missedPassengerMiddleware, getMissedPassengers] =  MissedPassengerMiddleware();
-        const Middlewares: EvaluationFunc[] = [
-            transferMiddleware, missedPassengerMiddleware
-        ]
+        const [vehicleWaitingMiddleware, getVehicleWaiting] =  VehicleWaitingTimeCounterMiddleware();
+        const [passengerWaitingMiddleware, getPassengerWaiting] =  PassengerWaitingTimeCounterMiddleware();
+        const [passengerJourneyMiddleware, getPassengerJourney] =  PassengerJourneyTimeCounterMiddleware();
+        const Middlewares: EvaluationFunc[] = [ transferMiddleware, missedPassengerMiddleware, 
+            vehicleWaitingMiddleware, passengerWaitingMiddleware, passengerJourneyMiddleware ]; 
 
         for(let second = start; second < DAY && second < end; second++){
             const simulationFrame: SimulationFrame = {};
+            results.frame[second] = {stationCongestion: {}, 
+                vehicleCongestion: {}, passengerCongestion: {}}
     
             // Evaluate active vehicles and passengers
             const vehicles = Object.keys(this.simulationVehicles).reduce((accum, avID) => {
                 const av = this.simulationVehicles[+avID];
                 const f = av.Simulate(second, this.eventManager);
+                if(f) { results.frame[second].vehicleCongestion[+avID] = f?.passengerCnt; }
                 return { ...accum, ...(f? { [av.getID()] : f } :{} )}
             }, {});
             if(vehicles && vehicles !== {}){ simulationFrame.vehicles = vehicles; }
@@ -64,6 +84,7 @@ class Simulator {
             const stations = Object.keys(this.simulationStations).reduce((accum, asID) => {
                 const as = this.simulationStations[+asID];
                 const f = as.Simulate(second, this.eventManager);
+                results.frame[second].stationCongestion[+asID] = f.passengerCnt;
                 return { ...accum, ...(f? { [as.getID()] : f } :{} )}
             }, {});
             if(stations && stations !== {}){ simulationFrame.stations = stations; }
@@ -71,22 +92,9 @@ class Simulator {
 
             // Aggregate data...
             frameContainer[second] = simulationFrame;
+            results.frame[second].passengerCongestion = this.getCurrentPassengerCongestion(second);
             Middlewares.forEach((m: EvaluationFunc) => m(simulationFrame, this.eventManager));
-            let events = this.eventManager.getEventsWithTag(PassengerEventTags[PassengerEventTags.PATH_CALCULATED]);
-            for(let i = 0; i < events.length; i++){
-                const obj = events[i].getObj();
-                this.eventManager.deleteEvent(events[i].getID());
-                if(isPassengerEventObj(obj)){
-                    if(obj.path && obj.alg) {
-                        yield put(PushPassengerPath(obj.passengerID, { 
-                            [obj.alg as number]: {
-                                path: obj.path.path, 
-                                isActive: obj.path.isActive
-                            }
-                        }));   
-                    }
-                }
-            }
+            yield call([this, this.handlePassengerPaths]);
 
             // Remove expired events...
             this.eventManager.cleanup(second);
@@ -96,24 +104,47 @@ class Simulator {
             }
         }
 
-        const results: SimulationResults = {
-            frames: { start: start, end: end },
-            metrics: {
-                vehicleTotal: Object.keys(this.simulationVehicles).length,
-                passengerTotal: Object.keys(this.simulationPassengers).length,
-                stationTotal: Object.keys(this.simulationStations).length,
-                passengerTransfers: getPassengerTransfers(),
-                missedPassengers: getMissedPassengers()
-            },
-
-            passenger: {},
-            vehicles: {},
-            frame: {}
-        }; 
+        results.vehicles = getVehicleWaiting();
+        results.metrics.passengerTransfers = getPassengerTransfers();
+        results.metrics.missedPassengers = getMissedPassengers();
+        results.passenger = Object.keys(this.simulationPassengers).reduce((accum, pID) => ({
+            ...accum, [+pID]:{
+                journeyTimes: getPassengerJourney(+pID),
+                timeWaiting: getPassengerWaiting(+pID),
+        }}), {});
 
         return {
             frames: frameContainer,
             results: results
+        }
+    }
+
+    getCurrentPassengerCongestion = (second: number): { [pID:number]: number } =>
+        Object.keys(this.simulationPassengers).reduce((accum, pID) => {
+            const p = this.simulationPassengers[+pID];
+            if(second < p.getDeparture() || p.hasCompleted) return {...accum};
+
+            const congestion = !p.isOnboardVehicle()? 1:
+                this.simulationVehicles[p.getCurrentVehicle()].getCurrentPassengerCount();
+            return { ...accum, ...{ [+pID]: congestion } };
+        }, {});
+
+    *handlePassengerPaths()
+    {
+        let events = this.eventManager.getEventsWithTag(PassengerEventTags[PassengerEventTags.PATH_CALCULATED]);
+        for(let i = 0; i < events.length; i++){
+            const obj = events[i].getObj();
+            this.eventManager.deleteEvent(events[i].getID());
+            if(isPassengerEventObj(obj)){
+                if(obj.path && obj.alg) {
+                    yield put(PushPassengerPath(obj.passengerID, { 
+                        [obj.alg as number]: {
+                            path: obj.path.path, 
+                            isActive: obj.path.isActive
+                        }
+                    }));   
+                }
+            }
         }
     }
 }

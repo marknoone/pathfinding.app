@@ -1,4 +1,4 @@
-import { Edge } from "..";
+import { Edge, EmptyPath } from "..";
 import { Previous } from ".";
 import Graph from "../graph";
 import { PathfindingAlg } from './index';
@@ -26,7 +26,7 @@ class DijkstraPathfinding implements PathfindingAlg {
         // Init
         if (!g) {
             console.error("Dijkstra pathfind needs graph to execute.")
-            return [];
+            return EmptyPath;
         }
 
         this.dist = {};
@@ -47,8 +47,8 @@ class DijkstraPathfinding implements PathfindingAlg {
 
         while (!this.pq.IsEmpty()){
             const currNode = this.pq.Dequeue();
-            if(!currNode) return [];
-            if(currNode === d) return CalculatePath(this.graph, this.prev, s, d);
+            if(!currNode) return EmptyPath;
+            if(currNode === d) return CalculatePath(this.graph, this.prev, s, d, depTime);
 
             this.graph.edges[currNode].forEach((e: Edge) => { 
                 const n = this.graph!.nodes[e.to];
@@ -69,7 +69,7 @@ class DijkstraPathfinding implements PathfindingAlg {
             }); 
         }
 
-        return [];
+        return EmptyPath;
     }
 };
 
