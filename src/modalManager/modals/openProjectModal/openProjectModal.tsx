@@ -61,7 +61,7 @@ const OpenProjectModal: React.FunctionComponent = (props) => {
             func: () => { if(clickedIdx >= 0) dispatch(LoadProject(summaries[clickedIdx].id))}
         }}
         render={() =>{
-            return <ul style={{padding: 0, margin: 0, listStyle: 'none'}}>
+            return <ul style={{padding: 0, margin: 0, height: '100%', overflowY: 'auto', listStyle: 'none'}}>
                 {
                     summaries.map((s, i) => {
                         const date = new Date(s.lastEdited)

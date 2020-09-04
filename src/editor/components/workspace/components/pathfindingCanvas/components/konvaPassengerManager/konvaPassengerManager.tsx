@@ -33,6 +33,9 @@ const KonvaPassengerManager: React.FunctionComponent<KPMProps> = (props) => {
     const [activeSubComponent, setActiveSubComponent] = useState<number>(0);
     if(props.inspecting.componentType !== ComponentTypes.PASSENGER) return null;
     const passengerObj = props.passengers[props.inspecting.elementID];
+    if(!passengerObj)
+        return null;
+
     if(isPassengerDirectory(passengerObj)) return null;
     const dragFunc = CreateBoundingFunc(props.coords, props.dimensions);
 

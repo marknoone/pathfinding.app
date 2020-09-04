@@ -25,7 +25,7 @@ const Modal: React.FunctionComponent<ModalProps> = ({ title, size, primaryAction
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div>
+        <div style={{width: '100%', height: size?`calc(${size.h} - 128px)`:"calc(20vh - 128px)"}}>
           {render()}
         </div>
         <div style={ModalFooter}>

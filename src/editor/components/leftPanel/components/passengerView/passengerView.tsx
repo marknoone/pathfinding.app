@@ -1,7 +1,7 @@
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import React, { useMemo, useState } from 'react';
 import { AppState } from '../../../../../store';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock, faTrash } from '@fortawesome/free-solid-svg-icons';
 import PassengerDirectoryElement from './passengerDirElem';
 import { PassengerDirectory, Passenger } from './constants';
 import { makeGetPassengerElemByIDSelector, getPassengerTree } from './selectors';
@@ -14,7 +14,7 @@ import {
     PassengerP,
     HoverIcon
 } from './passengerView.css';
-import { SetPassengerLock } from './actions';
+import { SetPassengerLock, DeletePassenger } from './actions';
 
 const PassengerView: React.FunctionComponent = (props) => {
     const getPassengerElemByID = useMemo(makeGetPassengerElemByIDSelector, [])
@@ -57,6 +57,12 @@ export const PassengerElement: React.FunctionComponent<PProps> = (props) => {
                     dispatch(SetPassengerLock(props.passenger.id, !props.passenger.isLocked))
                 }}>
                     <FontAwesomeIcon icon={faLock}/></span>
+                <span style={{ cursor: 'pointer', marginLeft: '8px', color: 'rgb(153, 153, 153)'}} 
+                onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
+                    event.preventDefault();
+                    dispatch(DeletePassenger(props.passenger.id));
+                }}>
+                    <FontAwesomeIcon icon={faTrash}/></span>
             </div>
             :null
         }

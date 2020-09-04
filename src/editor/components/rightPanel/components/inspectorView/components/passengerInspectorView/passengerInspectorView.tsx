@@ -25,10 +25,11 @@ const PassengerInspectorView: React.FunctionComponent<InspectorSubViewProps> = (
         || !_.isEqual(passenger.start, editingObj.start))
             setEditingObj(passenger);
     });
-
+    if(!passenger)
+        return null
 
     const disabled =  passenger.isLocked || isSimulating;
-    return <div style={BaseStyle}>
+    return !passenger?null:<div style={BaseStyle}>
         <div style={InspectorForm}>
             <div style={FormEntry}>
                 <p style={InputLabel}>ID:</p>

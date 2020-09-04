@@ -8,7 +8,7 @@ import { SimClockSlider } from './components/simClockSlider';
 import { faPlay, faForward, faStepForward, faBackward, 
     faStepBackward, faCaretDown, faStop} from '@fortawesome/free-solid-svg-icons';
 import { SetSimulationAlgorithm, IncPlaySpeed, DecPlaySpeed, IncSimulationFrame, 
-    DecSimulationFrame, SetIsPlaying, SetSimOptions, SimulateScenario, SetSimulationFrame } from './actions';
+    DecSimulationFrame, SetIsPlaying, SetSimOptions, SimulateScenario, SetSimulationFrame, CancelBaking } from './actions';
 import {
     BaseStyle,
     InputText,
@@ -76,7 +76,11 @@ const SimulationView: React.FunctionComponent = (props) => {
                 cursor: config.algorithm !== Algorithms.CMTDijkstra?  'not-allowed':'pointer',
                 backgroundColor: config.algorithm !== Algorithms.CMTDijkstra?  '#666':'#ff9f43'
             }}>Bake</button>
-            <button style={{...SimBtn, backgroundColor: '#10ac84'}} onClick={() => dispatch(SimulateScenario())}>Simulate</button>
+            {
+                !config.isSimulating?
+                <button style={{...SimBtn, backgroundColor: '#10ac84'}} onClick={() => dispatch(SimulateScenario())}>Simulate</button>:
+                <button style={{...SimBtn, backgroundColor: '#ee5253'}} onClick={() => dispatch(CancelBaking())}>Cancel</button>
+            }
             <div style={SimPlaybackCtrl}>
                 <ul style={SimPlaybackCtrlList}>
                     <li style={SimPlaybackCtrlElem} onClick={() => dispatch(DecSimulationFrame())}> <FontAwesomeIcon icon={faStepBackward}/> </li>

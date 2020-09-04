@@ -139,6 +139,9 @@ class ActivePassenger {
                 if(!hasArrived) return this.getPassengerFrame();
 
                 if(nextNode.isLast) {
+                    this.emitVehicleAlight(simClock, eventManager);
+                    this.currentVehicle = -1;
+
                     if(segment.isLast) {
                         this.hasCompleted = true;
                         eventManager.emitEvent(new Event(
@@ -152,7 +155,6 @@ class ActivePassenger {
                         return this.getPassengerFrame();
                     }
                     else {
-                        this.currentVehicle = -1;
                         this.pathSegmentIdx += 1;
                         this.pathSegmentNodeIdx = 0;
                         this.status = this.getCurrentSegment()!.mode === TransitModes.FOOT?
@@ -175,7 +177,6 @@ class ActivePassenger {
                     this.coords = nextNode.coord;
                     this.pathSegmentNodeIdx += 1;
                 }
-
         }
 
         return this.getPassengerFrame();
@@ -218,6 +219,19 @@ class ActivePassenger {
 
     mustGetPrevSegmentNode = () => 
         this.getNextSegmentNode() as PathSegmentNode;
+
+    emitVehicleAlight = (simClock: number, e: EventManager) =>
+        e.emitEvent(new Event(
+            PassengerEventTags[PassengerEventTags.ALIGHT_EVENT],
+            EventType.PASSENGER_EVENT,
+            -1,
+            passengerEventObj({
+                stopID: this.getCurrentSegmentNode()!.stopID!, 
+                routeID: this.getCurrentSegment()!.route!, 
+                passengerID: this.ID,
+                vehicleID: this.currentVehicle,
+            })
+        ))
 }
 
 export default ActivePassenger;

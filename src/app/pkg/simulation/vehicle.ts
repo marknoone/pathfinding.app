@@ -74,6 +74,9 @@ import { VehicleEventTags } from "./events/vehicle";
         }
         else if(this.status === 'INACTIVE') return null;
         
+        // Maintenance
+        this.checkPassengersOnboard(simClock, eventManager);
+
         // Simulate ...
         const currStn = this.getCurrentStation();
         if(!currStn) { 
@@ -223,6 +226,25 @@ import { VehicleEventTags } from "./events/vehicle";
                 coordinates: this.coords
             })
         ));
+
+    checkPassengersOnboard(simClock: number, em: EventManager)
+    {
+        const arrivalEvents = em
+            .getEventsWithTag(PassengerEventTags[PassengerEventTags.ALIGHT_EVENT])
+            .filter((e:SimulationEvent) => {
+                const pObj = e.getObj()
+                if(!isPassengerEventObj(pObj) && pObj.vehicleID) return false;
+                return pObj.vehicleID === this.ID;
+            }); 
+
+        arrivalEvents.forEach((e: SimulationEvent) => {
+            const pObj = e.getObj() as PassengerEventObj;
+            if (this.passengers.has(pObj.passengerID)){
+                this.passengers.delete(pObj.passengerID);
+                em.deleteEvent(e.getID());
+            }
+        });
+    }
 
 } 
 
