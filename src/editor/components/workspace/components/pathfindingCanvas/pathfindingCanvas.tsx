@@ -1,6 +1,6 @@
 import { Stage } from "react-konva";
 import { Vector2d } from 'konva/types/types';
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import { KonvaBG } from './components/konvaBG';
 import { AppState } from '../../../../../store';
 import { KonvaGrid } from './components/konvaGrid';
@@ -17,6 +17,8 @@ import {
     SetCanvasCoordinates,
     SetScaleAndCanvasScale
 } from './actions';
+import { SetSimulationFrame } from "../../../rightPanel/components/simulationView/actions";
+import { Playspeeds } from "../../../rightPanel/components/simulationView/constants";
 
 type PCProps = { dimensions: number[] }
 type PCState = { coords: number[], scale: {x: number, y: number} }
@@ -34,8 +36,8 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
         state.scenario.scenarios[state.scenario.activeScenarioIdx].simulation.isSimulating);
     const vehicles = useSelector((state: AppState) => state.scenario.scenarios
         [ state.scenario.activeScenarioIdx ].vehicles, shallowEqual);
-    const simClock = useSelector((state: AppState) => state.scenario.scenarios
-        [ state.scenario.activeScenarioIdx ].simulation.simClock, shallowEqual)
+    const { simClock, playSpeedIdx, isPlaying } = useSelector((state: AppState) => state.scenario.scenarios
+        [ state.scenario.activeScenarioIdx ].simulation, shallowEqual);
     const simData = useSelector((state: AppState) => 
         state.scenario.scenarios[ state.scenario.activeScenarioIdx ].simulation.data, shallowEqual);
     const { frames, passengerPaths } = simData?simData:{frames: {}, passengerPaths:{}}
@@ -44,12 +46,27 @@ const PathfindingCanvas: React.FunctionComponent<PCProps> = (props) => {
     const simPassengers = frame.passengers?frame.passengers:{};
     const simVehicles = frame.vehicles?frame.vehicles:{};
 
+    console.log("Redraw!");
     useLayoutEffect(() => {
         dispatch(SetCanvasCoordinates(
             props.dimensions[0]/2 - canvasOpts.canvasSize[0]/2,
             props.dimensions[1]/2 - canvasOpts.canvasSize[1]/2,
         ));
     }, [props.dimensions, canvasOpts.canvasSize]);
+
+    useEffect(() => {
+        let timeout: number | null = null;
+        if(isPlaying)
+            setTimeout(() => {
+                const spd = Playspeeds[playSpeedIdx];
+                dispatch(SetSimulationFrame(simClock+spd));
+            }, 500);
+        return () => {
+            // console.log("Cleanup")
+            if(timeout)
+                clearTimeout(timeout)
+        }
+    }, [simClock, isPlaying]);
 
     return <Stage width={props.dimensions[0]}  height={props.dimensions[1]}>
         <KonvaBG dimensions={props.dimensions} fill="#f1f3f4"/>

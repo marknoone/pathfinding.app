@@ -7,12 +7,12 @@ class Event implements SimulationEvent {
     expires: number
     type: EventType
 
-    constructor(tag: string, expires: number, obj: any){
+    constructor(tag: string, type:EventType,  expires: number, obj: any){
         this.id = -1; // Set by event manager
         this.expires = expires;
         this.obj = obj;
         this.tag = tag;
-        this.type = EventType.PASSENGER_EVENT
+        this.type = type;
     }
 
     emit(newID: number): SimulationEvent{

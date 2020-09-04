@@ -2,7 +2,7 @@ import { Route, Station } from "../../../editor/components/leftPanel/components/
 import { Coord, VehicleFrame } from "."
 import { distance } from './geometry';
 import { vehicleEventObj } from "./events/vehicle";
-import EventManager, { SimulationEvent, Event  } from "./events"
+import EventManager, { SimulationEvent, Event, EventType  } from "./events"
 import { PassengerEventTags, PassengerEventObj, isPassengerEventObj } from "./events/passenger"
 import { VehicleEventTags } from "./events/vehicle";
 
@@ -61,6 +61,16 @@ import { VehicleEventTags } from "./events/vehicle";
             this.lastStatusChg = simClock;
             this.activeSince = simClock;
             this.currentStationIdx = 0;
+            if(this.getCurrentStation())
+                eventManager.emitEvent(new Event(
+                    VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT],
+                    EventType.VEHICLE_EVENT,
+                    simClock, vehicleEventObj({
+                        stopID: this.getCurrentStation()!.id, 
+                        routeID: this.routeID, 
+                        vehicleID: this.ID,
+                    })
+                ));
         }
         else if(this.status === 'INACTIVE') return null;
         
@@ -97,6 +107,7 @@ import { VehicleEventTags } from "./events/vehicle";
                     if(this.passengers.size >= this.vehicleCapacity)
                         eventManager.emitEvent(new Event(
                             VehicleEventTags[VehicleEventTags.MISSED_PASSENGERS],
+                            EventType.VEHICLE_EVENT,
                             simClock, vehicleEventObj({
                                 stopID: currStn.id, 
                                 routeID: this.routeID, 
@@ -117,6 +128,7 @@ import { VehicleEventTags } from "./events/vehicle";
 
                     eventManager.emitEvent(new Event(
                         VehicleEventTags[VehicleEventTags.DEPARTING_STOP],
+                        EventType.VEHICLE_EVENT,
                         simClock, vehicleEventObj({
                             stopID: currStn.id, 
                             routeID: this.routeID, 
@@ -146,6 +158,7 @@ import { VehicleEventTags } from "./events/vehicle";
                     this.status = 'STOPPED';
                     this.lastStatusChg = simClock;
                     this.coords = currStn.coordinates;
+                    this.emitCoordinateChange(simClock, eventManager);
                     const nextStn = this.getNextStation();
                     this.angle = nextStn? Math.atan2(
                         (nextStn.coordinates.y - this.coords.y),
@@ -153,6 +166,7 @@ import { VehicleEventTags } from "./events/vehicle";
                     ) * (180/Math.PI): this.angle;
                     eventManager.emitEvent(new Event(
                         VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT],
+                        EventType.VEHICLE_EVENT,
                         simClock, vehicleEventObj({
                             stopID: currStn.id, 
                             routeID: this.routeID, 
@@ -162,11 +176,11 @@ import { VehicleEventTags } from "./events/vehicle";
                     return this.getVehicleFrame();
                 }
                 this.coords = coordinate
+                this.emitCoordinateChange(simClock, eventManager);
                 this.angle = Math.atan2(
                     (currStn.coordinates.y - this.coords.y),
                     (currStn.coordinates.x - this.coords.x)
                 ) * (180/Math.PI);
-                break;
         }
 
         return this.getVehicleFrame();
@@ -197,6 +211,18 @@ import { VehicleEventTags } from "./events/vehicle";
         this.currentStationIdx >= 0 &&
         this.currentStationIdx < this.travellingStations.length?
             this.travellingStations[this.currentStationIdx]: null;
+
+    emitCoordinateChange = (simClock: number, e: EventManager) =>
+        e.emitEvent(new Event(
+            VehicleEventTags[VehicleEventTags.NEW_POSITION],
+            EventType.VEHICLE_EVENT,
+            simClock, vehicleEventObj({
+                stopID: this.getCurrentStation()!.id, 
+                routeID: this.routeID, 
+                vehicleID: this.ID,
+                coordinates: this.coords
+            })
+        ));
 
 } 
 

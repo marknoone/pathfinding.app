@@ -2,7 +2,7 @@ import Graph from "./graph";
 import { distance } from './geometry';
 import { PassengerFrame, Coord } from ".";
 import { Path, PathSegment, PathSegmentNode } from "."
-import EventManager, { Event, SimulationEvent } from "./events"
+import EventManager, { Event, SimulationEvent, EventType } from "./events"
 import { passengerEventObj, PassengerEventTags } from "./events/passenger";
 import { VehicleEventTags, VehicleEventObj, isVehicleEventObj, getVehicleCoordChange } 
     from "./events/vehicle"
@@ -66,6 +66,7 @@ class ActivePassenger {
 
             eventManager.emitEvent(new Event(
                 PassengerEventTags[PassengerEventTags.PATH_CALCULATED],
+                EventType.PASSENGER_EVENT,
                 simClock, passengerEventObj({
                     passengerID: this.getID(), 
                     alg: this.graph.getAlg(),
@@ -84,17 +85,18 @@ class ActivePassenger {
         switch(this.status){
             case 'WAITING':
                 const arrivalEvent = eventManager
-                    .getEventsWithTag(VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT])
-                    .find((e:SimulationEvent) => {
-                        const vObj = e.getObj();
-                        if(!isVehicleEventObj(vObj)) return false;
-                        return vObj.routeID === segment.route && 
-                            vObj.stopID === segmentNode.stopID!;
-                    });
+                .getEventsWithTag(VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT])
+                .find((e:SimulationEvent) => {
+                    const vObj = e.getObj();
+                    if(!isVehicleEventObj(vObj)) return false;
+                    return vObj.routeID === segment.route && 
+                    vObj.stopID === segmentNode.stopID!;
+                });
                 if(arrivalEvent){
                     this.currentVehicle = (arrivalEvent.getObj() as VehicleEventObj).vehicleID;
                     eventManager.emitEvent(new Event(
                         PassengerEventTags[PassengerEventTags.BOARDING_EVENT],
+                        EventType.PASSENGER_EVENT,
                         simClock,
                         passengerEventObj({
                             stopID: segmentNode.stopID!, 
@@ -103,15 +105,17 @@ class ActivePassenger {
                             vehicleID: (arrivalEvent.getObj() as VehicleEventObj).vehicleID
                         })
                     ))
+                    this.status = "TRAVELLING";
+                    this.lastStatusChg = simClock;
                 }
             case 'TRAVELLING':
-                if(segment.mode === TransitModes.FOOT){
-                    const nextNode = this.getNextSegmentNode();
-                    if(!nextNode) {
-                        console.error("Passenger State Corruption: No next node...")
-                        return this.getPassengerFrame();
-                    }
+                const nextNode = this.getNextSegmentNode();
+                if(!nextNode) {
+                    console.error("Passenger State Corruption: No next node...")
+                    return this.getPassengerFrame();
+                }
 
+                if(segment.mode === TransitModes.FOOT){
                     const v = [
                         nextNode.coord.x - this.coords.x,
                         nextNode.coord.y - this.coords.y,
@@ -120,51 +124,58 @@ class ActivePassenger {
                     const vNorm = [v[0]/vLen, v[1]/vLen];
     
                     // speed * time = distance, but time is 1 second in this case.
-                    let coordinate: Coord = {
+                    this.coords = {
                         x: this.coords.x +  (this.walkingSpeed * vNorm[0]), 
                         y: this.coords.y +  (this.walkingSpeed * vNorm[1])
                     }
-    
-                    const hasArrived = distance(coordinate, nextNode.coord) < this.walkingSpeed;
-                    if( hasArrived && nextNode.isLast) {
-                        if(segment.isLast) {
-                            this.hasCompleted = true;
-                            eventManager.emitEvent(new Event(
-                                PassengerEventTags[PassengerEventTags.COMPLETED_JOURNEY],
-                                simClock,
-                                passengerEventObj({
-                                    passengerID: this.ID
-                                })
-                            ))
-                            return this.getPassengerFrame();
-                        }
-                        else {
-                            this.pathSegmentIdx += 1;
-                            this.pathSegmentNodeIdx = 0;
-                            this.status = this.getCurrentSegment()!.mode === TransitModes.FOOT?
-                                'TRAVELLING': 'WAITING';
-                            if(this.status === 'WAITING')
-                                eventManager.emitEvent(new Event(
-                                    PassengerEventTags[PassengerEventTags.ARRIVED_AT_STOP_EVENT],
-                                    -1,
-                                    passengerEventObj({
-                                        stopID: this.getCurrentSegmentNode()!.stopID!, 
-                                        routeID: this.getCurrentSegment()!.route!, 
-                                        passengerID: this.ID
-                                    })
-                                ));
-                        }
-                    } else if(hasArrived) {
-                        this.lastStatusChg = simClock;
-                        this.coords = nextNode.coord;
-                        this.pathSegmentNodeIdx += 1;
-                    } else 
-                        this.coords = coordinate;
                 } else {
                     const newC = getVehicleCoordChange(this.currentVehicle, eventManager)
-                    if(newC)
+                    if(newC) {
                         this.coords = newC;
+                    }
                 }
+    
+                const hasArrived = distance(this.coords, nextNode.coord) < this.walkingSpeed;
+                if(!hasArrived) return this.getPassengerFrame();
+
+                if(nextNode.isLast) {
+                    if(segment.isLast) {
+                        this.hasCompleted = true;
+                        eventManager.emitEvent(new Event(
+                            PassengerEventTags[PassengerEventTags.COMPLETED_JOURNEY],
+                            EventType.PASSENGER_EVENT,
+                            simClock,
+                            passengerEventObj({
+                                passengerID: this.ID
+                            })
+                        ))
+                        return this.getPassengerFrame();
+                    }
+                    else {
+                        this.currentVehicle = -1;
+                        this.pathSegmentIdx += 1;
+                        this.pathSegmentNodeIdx = 0;
+                        this.status = this.getCurrentSegment()!.mode === TransitModes.FOOT?
+                            'TRAVELLING': 'WAITING';
+                        this.lastStatusChg = simClock;
+                        if(this.status === 'WAITING')
+                            eventManager.emitEvent(new Event(
+                                PassengerEventTags[PassengerEventTags.ARRIVED_AT_STOP_EVENT],
+                                EventType.PASSENGER_EVENT,
+                                -1,
+                                passengerEventObj({
+                                    stopID: this.getCurrentSegmentNode()!.stopID!, 
+                                    routeID: this.getCurrentSegment()!.route!, 
+                                    passengerID: this.ID
+                                })
+                            ));
+                    }
+                } else {
+                    this.lastStatusChg = simClock;
+                    this.coords = nextNode.coord;
+                    this.pathSegmentNodeIdx += 1;
+                }
+
         }
 
         return this.getPassengerFrame();

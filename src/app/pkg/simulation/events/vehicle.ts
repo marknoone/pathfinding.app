@@ -50,7 +50,7 @@ export const getVehicleCoordChange = (vID: number, eventManager:EventManager):(C
         });
     
     if(e){
-        const c = (<VehicleEventObj>e.getObj()).coordinates
+        const c = (e.getObj() as VehicleEventObj).coordinates
         return c? c: null
     }
     return null;
