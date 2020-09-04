@@ -16,11 +16,14 @@ class EventManager {
     cleanup = (time:number) =>
         this.events = Object.keys(this.events).reduce((accum, k) => ({
             ...accum,
-            ...(!this.events[+k].hasExpired(time) && this.events[+k])
+            ...(!this.events[+k].hasExpired(time) && { [+k]: this.events[+k] })
         }), {});
 
-    emitEvent = (e: SimulationEvent) => 
-        this.events[this.eventIdx++] = e;
+    emitEvent = (e: SimulationEvent) => {
+        const ID = this.eventIdx;
+        this.events[ID] = e.emit(ID);
+        this.eventIdx++;
+    }
     
     getEvents = (): EventStore => this.events
     

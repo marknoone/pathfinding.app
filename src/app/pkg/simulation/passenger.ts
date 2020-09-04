@@ -146,7 +146,7 @@ class ActivePassenger {
                             if(this.status === 'WAITING')
                                 eventManager.emitEvent(new Event(
                                     PassengerEventTags[PassengerEventTags.ARRIVED_AT_STOP_EVENT],
-                                    simClock,
+                                    -1,
                                     passengerEventObj({
                                         stopID: this.getCurrentSegmentNode()!.stopID!, 
                                         routeID: this.getCurrentSegment()!.route!, 

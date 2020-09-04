@@ -70,6 +70,9 @@ import { VehicleEventTags } from "./events/vehicle";
         switch(this.status) {
             case 'STOPPED':
                 const stoppedFor = simClock - this.lastStatusChg;
+                if(stoppedFor % this.stopTime !== 0)
+                    break; 
+
                 const arrivalEvents = eventManager
                     .getEventsWithTag(PassengerEventTags[PassengerEventTags.ARRIVED_AT_STOP_EVENT])
                     .filter((e:SimulationEvent) => {
@@ -113,7 +116,7 @@ import { VehicleEventTags } from "./events/vehicle";
                             vehicleID: this.ID,
                         })
                     ));
-                } else if(stoppedFor % this.stopTime === 0){
+                } else {
                     const eObj = arrivalEvents[0].getObj() as PassengerEventObj
                     this.passengers.add(eObj.passengerID);
                     eventManager.deleteEvent(arrivalEvents[0].getID());
@@ -135,7 +138,7 @@ import { VehicleEventTags } from "./events/vehicle";
                 if(distance(coordinate, currStn.coordinates) < this.vehicleSpeed) {
                     this.status = 'STOPPED';
                     this.lastStatusChg = simClock;
-                    this.coords = currStn.coordinates;
+                    coordinate = currStn.coordinates;
                     eventManager.emitEvent(new Event(
                         VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT],
                         simClock, vehicleEventObj({

@@ -21,7 +21,7 @@ class Event implements SimulationEvent {
     }
 
     hasExpired = (time:number) => 
-        this.expires - time <= 0
+        this.expires - time <= 0 && this.expires !== -1;
     
     getID = () => this.id;
     getObj = () => this.obj; 
