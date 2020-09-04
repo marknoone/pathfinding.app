@@ -16,8 +16,8 @@ export const initialState: SimulationState = {
     isSimulating: false,
     isBaking: false,
     bakedFrames: {
-        total: 45,
-        current: 1
+        total: 0,
+        current: 0
     },
 
     data: null,
@@ -163,13 +163,15 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
         case SimulationActionTypes.CANCEL_BAKE:
             return {
                 ...state,
-                isBaking: false,
+                isPlaying: false,
                 isSimulating: false,
-                data: null,
+                isBaking: false,
                 bakedFrames: {
-                    current: 0,
-                    total: 0
-                }
+                    total: 0,
+                    current: 0
+                },
+
+                data: null,
             };
         case SimulationActionTypes.COMPLETE_BAKE:
             if(!action.payload) return state;

@@ -69,6 +69,8 @@ import { VehicleEventTags } from "./events/vehicle";
                         stopID: this.getCurrentStation()!.id, 
                         routeID: this.routeID, 
                         vehicleID: this.ID,
+                        currentCapacity: this.vehicleCapacity,
+                        currentPassengers: this.passengers.size,
                     })
                 ));
         }
@@ -115,7 +117,9 @@ import { VehicleEventTags } from "./events/vehicle";
                                 stopID: currStn.id, 
                                 routeID: this.routeID, 
                                 vehicleID: this.ID,
-                                missedPassengers: arrivalEvents.length
+                                missedPassengers: arrivalEvents.length,
+                                currentCapacity: this.vehicleCapacity,
+                                currentPassengers: this.passengers.size,
                             })
                         ));
                     const nextStn = this.getNextStation();
@@ -136,6 +140,8 @@ import { VehicleEventTags } from "./events/vehicle";
                             stopID: currStn.id, 
                             routeID: this.routeID, 
                             vehicleID: this.ID,
+                            currentCapacity: this.vehicleCapacity,
+                            currentPassengers: this.passengers.size,
                         })
                     ));
                 } else {
@@ -174,6 +180,8 @@ import { VehicleEventTags } from "./events/vehicle";
                             stopID: currStn.id, 
                             routeID: this.routeID, 
                             vehicleID: this.ID,
+                            currentCapacity: this.vehicleCapacity,
+                            currentPassengers: this.passengers.size,
                         })
                     ));
                     return this.getVehicleFrame();
@@ -223,7 +231,9 @@ import { VehicleEventTags } from "./events/vehicle";
                 stopID: this.getCurrentStation()!.id, 
                 routeID: this.routeID, 
                 vehicleID: this.ID,
-                coordinates: this.coords
+                coordinates: this.coords,
+                currentCapacity: this.vehicleCapacity,
+                currentPassengers: this.passengers.size,
             })
         ));
 

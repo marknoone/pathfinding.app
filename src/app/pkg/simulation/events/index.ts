@@ -16,6 +16,7 @@ export interface SimulationEvent {
     getObj: () => any 
     getTag: () => string
     getType: () => EventType
+    getExpiry: () => number
     
     hasExpired: (time:number) => boolean
     emit: (newID: number) => SimulationEvent

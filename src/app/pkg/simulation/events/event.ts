@@ -27,6 +27,7 @@ class Event implements SimulationEvent {
     getObj = () => this.obj; 
     getTag = () => this.tag;
     getType = () => this.type;
+    getExpiry = () => this.expires; 
 }
 
 export default Event; 

@@ -20,6 +20,9 @@ export type VehicleEventObj = {
     stopID: number, 
     routeID: number, 
     vehicleID: number,
+    currentCapacity: number,
+    currentPassengers: number,
+
     coordinates?: Coord
     missedPassengers?: number,
 }
@@ -30,6 +33,8 @@ export const vehicleEventObj = (p: {
     vehicleID: number, 
     coordinates?: Coord,
     missedPassengers?: number
+    currentCapacity: number
+    currentPassengers: number
 }): VehicleEventObj =>
     ({ 
         __isVehicleObj: null, 
@@ -37,7 +42,9 @@ export const vehicleEventObj = (p: {
         routeID: p.routeID, 
         vehicleID: p.vehicleID, 
         coordinates: p.coordinates,
-        missedPassengers: p.missedPassengers
+        missedPassengers: p.missedPassengers,
+        currentCapacity: p.currentCapacity,
+        currentPassengers: p.currentPassengers,
 });
 
 export const getVehicleCoordChange = (vID: number, eventManager:EventManager):(Coord | null) => {

@@ -4,7 +4,7 @@ import { PassengerFrame, Coord } from ".";
 import { Path, PathSegment, PathSegmentNode } from "."
 import EventManager, { Event, SimulationEvent, EventType } from "./events"
 import { passengerEventObj, PassengerEventTags } from "./events/passenger";
-import { VehicleEventTags, VehicleEventObj, isVehicleEventObj, getVehicleCoordChange } 
+import { VehicleEventTags, VehicleEventObj, isVehicleEventObj, getVehicleCoordChange, vehicleEventObj } 
     from "./events/vehicle"
 import { TransitModes } 
     from "../../../editor/components/leftPanel/components/componentView/constants";
@@ -85,15 +85,14 @@ class ActivePassenger {
         switch(this.status){
             case 'WAITING':
                 const arrivalEvent = eventManager
-                .getEventsWithTag(VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT])
-                .find((e:SimulationEvent) => {
-                    const vObj = e.getObj();
-                    if(!isVehicleEventObj(vObj)) return false;
-                    return vObj.routeID === segment.route && 
-                    vObj.stopID === segmentNode.stopID!;
-                });
-                if(arrivalEvent){
-                    this.currentVehicle = (arrivalEvent.getObj() as VehicleEventObj).vehicleID;
+                    .getEventsWithTag(VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT])
+                    .find((e:SimulationEvent) => {
+                        const vObj = e.getObj();
+                        if(!isVehicleEventObj(vObj)) return false;
+                        return vObj.routeID === segment.route && 
+                        vObj.stopID === segmentNode.stopID!;
+                    });
+                if(arrivalEvent && this.willBoardVehicle(eventManager, arrivalEvent)){
                     eventManager.emitEvent(new Event(
                         PassengerEventTags[PassengerEventTags.BOARDING_EVENT],
                         EventType.PASSENGER_EVENT,
@@ -105,6 +104,7 @@ class ActivePassenger {
                             vehicleID: (arrivalEvent.getObj() as VehicleEventObj).vehicleID
                         })
                     ))
+                    this.currentVehicle = (arrivalEvent.getObj() as VehicleEventObj).vehicleID;
                     this.status = "TRAVELLING";
                     this.lastStatusChg = simClock;
                 }
@@ -183,6 +183,24 @@ class ActivePassenger {
         }
 
         return this.getPassengerFrame();
+    }
+
+    willBoardVehicle(em: EventManager, e: SimulationEvent): boolean {
+        const vObj = e.getObj() as VehicleEventObj;
+        if(vObj.currentPassengers < vObj.currentCapacity){
+            em.deleteEvent(e.getID());
+            em.emitEvent(new Event(
+                e.getTag(),
+                e.getType(),
+                e.getExpiry(), 
+                vehicleEventObj({
+                    ...vObj,
+                    currentPassengers: vObj.currentPassengers+1
+                })
+            ));
+            return true;
+        }
+        return false
     }
 
     // Getters / setters
