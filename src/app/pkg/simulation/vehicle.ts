@@ -66,10 +66,22 @@ import { VehicleEventTags } from "./events/vehicle";
         
         // Simulate ...
         const currStn = this.getCurrentStation();
-        if(!currStn) { console.log(`Vehicle ${this.ID} has no current station`); return null; }
+        if(!currStn) { 
+            console.log(`Vehicle ${this.ID} has no current station`); 
+            this.hasCompleted = true; 
+            this.status = 'INACTIVE';
+            return null;
+        }
+
         switch(this.status) {
             case 'STOPPED':
                 const stoppedFor = simClock - this.lastStatusChg;
+                this.coords = currStn.coordinates;
+                const nextStn = this.getNextStation();
+                this.angle = nextStn? Math.atan2(
+                    (nextStn.coordinates.y - this.coords.y),
+                    (nextStn.coordinates.x - this.coords.x)
+                ) * (180/Math.PI): this.angle;
                 if(stoppedFor % this.stopTime !== 0)
                     break; 
 
@@ -102,11 +114,6 @@ import { VehicleEventTags } from "./events/vehicle";
                     this.currentStationIdx += 1;
                     this.status = 'INTRANSIT';
                     this.lastStatusChg = simClock;
-                    this.coords = currStn.coordinates;
-                    this.angle = Math.atan2(
-                        (nextStn.coordinates.y - this.coords.y),
-                        (nextStn.coordinates.x - this.coords.x)
-                    ) * (180/Math.PI);
 
                     eventManager.emitEvent(new Event(
                         VehicleEventTags[VehicleEventTags.DEPARTING_STOP],
@@ -138,7 +145,12 @@ import { VehicleEventTags } from "./events/vehicle";
                 if(distance(coordinate, currStn.coordinates) < this.vehicleSpeed) {
                     this.status = 'STOPPED';
                     this.lastStatusChg = simClock;
-                    coordinate = currStn.coordinates;
+                    this.coords = currStn.coordinates;
+                    const nextStn = this.getNextStation();
+                    this.angle = nextStn? Math.atan2(
+                        (nextStn.coordinates.y - this.coords.y),
+                        (nextStn.coordinates.x - this.coords.x)
+                    ) * (180/Math.PI): this.angle;
                     eventManager.emitEvent(new Event(
                         VehicleEventTags[VehicleEventTags.ARRIVED_AT_STOP_EVENT],
                         simClock, vehicleEventObj({
@@ -147,6 +159,7 @@ import { VehicleEventTags } from "./events/vehicle";
                             vehicleID: this.ID,
                         })
                     ));
+                    return this.getVehicleFrame();
                 }
                 this.coords = coordinate
                 this.angle = Math.atan2(

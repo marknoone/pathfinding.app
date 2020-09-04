@@ -188,8 +188,9 @@ class Graph {
         const stn = Object.keys(this.stationMap).find((stn:string) =>
             this.stationMap[+stn] === node);
         
-        return stn? this.stationMap[+stn]: undefined;
+        return stn? +stn: undefined;
     }
+
 
     computePath(start: Coord, destination: Coord, depTime: number):(Path|null) {
         const startNode = this.getNodeFromCoordinates(start);

@@ -6,7 +6,7 @@ class ActiveStation {
     ID: number
     coord: Coord
     nodeID: number
-    routeCnt: {[rID:number]: number}
+    routeCnt: {[rID:number]: Set<number>}
 
     constructor(id: number, c: Coord, node: number){
         this.ID = id;
@@ -18,7 +18,7 @@ class ActiveStation {
     getID = ():number => this.ID;
     getCoords = ():Coord => this.coord;
     getNodeID = ():number => this.nodeID;
-    addRouteWatch = (rID: number) => this.routeCnt[rID] = 0; 
+    addRouteWatch = (rID: number) => this.routeCnt[rID] = new Set<number>(); 
 
     Simulate(_: number, eventManager: EventManager): StationFrame {
         // Increment stop counts for stop and routes...
@@ -27,9 +27,11 @@ class ActiveStation {
         ).forEach((e:SimulationEvent) => {
             const pObj = e.getObj()
             if(isPassengerEventObj(pObj) && pObj.stopID === this.ID){
-                if(Object.keys(this.routeCnt)
-                    .includes(pObj.routeID!.toString()))
-                        this.routeCnt[pObj.routeID!] += 1;
+                if(
+                    Object.keys(this.routeCnt).includes(pObj.routeID!.toString())
+                    && !this.routeCnt[pObj.routeID!].has(pObj.passengerID)
+                )
+                    this.routeCnt[pObj.routeID!].add(pObj.passengerID);
             }
         });
             
@@ -37,18 +39,22 @@ class ActiveStation {
         eventManager.getEventsWithTag(
             PassengerEventTags[PassengerEventTags.BOARDING_EVENT]
         ).forEach((e:SimulationEvent) => {
-            const pObj = e.getObj()
+            const pObj = e.getObj();
             if(isPassengerEventObj(pObj) && pObj.stopID === this.ID){
-                if(Object.keys(this.routeCnt)
-                    .includes(pObj.routeID!.toString()))
-                        this.routeCnt[pObj.routeID!] -= 1;
+                if(
+                    Object.keys(this.routeCnt).includes(pObj.routeID!.toString())
+                    && this.routeCnt[pObj.routeID!].has(pObj.passengerID)
+                )
+                    this.routeCnt[pObj.routeID!].delete(pObj.passengerID);
             }
         });
 
         return {
-            passengerCntByRoute: this.routeCnt,
             passengerCnt: Object.keys(this.routeCnt).reduce((accum, cnt) => 
-                accum + this.routeCnt[+cnt], 0)
+                accum + this.routeCnt[+cnt].size, 0
+            ),
+            passengerCntByRoute: Object.keys(this.routeCnt).reduce((accum, route) => 
+            ({ ...accum, ... { [+route]: this.routeCnt[+route].size }}), {})
         };
     }   
 }
