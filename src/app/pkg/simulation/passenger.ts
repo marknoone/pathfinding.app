@@ -108,6 +108,7 @@ class ActivePassenger {
                     this.status = "TRAVELLING";
                     this.lastStatusChg = simClock;
                 }
+                break;
             case 'TRAVELLING':
                 const nextNode = this.getNextSegmentNode();
                 if(!nextNode) {
@@ -139,8 +140,10 @@ class ActivePassenger {
                 if(!hasArrived) return this.getPassengerFrame();
 
                 if(nextNode.isLast) {
-                    this.emitVehicleAlight(simClock, eventManager);
-                    this.currentVehicle = -1;
+                    if(this.currentVehicle !== -1){
+                        this.emitVehicleAlight(simClock, eventManager);
+                        this.currentVehicle = -1;
+                    }
 
                     if(segment.isLast) {
                         this.hasCompleted = true;

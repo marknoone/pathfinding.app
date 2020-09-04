@@ -152,8 +152,5 @@ export type StationSimData = {
 }
 
 export type StationFrame = { 
-    passengerCnt: number 
-    passengerCntByRoute: { 
-        [rID: number]: number 
-    }
+    passengerCnt: number
 }

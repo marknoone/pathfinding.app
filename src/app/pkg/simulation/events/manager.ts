@@ -36,7 +36,7 @@ class EventManager {
             return null 
     }
     
-    deleteEvent = (eventID: number) => delete this.events[eventID];
+    deleteEvent = (eventID: number) =>  delete this.events[eventID];
 
     getEventsOfType = (type: EventType): SimulationEvent[] => 
         Object.keys(this.events)

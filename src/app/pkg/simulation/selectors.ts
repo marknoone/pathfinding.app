@@ -63,11 +63,5 @@ export const getStations = (scenario: Scenario, g: Graph): { [sID: number]: Acti
         const stnNID = g.getNodeFromCoordinates(stn.coordinates)
         stns[stn.id] = new ActiveStation(stn.id, stn.coordinates, stnNID?stnNID:-1)
     });
-
-    Object.keys(routes.data).forEach((r:string) => 
-        Object.keys(routes.data[+r].stations).forEach((s:string) => 
-            stns[routes.data[+r].stations[+s].id].addRouteWatch(routes.data[+r].id)
-    ));
-
     return stns;
 }
