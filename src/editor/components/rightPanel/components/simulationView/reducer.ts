@@ -144,8 +144,7 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
         case SimulationActionTypes.PUSH_BAKED_FRAME:
             if(!action.payload) return state;
             return action.payload.simFrame && 
-                action.payload.dataFrame &&
-                action.payload.evalFrame? {
+                action.payload.dataFrame? {
                 ...state,
                 data: {
                     passengerPaths: {
@@ -153,10 +152,7 @@ const SimulationReducer: Reducer<SimulationState, SimulationAction> = (state = i
                     },
                     frames: {
                         ...(state.data? state.data.frames:{}),
-                        [action.payload.simFrame]: {
-                            simulation: action.payload.dataFrame, 
-                            evaluation: action.payload.evalFrame 
-                        }
+                        [action.payload.simFrame]: action.payload.dataFrame,
                     }
                 }
             }: state;

@@ -6,14 +6,13 @@ import { put, delay } from 'redux-saga/effects';
 import ActivePassenger from './passenger';
 import { Scenario } from '../../../editor/constants';
 import { SimulationFrame, FrameContainer, SimulationResults, FullSimData } from '.';
+import { EvaluationFunc, PassengerTransferMiddleware, MissedPassengerMiddleware } from './middlewares';
 import { getSimulationPassengers, getSimulationVehicles, getStations } 
     from './selectors';
 import { SetBakedFrames, PushPassengerPath } 
     from '../../../editor/components/rightPanel/components/simulationView/actions';
-import { EvaluateMiddlewareFunc, PassengerTransferMiddleware, MissedPassengerMiddleware } 
-    from './middlewares';
 import { PassengerEventTags, isPassengerEventObj } from "./events/passenger";
-    
+
 class Simulator {
     g: Graph
     s: Scenario
@@ -31,13 +30,18 @@ class Simulator {
         this.simulationPassengers = getSimulationPassengers(s, this.g);
     }
 
-    *SimulateScenario(start: number, end: number, middleware?: EvaluateMiddlewareFunc) {
+    *SimulateScenario(start: number, end: number): 
+        Generator<any, {frames: FrameContainer, results: SimulationResults}, any> 
+    {
         const DAY = 24 * 60 * 60;
         const frameContainer: FrameContainer = {}; 
 
         // Middlewares
         const [transferMiddleware, getPassengerTransfers] =  PassengerTransferMiddleware();
         const [missedPassengerMiddleware, getMissedPassengers] =  MissedPassengerMiddleware();
+        const Middlewares: EvaluationFunc[] = [
+            transferMiddleware, missedPassengerMiddleware
+        ]
 
         for(let second = start; second < DAY && second < end; second++){
             const simulationFrame: SimulationFrame = {};
@@ -64,14 +68,10 @@ class Simulator {
             }, {});
             if(stations && stations !== {}){ simulationFrame.stations = stations; }
             
-            // Evaluate middlewares and push to simulationFrame.
-            const evalFrame = middleware? middleware(simulationFrame, this.eventManager): {};
-            
-            frameContainer[second] = {
-                simulation: simulationFrame,
-                evaluation: evalFrame
-            };
 
+            // Aggregate data...
+            frameContainer[second] = simulationFrame;
+            Middlewares.forEach((m: EvaluationFunc) => m(simulationFrame, this.eventManager));
             let events = this.eventManager.getEventsWithTag(PassengerEventTags[PassengerEventTags.PATH_CALCULATED]);
             for(let i = 0; i < events.length; i++){
                 const obj = events[i].getObj();
@@ -88,6 +88,7 @@ class Simulator {
                 }
             }
 
+            // Remove expired events...
             this.eventManager.cleanup(second);
             if(second%100 === 0){
                 yield put(SetBakedFrames(second - start));
@@ -96,7 +97,7 @@ class Simulator {
         }
 
         const results: SimulationResults = {
-            totalFrames: DAY,
+            frames: { start: start, end: end },
             metrics: {
                 vehicleTotal: Object.keys(this.simulationVehicles).length,
                 passengerTotal: Object.keys(this.simulationPassengers).length,

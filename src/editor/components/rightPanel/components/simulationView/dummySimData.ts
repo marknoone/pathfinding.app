@@ -2,23 +2,18 @@ import { Algorithms } from './constants';
 import { SimulationResults, FullSimData } from '../../../../../app/pkg/simulation';
 import { TransitModes } from '../../../leftPanel/components/componentView/constants'; 
 
+
 export const DummySimData: FullSimData = {
     frames:{
-        0:{ 
-            simulation: {
-                passengers: { 1: { coordinates: { x: 356, y:220 } }}, 
-                vehicles:   { 1: { coordinate:  { x: 657, y:109 }, originalVID: 1, angle: 20, passengerCnt: 3 }}, 
-                stations:   { 1: { passengerCnt: 4 }},
-            }, 
-            evaluation: {} 
+        0:{
+            passengers: { 1: { coordinates: { x: 356, y:220 } }}, 
+            vehicles:   { 1: { coordinate:  { x: 657, y:109 }, originalVID: 1, angle: 20, passengerCnt: 3 }}, 
+            stations:   { 1: { passengerCnt: 4 }},
         },
-        1:{ 
-            simulation: {
-                passengers: { 1: { coordinates: { x: 456, y:320 } }}, 
-                vehicles:   { 1: { coordinate:  { x: 757, y:209 }, originalVID: 1, angle: 30, passengerCnt: 5 }}, 
-                stations:   { 1: { passengerCnt: 2 }},
-            }, 
-            evaluation: {} 
+        1:{
+            passengers: { 1: { coordinates: { x: 456, y:320 } }}, 
+            vehicles:   { 1: { coordinate:  { x: 757, y:209 }, originalVID: 1, angle: 30, passengerCnt: 5 }}, 
+            stations:   { 1: { passengerCnt: 2 }},
         }
     },
     passengerPaths: {
@@ -44,7 +39,7 @@ export const DummySimData: FullSimData = {
 
 
 export const DummySimulationResults: SimulationResults = {
-    totalFrames: 6,
+    frames: { start: 0, end: 6 },
     metrics:{
         vehicleTotal: 3,
         passengerTotal: 5,

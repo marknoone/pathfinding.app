@@ -1,5 +1,4 @@
 import { TransitModes } from "../../../editor/components/leftPanel/components/componentView/constants";
-import { EvaluationData } from './middlewares';
 import Simulator from './simulation';
 
 export { SaveSimulationResults, GetSimulationResults } from './storage';
@@ -11,7 +10,11 @@ export type Node = {
 }
 
 export type SimulationResults = {
-    totalFrames: number
+    frames: {
+        start: number,
+        end: number,
+    }
+
     metrics:{
         vehicleTotal: number
         passengerTotal: number
@@ -107,12 +110,7 @@ export type PassengerPath = {
     }
 }
 
-export type FullSimFrame = { 
-    simulation: SimulationFrame, 
-    evaluation: EvaluationData 
-}
-
-export type FrameContainer = { [frame: number]: FullSimFrame }
+export type FrameContainer = { [frame: number]: SimulationFrame }
 export type FullSimData = {
     frames: FrameContainer,
     passengerPaths: {

@@ -3,7 +3,6 @@ import { Scenario } from '../../../../constants';
 import { SimulationActionTypes } from './constants';
 import { DummySimulationResults } from './dummySimData';
 import { takeLatest, select, put, call, take, delay, fork, actionChannel, all  } from 'redux-saga/effects';
-import withMiddleware from '../../../../../app/pkg/simulation/middlewares';
 import { CanvasState } from '../../../workspace/components/pathfindingCanvas/constants';
 import Simulator, { FullSimData, FrameContainer, SaveSimulationResults, SimulationResults } 
     from '../../../../../app/pkg/simulation';

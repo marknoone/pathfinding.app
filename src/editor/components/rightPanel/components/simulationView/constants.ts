@@ -1,4 +1,3 @@
-import { EvaluationData } from "../../../../../app/pkg/simulation/middlewares";
 import { FullSimData, SimulationFrame, PassengerPath, SimulationOptions, FrameContainer } from "../../../../../app/pkg/simulation";
 
 export type SimulationAction = {
@@ -11,7 +10,6 @@ export type SimulationAction = {
         opts?: SimulationOptions
         pPath?: {path: PassengerPath, pID: number}
         dataFrame?: SimulationFrame
-        evalFrame?: EvaluationData
         frames?: FrameContainer
     }
 }
